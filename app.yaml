@@ -1,0 +1,40 @@
+application: showtownmvp
+version: 10
+runtime: python27
+api_version: 1
+threadsafe: yes
+
+
+
+handlers:
+- url: /favicon\.ico
+  static_files: favicon.ico
+  upload: favicon\.ico
+  
+- url: /css
+  static_dir: css
+  
+- url: /images
+  static_dir: images
+  
+- url: /javascript
+  static_dir: javascript
+  
+- url: /admin.*
+  script: admin.app
+  login: admin
+ 
+
+- url: /taskslist.*
+  script: cron.app
+
+  
+- url: .*
+  script: main.app
+
+libraries:
+- name: webapp2
+  version: "2.5.1"
+
+- name: jinja2
+  version: latest

@@ -1,0 +1,12 @@
+cron:
+- description: Leader board update
+  url: /taskslist/leaderupdate
+  schedule: every 5 minutes from 8:00 to 2:00
+  timezone: America/Detroit
+  target: version-8
+
+- description: Close Competition
+  url: /taskslist/closecomp
+  schedule: every day 22:00
+  timezone: America/Detroit
+  target: version-8
