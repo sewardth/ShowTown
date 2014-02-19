@@ -18,15 +18,60 @@
 import webapp2, views
 
 class MainHandler(views.Template):
+  def get(self):
+    genres = [{'name':'Alternative', 'arg':'alt'}, {'name':'Blues', 'arg':'blues'}, {'name':'Classical', 'arg':'classical'}]
+    template_values = {'genres':genres}
+    self.render('index.html', template_values)
+
+class TrendingHandler(views.Template):
     def get(self):
-		template_values = {}
-		self.render('index.html', template_values)
+  		template_values = {}
+  		self.render('trending.html', template_values)
+		
+class VenuesHandler(views.Template):
+    def get(self):
+  		template_values = {}
+  		self.render('venues.html', template_values)
 
+class FaqHandler(views.Template):
+    def get(self):
+  		template_values = {}
+  		self.render('faq.html', template_values)
+        		
+class PrivacyHandler(views.Template):
+    def get(self):
+  		template_values = {}
+  		self.render('privacy.html', template_values)
+              		
+class TermsHandler(views.Template):
+    def get(self):
+  		template_values = {}
+  		self.render('terms.html', template_values)
 
+class SignupFanHandler(views.Template):
+    def get(self):
+  		template_values = {}
+  		self.render('signup_fan.html', template_values)
 
+class SignupMusicianHandler(views.Template):
+    def get(self):
+  		template_values = {}
+  		self.render('signup_musician.html', template_values)
+        		
+class SignupVebueHandler(views.Template):
+    def get(self):
+  		template_values = {}
+  		self.render('signup_venue.html', template_values)
 
 app = webapp2.WSGIApplication([
-    ('/', MainHandler)
-
-
+    ('/', MainHandler),
+    ('/trending', TrendingHandler),
+    ('/venues', VenuesHandler),
+    ('/faq', FaqHandler),
+    ('/privacy', PrivacyHandler),
+    ('/terms', TermsHandler),
+    ('/signup_fan', SignupFanHandler),
+    ('/signup_musician', SignupMusicianHandler),
+    ('/signup_venue', SignupVebueHandler)
+    
 ], debug=True)
