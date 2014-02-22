@@ -65,6 +65,11 @@ class SignupVenueHandler(views.Template):
 		template_values = {}
 		self.render('signup_venue.html', template_values)
 
+class SignupHandler(views.Template):
+  def post(self):
+    self.response.headers['Content-Type'] = "text/plain"
+    self.response.out.write(self.request.body)
+        
 class GetMatchUpPageDataHandler(views.Template):
   def post(self):
     self.response.headers['Content-Type'] = "text/plain"
@@ -90,6 +95,7 @@ app = webapp2.WSGIApplication([
     ('/signup_fan', SignupFanHandler),
     ('/signup_musician', SignupMusicianHandler),
     ('/signup_venue', SignupVenueHandler),
+    ('/signup', SignupHandler),
     ('/get_match_up_page_data', GetMatchUpPageDataHandler),
     ('/get_trending_page_data', GetMTrendingPageDataHandler),
     ('/get_venue_page_data', GetVenuePageDataHandler)
