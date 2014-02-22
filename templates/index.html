@@ -3,6 +3,7 @@
 <head>
 	<meta charset="utf-8">
 	{% include 'common_links.inc' %}
+	<script src="javascript/index.js"></script>
 	<title>Home</title>
 	<!--[if lt IE 9]>
 	<script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script>
@@ -13,51 +14,31 @@
     {% include 'header.html' %}
     <div class="microcopy">
 			<p class="pull-right"><a href="find-musicians.html">Find Musicians »</a></p>
-			<ul class="nav comparison-nav no_padding">
+			<ul class="nav selection-nav no_padding">
 				<li>You are currently comparing </li>
-				<li class="dropdown"><a data-toggle="dropdown" class="dropdown-toggle" href="#">Hip-Hop/Rap <b class="caret"></b></a>
-			 <ul class="dropdown-menu">
-			   {% for genre in genres %}
-           <li><a href="/?g={{genre.arg}}">{{genre.name}}</a></li>
-         {% endfor %}
-         <!--
-		          <li><a href="#">Alternative</a></li>
-		          <li><a href="#">Blues</a></li>
-		          <li><a href="#">Classical</a></li>
-		          <li><a href="#">Country</a></li>
-		          <li><a href="#">Dance</a></li>
-		          <li><a href="#">Easy Listening</a></li>
-		          <li><a href="#">Electronic</a></li>
-		          <li><a href="#">Hip-Hop/Rap</a></li>
-		          <li><a href="#">Classical</a></li>
-		          <li><a href="#">Industrial</a></li>
-		          <li><a href="#">Instrumental</a></li>
-		          <li><a href="#">Jazz</a></li>
-		          <li><a href="#">Pop</a></li>
-		          <li><a href="#">Rock</a></li>
-		          <li><a href="#">Singer/Songwriter</a></li>
-		          <li><a href="#">Vocal</a></li>
-		          <li class="divider"></li>
-		          <li><a href="#">Random</a></li>
-		      -->
-				</ul>
-			</li>
+				<li class="dropdown">
+				  <a data-toggle="dropdown" class="dropdown-toggle" id="selected_genre" href="javascript:void(0)"><b class="caret"></b></a>
+          <ul class="dropdown-menu" id="genres_list"><!-- filled in by set_selection_nav --></ul>
+        </li>
 				<li>musicians in </li>
-				<li class="dropdown"><a data-toggle="dropdown" class="dropdown-toggle" href="#">Michigan <b class="caret"></b></a>
+				<li class="dropdown">
+				  <a data-toggle="dropdown" class="dropdown-toggle" id="selected_state" href="javascript:void(0)">Michigan<b class="caret"></b></a>
 					<ul class="dropdown-menu">
-			          <li><a href="#">Alabama</a></li>
-			          <li><a href="#">Michigan</a></li>
-			          <li><a href="#">California</a></li>
-			          <li><a href="#">Florida</a></li>
-			          <li><a href="#">New York</a></li>
-			        </ul>
+				  {% for musicians_state in musicians_states %}
+            <li><a href="javascript:void(0)" onclick="load_page_content(null,'{{musicians_state.abbr}}')">{{musicians_state.name}}</a></li>
+          {% endfor %}
+	        </ul>
 				</li>
 			</ul>
 		</div>
 		<br/>
 		<hr/>
 		<h1 class="text-center">HipHop/Rap Match Up</h1>
+<!--
+<iframe width="640" height="360" src="//www.youtube.com/embed/58kDMw779xc?feature=player_detailpage" frameborder="0" allowfullscreen></iframe>
 
+http://www.youtube.com/watch?feature=player_detailpage&v=58kDMw779xc
+-->
 		
     {% include 'footer.html' %}
   </div>

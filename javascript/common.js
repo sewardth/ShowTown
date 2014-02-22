@@ -1,20 +1,27 @@
-$( document ).ready(function() {
-  set_top_menu();
-});
-
-function set_top_menu(){
-  var a = $('<a>', { href:window.location } )[0];
-  console.log(a.hostname);
-  console.log(a.pathname);
-  switch(a.pathname){
+/**
+ * @file Functions common to all pages and jQuery initialization.
+ */
+ 
+$(document).ready(function() {
+  switch(location.pathname){
     case '/':
-      $('li.musicians').addClass('selected');
+      init_page()
       break;
     case '/trending':
-      $('li.trending').addClass('selected');
+      init_page()
       break;
     case '/venues':
-      $('li.venues').addClass('selected');
+      init_page()
       break;
   }
-}
+});
+
+/**
+ * Objects to fill in pulldowns and get keys for AJAX calls
+ */
+var gig_offers = {'With Gigs':'with', 'Without Gigs':'without', Either:'either'};
+var genres = {alt:'Alternative', blues:'Blues', classical:'Classical', country:'Country', dance:'Dance',
+  easy_listening:'Easy Listening', electronic:'Electronic', hip_hop_rap:'Hip-Hop/Rap', industrial:'Industrial',
+  instrumental:'Instrumental', jazz:'Jazz', pop:'Pop', rock:'Rock', singer_songwriter:'Singer/Songwriter', vocal:'Vocal'};
+var venue_types = {bar:'Bar', coffee_shop:'Coffee Shop', concert_house:'Concert House'};
+var states = {Michigan:'MI', California:'CA', Florida:'FL'}

@@ -11,7 +11,111 @@
 <body>
   <div id="page">
     {% include 'header.html' %}
-    <p>Test from bitbucket clone</p>	
+    <div class="row">
+			<div class="col-lg-8 col-lg-offset-2">
+				<h1>Sign Up to Showtown</h1>
+				<p>Sign up to ShowTown as a fan <strong>to vote on match ups</strong> and <strong>follow your favorite artists.</strong></p>
+				<br>
+				<form class="form-horizontal" action="/signup" method="POST">
+				  <input type="hidden" name="user_type" value="fan">
+					<fieldset>
+						<p class="float_left">Signup Using Your Social Media Account</p>
+						<a href="#" class="btn btn-default float_left">Twitter</a>
+						<a href="#" class="btn btn-default float_left">Facebook</a>
+						<a href="#" class="btn btn-default float_left">Google+</a>
+					</fieldset>
+					<br>
+  				<fieldset>
+    				<div class="control-group" id="email_wrapper">
+    				  <label for="email" class="control-label">Email</label>
+    				  <div class="controls">
+    				    <input type="text" required="" class="input-xlarge" placeholder="email@domain.com" name="email" id="email">
+    				  </div>
+    				</div>
+    				<div class="control-group" id="dob_wrapper">
+    				  <label for="dob" class="control-label">Date of Birth</label>
+    				  <div class="controls">
+    				    <input type="text" class="input-xlarge" placeholder="MM/DD/YYYY" name="dob" id="dob">
+    				  </div>
+    				</div>
+    				<div class="clearfix"></div>
+    				<div class="control-group" id="password_wrapper">
+    				  <label for="password" class="control-label">Password</label>
+    				  <div class="controls">
+    				    <input type="password" class="input-xlarge" placeholder="" name="password" id="password">
+    				    <p class="help-block">Type in password</p>
+    				  </div>
+    				</div>
+    				<div class="control-group" id="conf_password_wrapper">
+    				  <label for="conf_password" class="control-label">&nbsp;</label>
+    				  <div class="controls">
+    				    <input type="password" class="input-xlarge" placeholder="" name="conf_password" id="conf_password">
+    				    <p class="help-block">Confirm password</p>
+    				  </div>
+    				</div>
+    				<div class="clearfix"></div>
+    				<div class="control-group">
+    				  <label for="checkboxes" class="control-label">Favorite Genre(s)</label>
+    				  <div class="controls">
+    				    <ul id="favorite_genres">
+      				    <li><label for="checkboxes" class="checkbox">
+      				      <input type="checkbox" value="Alternative" id="checkboxes" name="checkboxes">
+      				        Alternative </label></li>
+      		        <li><label for="checkboxes" class="checkbox">
+      				      <input type="checkbox" value="Blues" id="checkboxes" name="checkboxes">
+      				        Blues </label></li>
+      		        <li><label for="checkboxes" class="checkbox">
+      				      <input type="checkbox" value="Classical" id="checkboxes" name="checkboxes">
+      				        Classical </label></li>
+      		        <li><label for="checkboxes" class="checkbox">
+      				      <input type="checkbox" value="Country" id="checkboxes" name="checkboxes">
+      				        Country </label></li>
+      		        <li><label for="checkboxes" class="checkbox">
+      				      <input type="checkbox" value="Dance" id="checkboxes" name="checkboxes">
+      				        Dance </label></li>
+      		        <li><label for="checkboxes" class="checkbox">
+      				      <input type="checkbox" value="Easy Listening" id="checkboxes" name="checkboxes">
+      				        Easy Listening</label></li>
+      		        <li><label for="checkboxes" class="checkbox">
+      				      <input type="checkbox" value="Electronic" id="checkboxes" name="checkboxes">
+      				        Electronic</label></li>
+      		        <li><label for="checkboxes" class="checkbox">
+      				      <input type="checkbox" value="Hip Hop / Rap" id="checkboxes" name="checkboxes">
+      				        Hip-Hop/Rap</label></li>
+      		        <li><label for="checkboxes" class="checkbox">
+      				      <input type="checkbox" value="Classical" id="checkboxes" name="checkboxes">
+      				        Classical</label></li>
+      		        <li><label for="checkboxes" class="checkbox">
+      				      <input type="checkbox" value="Industrial" id="checkboxes" name="checkboxes">
+      				        Industrial</label></li>
+      		        <li><label for="checkboxes" class="checkbox">
+      				      <input type="checkbox" value="Instrumental" id="checkboxes" name="checkboxes">
+      				        Instrumental</label></li>
+      		        <li><label for="checkboxes" class="checkbox">
+      				      <input type="checkbox" value="Jazz" id="checkboxes" name="checkboxes">
+      				        Jazz</label></li>
+      		        <li><label for="checkboxes" class="checkbox">
+      				      <input type="checkbox" value="Pop" id="checkboxes" name="checkboxes">
+      				        Pop</label></li>
+      		        <li><label for="checkboxes" class="checkbox">
+      				      <input type="checkbox" value="Rock" id="checkboxes" name="checkboxes">
+      				        Rock</label></li>
+      		        <li><label for="checkboxes" class="checkbox">
+      				      <input type="checkbox" value="Singer/Songwriter" id="checkboxes" name="checkboxes">
+      				        Singer/Songwriter</label>
+      		        <li><label for="checkboxes" class="checkbox">
+      				      <input type="checkbox" value="Vocal" id="checkboxes" name="checkboxes">
+      				        Vocal</label></li>
+      				  </ul>
+    				  </div>
+  				  </div>
+  				  <div class="clearfix"></div>
+  				  <br>
+            <input class="btn btn-primary" type="submit" value="Sign Up" />
+  				</fieldset>
+				</form>
+			</div>
+		</div>
     {% include 'footer.html' %}
   </div>
 </body>

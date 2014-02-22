@@ -19,50 +19,67 @@ import webapp2, views
 
 class MainHandler(views.Template):
   def get(self):
-    genres = [{'name':'Alternative', 'arg':'alt'}, {'name':'Blues', 'arg':'blues'}, {'name':'Classical', 'arg':'classical'}]
-    template_values = {'genres':genres}
+    musicians_states = [{'name':'Michigan', 'abbr':'MI'}, {'name':'California', 'abbr':'CA'}, {'name':'Florida', 'abbr':'FL'}]
+    template_values = {'musicians_states':musicians_states}
     self.render('index.html', template_values)
 
 class TrendingHandler(views.Template):
-    def get(self):
-  		template_values = {}
-  		self.render('trending.html', template_values)
+  def get(self):
+    musicians_states = [{'name':'Michigan', 'abbr':'MI'}, {'name':'California', 'abbr':'CA'}, {'name':'Florida', 'abbr':'FL'}]
+    template_values = {'musicians_states':musicians_states}
+    self.render('trending.html', template_values)
 		
 class VenuesHandler(views.Template):
-    def get(self):
-  		template_values = {}
-  		self.render('venues.html', template_values)
+  def get(self):
+    venues_states = [{'name':'Michigan', 'abbr':'MI'}, {'name':'Ohio', 'abbr':'OH'}]
+    template_values = {'venues_states':venues_states}
+    self.render('venues.html', template_values)
 
 class FaqHandler(views.Template):
-    def get(self):
-  		template_values = {}
-  		self.render('faq.html', template_values)
+  def get(self):
+		template_values = {}
+		self.render('faq.html', template_values)
         		
 class PrivacyHandler(views.Template):
-    def get(self):
-  		template_values = {}
-  		self.render('privacy.html', template_values)
+  def get(self):
+		template_values = {}
+		self.render('privacy.html', template_values)
               		
 class TermsHandler(views.Template):
-    def get(self):
-  		template_values = {}
-  		self.render('terms.html', template_values)
+  def get(self):
+		template_values = {}
+		self.render('terms.html', template_values)
 
 class SignupFanHandler(views.Template):
-    def get(self):
-  		template_values = {}
-  		self.render('signup_fan.html', template_values)
+  def get(self):
+		template_values = {}
+		self.render('signup_fan.html', template_values)
 
 class SignupMusicianHandler(views.Template):
-    def get(self):
-  		template_values = {}
-  		self.render('signup_musician.html', template_values)
+  def get(self):
+		template_values = {}
+		self.render('signup_musician.html', template_values)
         		
-class SignupVebueHandler(views.Template):
-    def get(self):
-  		template_values = {}
-  		self.render('signup_venue.html', template_values)
+class SignupVenueHandler(views.Template):
+  def get(self):
+		template_values = {}
+		self.render('signup_venue.html', template_values)
 
+class GetMatchUpPageDataHandler(views.Template):
+  def post(self):
+    self.response.headers['Content-Type'] = "text/plain"
+    self.response.out.write(self.request.body)
+
+class GetMTrendingPageDataHandler(views.Template):
+  def post(self):
+    self.response.headers['Content-Type'] = "text/plain"
+    self.response.out.write(self.request.body)
+        
+class GetVenuePageDataHandler(views.Template):
+  def post(self):
+    self.response.headers['Content-Type'] = "text/plain"
+    self.response.out.write(self.request.body)  
+     		
 app = webapp2.WSGIApplication([
     ('/', MainHandler),
     ('/trending', TrendingHandler),
@@ -72,6 +89,9 @@ app = webapp2.WSGIApplication([
     ('/terms', TermsHandler),
     ('/signup_fan', SignupFanHandler),
     ('/signup_musician', SignupMusicianHandler),
-    ('/signup_venue', SignupVebueHandler)
+    ('/signup_venue', SignupVenueHandler),
+    ('/get_match_up_page_data', GetMatchUpPageDataHandler),
+    ('/get_trending_page_data', GetMTrendingPageDataHandler),
+    ('/get_venue_page_data', GetVenuePageDataHandler)
     
 ], debug=True)

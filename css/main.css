@@ -11,12 +11,18 @@ h4 {font-size: 24px;}
 .float_left{float: left;}
 .float_right{float: right;}
 .no_padding{padding: 0 !important}
+.clearfix:after {clear: both; content: "."; display: block; height: 0; visibility: hidden;}
+.clearfix {display: block;}
 
 #page {width: 1181px; margin: 0 auto;}
 
 /* General bootstrap overrides */
 .row {margin: 0;}
-
+label {font-weight: normal;}
+.help-block {font-size: 14px}
+.control-group {margin: 20px 0 0 0;}
+.control-group input[type="text"], .control-group textarea {max-width: 720px; width: 100%;}
+  
 /* Header */
 .top_btn{background-color: #3299bb; color: white}
 .utility {float: right; padding: 10px 0;}
@@ -53,37 +59,31 @@ h4 {font-size: 24px;}
 }
 
 /* Home */
-.comparison-nav > li {
-    float: left;
-    margin: 0;
+.selection-nav > li {float: left; margin: 0;}
+.selection-nav li > a {padding: 0 8px;}
+
+/* Forms */
+fieldset legend {margin: 0}
+#email_wrapper, #dob_wrapper, #password_wrapper, #conf_password_wrapper, #musician_name_wrapper, 
+#num_of_members_wrapper, #venue_name_wrapper, #address_wrapper, #address2_wrapper, #venue_type_wrapper,
+#age_limit_wrapper, #capacity_wrapper {float: left; display: inline-block;}
+#email_wrapper, #password_wrapper, #musician_name_wrapper, #num_of_members_wrapper, #venue_name_wrapper, #address_wrapper {margin-right: 20px;}
+#email, #dob, #password, #conf_password, #musician_name, #venue_name, #address, #address2 {width: 350px;}
+#favorite_genres li {display: block;float: left; margin: 0 0 0 -40px;
+  width: 35%;   /* this controls the number of columns */
 }
-.comparison-nav li > a {
-    padding: 0 8px;
-}
-
-
-
+#favorite_genres li label {font-size: 14px;}
+#city_wrapper, #state_wrapper, #zip_wrapper {float: left; display: inline-block;}
+#city {width: 480px;}
+#state {width: 50px;}
+#zip {width: 150px;}
+#city, #state {margin-right: 20px;}
+#num_of_members_wrapper {width: 350px;}
+#venue_type_wrapper, #age_limit_wrapper, #capacity_wrapper {width: 240px;}
 
 /* Footer */
-.footer {
-    border-top: 1px solid #EFEFEF;
-    margin: 60px 0 0;
-}
-.footer ul {
-    float: right;
-    list-style: none outside none;
-    margin: 0;
-    padding: 0;
-}
-.footer ul li {
-    float: left;
-}
-.footer > .nav > li > a {
-    display: block;
-    padding: 10px 15px;
-    position: relative;
-}
-.footer p {
-    color: #888888;
-    padding: 12px 0;
-}
+.footer {border-top: 1px solid #EFEFEF; margin: 60px 0 0;}
+.footer ul {float: right; list-style: none outside none; margin: 0; padding: 0;}
+.footer ul li {float: left;}
+.footer > .nav > li > a {display: block; padding: 10px 15px; position: relative;}
+.footer p {color: #888888; padding: 12px 0;}

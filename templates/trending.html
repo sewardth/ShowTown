@@ -3,6 +3,7 @@
 <head>
 	<meta charset="utf-8">
   {% include 'common_links.inc' %}
+  <script src="javascript/trending.js"></script>
 	<title>Trending</title>
 	<!--[if lt IE 9]>
 	<script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script>
@@ -12,7 +13,24 @@
   <div id="page">
     {% include 'header.html' %}
     <h1>Trending</h1>
-    
+    <div class="microcopy">
+			<input class="pull-right" type="text" name="search_musician" id="search_musician" placeholder="Find a musician..."  />
+			<ul class="nav selection-nav no_padding">
+				<li>Viewing </li>
+				<li class="dropdown"><a data-toggle="dropdown" class="dropdown-toggle" id="selected_genre" href="#"><b class="caret"></b></a>
+  			  <ul class="dropdown-menu" id="genres_list"><!-- filled in by set_selection_nav --></ul>
+  			</li>
+				<li>trending musicians in </li>
+				<li class="dropdown"><a data-toggle="dropdown" class="dropdown-toggle" id="selected_state" href="#">Michigan<b class="caret"></b></a>
+					<ul class="dropdown-menu">
+  				  {% for musicians_state in musicians_states %}
+              <li><a href="javascript:void(0)" onclick="load_page_content(null,'{{musicians_state.abbr}}')">{{musicians_state.name}}</a></li>
+            {% endfor %}
+	        </ul>
+				</li>
+			</ul>
+		</div>
+		<hr/>
     
     {% include 'footer.html' %}
   </div>

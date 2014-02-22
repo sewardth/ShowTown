@@ -3,6 +3,7 @@
 <head>
 	<meta charset="utf-8">
   {% include 'common_links.inc' %}
+  <script src="javascript/venues.js"></script>
 	<title>Venues</title>
 	<!--[if lt IE 9]>
 	<script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script>
@@ -12,6 +13,32 @@
   <div id="page">
     {% include 'header.html' %}
     <h1>Venues</h1>
+    <div class="microcopy">
+			<input class="pull-right" type="text" name="search_venue" id="search_venue" placeholder="Search for a venue..."  />
+			<ul class="nav selection-nav no_padding">
+				<li>Viewing </li>
+				<li class="dropdown"><a data-toggle="dropdown" class="dropdown-toggle" id="selected_venue_type" href="#"><b class="caret"></b></a>
+  			  <ul class="dropdown-menu" id="venue_types"><!-- filled in by set_selection_nav --></ul>
+  			</li>
+				<li>venues in </li>
+				<li class="dropdown"><a data-toggle="dropdown" class="dropdown-toggle" id="selected_state" href="#">Michigan<b class="caret"></b></a>
+					<ul class="dropdown-menu">
+  				  {% for venues_state in venues_states %}
+              <li><a href="javascript:void(0)" onclick="load_page_content(null,'{{venues_state.abbr}}', null)">{{venues_state.name}}</a></li>
+            {% endfor %}
+	        </ul>
+				</li>
+				<li class="dropdown"><a data-toggle="dropdown" class="dropdown-toggle" id="selected_gig_offer" href="#">With Gigs<b class="caret"></b></a>
+					<ul class="dropdown-menu" id="gig_offers">
+	        </ul>
+				</li>
+			</ul>
+		</div>
+		<hr/>
+    
+    
+    
+    
     
     
     {% include 'footer.html' %}
