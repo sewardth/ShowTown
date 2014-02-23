@@ -65,10 +65,20 @@ class SignupVenueHandler(views.Template):
 		template_values = {}
 		self.render('signup_venue.html', template_values)
 
-class SignupHandler(views.Template):
-  def post(self):
-    self.response.headers['Content-Type'] = "text/plain"
-    self.response.out.write(self.request.body)
+class SignupHandler(views.Template): 
+	def post(self): 
+		self.response.headers['Content-Type'] = "text/plain" 
+		params = {} 
+		for field in self.request.arguments():
+			params[field] = self.request.get_all(field) 
+		user_type = params['user_type'][0]
+		if user_type == 'fan':
+			pass
+		elif user_type == 'musician':
+			pass
+		else:
+			pass
+
         
 class GetMatchUpPageDataHandler(views.Template):
   def post(self):

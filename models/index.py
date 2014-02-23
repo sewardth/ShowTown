@@ -1,6 +1,6 @@
-from google.appengine.ext import db
+from google.appengine.ext import ndb
 
-class Contact(db.Model):
+class Contact(ndb.Model):
 	name = db.StringProperty()
 	email_address = db.EmailProperty()
 	message = db.TextProperty()
