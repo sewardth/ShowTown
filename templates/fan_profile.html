@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+  {% include 'common_links.inc' %}
+  <script src="javascript/venues.js"></script>
+	<title>My Profile</title>
+	<!--[if lt IE 9]>
+	<script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+	<![endif]-->
+</head>
+<body>
+  <div id="page">
+    {% include 'header.html' %}
+    <h1 class="pull-left">My Profile</h1>
+    <h1 class="pull-right"><a href="/fan_profile_edit" class="btn btn-default">Edit Profile</a></h1>
+    <div class="clearfix"></div>
+    <div class="microcopy">
+      <div>
+        <strong>You're following</strong> {{following_count}} Musicians. <strong>You've Participated in</strong> {{matchups_count}} Matchups
+        <span class="left_spaced bold">Favorite Genres: </span>{{fav_genres}}
+      </div>
+		</div>
+		<hr/>
+
+    <h2>Upcoming Shows <small>by Musicians You Follow</small></h2>
+    <table class="table gigs">
+			<thead>
+				<tr>
+					<th style="width: 150px;">Artist</th>
+					<th style="width: 115px;">Venue</th>
+					<th style="width: 200px">Show</th>
+					<th style="width: 150px">Date / Time <b class="caret"></b></th>
+					<th>Details</th>
+				</tr>
+			</thead>
+			<tbody>
+			  {% for us in upcoming_shows %}
+				<tr>
+					<td><strong><a href="{{us.artist_href}}">{{us.artist}}</a></strong></td>
+					<td><a href="{{us.venue_href}}">{{us.venue}}</a></td>
+					<td>{{us.show}}</td>
+					<td><strong>{{us.date}}</strong><br> {{us.time}}</td>
+					<td>
+						<p>{{us.details}}</p>
+					</td>
+				</tr>
+				{% endfor %}
+			</tbody>
+		</table>
+    <h2>Musicians You Follow</h2>
+    {% for fm in followed_musicians %}
+    <div class="row prev-vid-row">
+			<div class="col-lg-6 prev-vid">
+				<div class="col-lg-8">
+					<img class="pull-left" src="{{fm.img_src}}">
+					<h4>{{fm.name}}</h4>
+					<p><a href="#">View Profile</a> | <a href="#">unfollow</a></p>
+				</div>
+				<div class="col-lg-4">
+					<h1 class="text-center">{{fm.liked_percent}}%</h1>
+				</div>
+			</div>
+			<div class="col-lg-6 prev-vid voted">
+				<div class="col-lg-8">
+					<img class="pull-left" src="{{fm.voted_img_src}}">
+					<h4>{{fm.voted_name}}</h4>
+					<p><a href="#">View Profile</a> | <a href="#">unfollow</a></p>
+				</div>
+				<div class="col-lg-4">
+					<h1 class="text-center">{{fm.voted_liked_percent}}%</h1>
+					<p class="text-center liked">Liked {{fm.voted_liked_percent}}% of the time</p>
+				</div>
+			</div>
+		</div>
+    {% endfor %}
+    <h2>Recent Match ups</h2>
+    
+    
+    
+    
+    {% include 'footer.html' %}
+  </div>
+</body>
+</html>
+
+
+
+
+
+ 
+

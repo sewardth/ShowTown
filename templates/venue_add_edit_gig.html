@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+  {% include 'common_links.inc' %}
+	<title>Edit your Showtown Profile</title>
+	<!--[if lt IE 9]>
+	<script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+	<![endif]-->
+</head>
+<body>
+  <div id="page">
+    {% include 'header.html' %}
+    <div class="row">
+			<div class="col-lg-8 col-lg-offset-2">
+			  {% if add %}
+				<h1>List a Gig</h1>
+				{% else %}
+				<h1>Edit Gig</h1>
+				{% endif %}
+				<hr>
+				<p>Find and book musicians by listing gigs on ShowTown.</p>
+				<br>
+				<form class="form-horizontal" action="/venue_add_edit_gig" method="POST">
+				  {% if add %}
+				  <input type="hidden" name="op" value="add">
+				  {% else %}
+				  <input type="hidden" name="op" value="edit">
+				  <input type="hidden" name="id" value="{{id}}">
+				  {% endif %}
+  				<fieldset>
+  				<legend>Gig Details</legend>
+    				<div class="control-group">
+    				  <label for="textinput" class="control-label">Gig Name</label>
+    				  <div class="controls">
+    				    <input type="text" class="input-xlarge" placeholder="" name="textinput" id="textinput">
+    				  </div>
+    				</div>
+    				<div class="control-group">
+    				  <label for="Date" class="control-label">Date</label>
+    				  <div class="controls">
+    				    <input type="text" class="input-xlarge" placeholder="MM/DD/YYYY" name="Date" id="Date">
+    				  </div>
+    				</div>
+    				<div class="control-group">
+    				  <label for="textinput" class="control-label">Start Time</label>
+    				  <div class="controls">
+    				    <input type="text" class="input-xlarge" placeholder="" name="textinput" id="textinput">
+    				  </div>
+    				</div>
+    				<div class="control-group">
+    				  <label for="textinput" class="control-label">End Time</label>
+    				  <div class="controls">
+    				    <input type="text" class="input-xlarge" placeholder="" name="textinput" id="textinput">
+    				  </div>
+    				</div>
+    				<div class="control-group">
+    				  <label for="prependedtext" class="control-label">Compensation</label>
+    				  <div class="controls">
+    				    <div class="input-prepend">
+    				      <span class="add-on">$</span>
+    				      <input type="text" placeholder="" class="input-xlarge" name="prependedtext" id="prependedtext">
+    				    </div>
+    				  </div>
+    				</div>
+    				<div class="control-group">
+    				  <label for="checkboxes" class="control-label">Equipment Required</label>
+    				  <div class="controls">
+    				    <label for="checkboxes-0" class="checkbox inline">
+    				      <input type="checkbox" value="Yes" id="checkboxes-0" name="checkboxes">
+    				      Yes
+    				    </label>
+    				  </div>
+    				</div>
+    				<div class="control-group">
+    				  <label for="checkboxes" class="control-label">Genre(s)</label>
+    				  <div class="controls">
+    				    <label for="checkboxes-0" class="checkbox">
+    				      <input type="checkbox" value="Option one" id="checkboxes-0" name="checkboxes">
+    				      Option one
+    				    </label>
+    				    <label for="checkboxes-1" class="checkbox">
+    				      <input type="checkbox" value="Option two" id="checkboxes-1" name="checkboxes">
+    				      Option two
+    				    </label>
+    				  </div>
+    				</div>
+    				<div class="control-group">
+    				  <label for="selectbasic" class="control-label">Locality</label>
+    				  <div class="controls">
+    				    <select class="input-xlarge" name="selectbasic" id="selectbasic">
+    				      <option>Local</option>
+    				      <option>Touring</option>
+    				      <option>Either</option>
+    				    </select>
+    				  </div>
+    				</div>
+    				<div class="control-group">
+    				  <label for="textarea" class="control-label">Brief Description</label>
+    				  <div class="controls">                     
+    				    <textarea name="textarea" id="textarea"></textarea>
+    				  </div>
+    				</div>
+    				<br>
+    				<input class="btn btn-primary" type="submit" value="Add Gig" />
+  				</fieldset>
+				</form>
+			</div>
+		</div>
+    {% include 'footer.html' %}
+  </div>
+</body>
+</html>
+
+
+
+
+
+ 
+

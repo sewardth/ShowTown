@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+  {% include 'common_links.inc' %}
+	<title>Edit your Showtown Profile</title>
+	<!--[if lt IE 9]>
+	<script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+	<![endif]-->
+</head>
+<body>
+  <div id="page">
+    {% include 'header.html' %}
+    <div class="row">
+  		<div class="col-lg-8 col-lg-offset-2">
+  			<h1>Edit your Showtown Profile</h1>
+  			<form class="form-horizontal" action="/signup" method="POST" enctype="multipart/form-data">
+  			  <input type="hidden" name="user_type" value="musician">
+    			<fieldset>
+      			<div class="control-group" id="musician_name_wrapper">
+      			  <label for="musician_name" class="control-label">Musician or Band Name</label>
+      			  <div class="controls">
+      			    <input type="text" class="input-xlarge" placeholder="" name="musician_name" id="musician_name">
+      			  </div>
+      			</div>
+    				<div class="control-group" id="email_wrapper">
+    				  <label for="email" class="control-label">Email</label>
+    				  <div class="controls">
+    				    <input type="text" required="" class="input-xlarge" placeholder="email@domain.com" name="email" id="email">
+    				  </div>
+    				</div>
+    				<div class="clearfix"></div>
+    				<div class="control-group" id="password_wrapper">
+    				  <label for="password" class="control-label">Password</label>
+    				  <div class="controls">
+    				    <input type="password" class="input-xlarge" placeholder="" name="password" id="password">
+    				    <p class="help-block">Type in password</p>
+    				  </div>
+    				</div>
+    				<div class="control-group" id="conf_password_wrapper">
+    				  <label for="conf_password" class="control-label">&nbsp;</label>
+    				  <div class="controls">
+    				    <input type="password" class="input-xlarge" placeholder="" name="conf_password" id="conf_password">
+    				    <p class="help-block">Confirm password</p>
+    				  </div>
+    				</div>
+    				<div class="clearfix"></div>
+      			<div class="control-group" id="city_wrapper">
+      			  <label for="city" class="control-label">City</label>
+      			  <div class="controls">
+      			    <input type="text" class="input-xlarge" placeholder="" name="city" id="city">
+      			  </div>
+      			</div>
+      			<div class="control-group" id="state_wrapper">
+      			  <label for="state" class="control-label">State</label>
+      			  <div class="controls">
+      			    <input type="text" class="input-xlarge" placeholder="" name="state" id="state">
+      			  </div>
+      			</div>
+      			<div class="control-group" id="zip_wrapper">
+      			  <label for="zip" class="control-label">Zipcode</label>
+      			  <div class="controls">
+      			    <input type="text" class="input-xlarge" placeholder="" name="zip" id="zip">
+      			  </div>
+      			</div>
+    			</fieldset>
+    			<div class="clearfix"></div>
+    			<br/>
+    			<fieldset>
+    				<legend>Music Video</legend>
+      			<div class="control-group">
+      			  <label for="video_url" class="control-label">Video URL</label>
+      			  <div class="controls">
+      			    <input type="text" class="input-xlarge" placeholder="http://" name="video_url" id="video_url">
+      			    <p class="help-block">Youtube or Vimeo Supported</p>
+      			  </div>
+      			</div>
+      			<div class="control-group">
+      			  <label for="song_name" class="control-label">Song Name</label>
+      			  <div class="controls">
+      			    <input type="text" class="input-xlarge" placeholder="" name="song_name" id="song_name">
+      			  </div>
+      			</div>
+      			<div class="control-group">
+      			  <label for="video_genre" class="control-label">Video Genre</label>
+      			  <div class="controls">
+      			    <select class="input-xlarge" name="video_genre" id="video_genre">
+      			      <option>Alternative</option>
+    		          <option>Blues</option>
+    		          <option>Classical</option>
+    		          <option>Country</option>
+    		          <option>Dance</option>
+    		          <option>Easy Listening</option>
+    		          <option>Electronic</option>
+    		          <option>Hip-Hop/Rap</option>
+    		          <option>Classical</option>
+    		          <option>Industrial</option>
+    		          <option>Instrumental</option>
+    		          <option>Jazz</option>
+    		          <option>Pop</option>
+    		          <option>Rock</option>
+    		          <option>Singer/Songwriter</option>
+    		          <option>Vocal</option>
+      			    </select>
+      			  </div>
+      			</div>
+    			</fieldset>
+    			<br>
+    			<fieldset>
+    				<legend>Customize Your Profile (optional)</legend>
+      			<div class="control-group">
+      			  <label for="file_upload" class="control-label">Profile Picture</label>
+      			  <div class="controls">
+      			    <input type="file" class="input-file" name="file_upload" id="file_upload">
+      			  </div>
+      			</div>
+      			<div class="control-group"  id="num_of_members_wrapper">
+      			  <label for="num_of_members" class="control-label"># of Band Members</label>
+      			  <div class="controls">
+      			    <input type="text" class="input-xlarge" placeholder="" name="num_of_members" id="num_of_members">
+      			  </div>
+      			</div>
+	    			<div class="control-group"  id="dob_wrapper">
+      			  <label for="dob" class="control-label">Date of Birth</label>
+      			  <div class="controls">
+      			    <input type="text" class="input-xlarge" placeholder="MM/DD/YYYY" name="dob" id="dob">
+      			  </div>
+      			</div>
+      			<div class="clearfix"></div>
+      			<div class="control-group">
+      			  <label for="bio" class="control-label">Brief Bio (500 charecters)</label>
+      			  <div class="controls">                     
+      			    <textarea name="bio" id="bio"></textarea>
+      			  </div>
+      			</div>
+      			<div class="control-group">
+      			  <label for="facebook" class="control-label">Facebook</label>
+      			  <div class="controls">
+      			    <input type="text" class="input-xlarge" placeholder="" name="facebook" id="facebook">
+      			  </div>
+      			</div>
+      			<div class="control-group">
+      			  <label for="twitter" class="control-label">Twitter</label>
+      			  <div class="controls">
+      			    <input type="text" class="input-xlarge" placeholder="" name="twitter" id="twitter">
+      			  </div>
+      			</div>
+      			<div class="control-group">
+      			  <label for="sound_cloud" class="control-label">Sound Cloud</label>
+      			  <div class="controls">
+      			    <input type="text" class="input-xlarge" placeholder="" name="sound_cloud" id="sound_cloud">
+      			  </div>
+      			</div>
+      			<div class="control-group">
+      			  <label for="my_space" class="control-label">Myspace</label>
+      			  <div class="controls">
+      			    <input type="text" class="input-xlarge" placeholder="" name="my_space" id="my_space">
+      			  </div>
+      			</div>
+      			<br>
+      			<input class="btn btn-primary" type="submit" value="Sign Up" />
+    			</fieldset>
+  			</form>
+  		</div>
+    </div>
+    {% include 'footer.html' %}
+  </div>
+</body>
+</html>
+
+
+
+
+
+ 
+

@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+  {% include 'common_links.inc' %}
+  <script src="javascript/venues.js"></script>
+	<title>{{musician_name}}</title>
+	<!--[if lt IE 9]>
+	<script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+	<![endif]-->
+</head>
+<body>
+  <div id="page">
+    {% include 'header.html' %}
+    <h1 class="pull-left">{{musician_name}} <small>You have {{likes_count}} Likes and {{followers_count}} Followers</h1>
+    <h1 class="pull-right">
+      <a href="/musician_profile_edit" class="btn btn-default">Edit Profile</a>
+      <a href="#" class="btn btn-primary">Find Gigs</a>
+    </h1>
+    <div class="clearfix"></div>
+    <div class="microcopy">
+      <p>
+        <strong>Genre: </strong>{{genre}} / Located in {{musician_city}}, {{musician_state}} / Born {{musician_dob}}
+      </p>
+      <p>
+        <a class="trending" href="/trending">
+          You Are Trending: <strong>#{{trending_rank}}</strong> out of <strong>{{trending_category}}</strong> in <strong>{{trending_state}}</strong>
+        </a>
+      </p>
+		</div>
+		<hr/>
+    <div class="row">
+      <div class="col-lg-2 profile-pic">
+    		<img src="{{img_src}}">
+    		<p class="text-center"><a href="#" class="btn btn-default">Twitter</a></p>
+    		<p class="text-center"><a href="#" class="btn btn-default">Facebook</a></p>
+    		<p class="text-center"><a href="#" class="btn btn-default">SoundCloud</a></p>
+    	</div>
+      <div class="col-lg-10">
+   			<h4>New Offers</h4>
+  			<table class="table gigs new-gigs">
+					<thead>
+						<tr>
+							<th>Venue</th>
+							<th>Gig Name</th>
+							<th>Date / Time <b class="caret"></b></th>
+							<th>Details</th>
+							<th>Compensation</th>
+							<th>&nbsp;</th>
+						</tr>
+					</thead>
+					<tbody>
+					  {% for o in new_offers %}
+    				<tr>
+    					<td><a href="/venue_profile?id={{o.venue_id}}">{{o.venue}}</a></td>
+    					<td>{{o.gig_name}}</td>
+    					<td><strong>{{o.date}}</strong><br> {{o.time}}</td>
+    					<td>
+    						<ul>
+    						  {% for d in o.detail_list %}
+  								<li><strong>{{d}}</strong></li>
+  								{% endfor %}
+    							<li><strong>Genres:</strong> {{o.genres}}</li>
+    						</ul>
+    						<p>{{o.detail_description}}</p>
+    					</td>
+    					<td>${{o.compemsation}}</td>
+    					<td><a class="btn btn-default" href="#">Confirm</a></td>
+    				</tr>
+    				{% endfor %}
+  				</tbody>
+  			</table>
+  			<h4>Booked Gigs</h4>
+  			<table class="table gigs">
+    			<thead>
+    				<tr>
+    					<th>Venue</th>
+    					<th>Gig Name</th>
+    					<th>Date / Time <b class="caret"></b></th>
+    					<th>Details</th>
+    					<th>Compensation</th>
+    				</tr>
+    			</thead>
+    			<tbody>
+					  {% for b in booked_gigs %}
+    				<tr>
+    					<td><a href="/venue-profile?id={{venue_id}}">{{b.venue}}</a></td>
+    					<td>{{b.gig_name}}</td>
+    					<td><strong>{{b.date}}</strong><br> {{b.time}}</td>
+    					<td>
+    						<ul>
+    						  {% for d in b.detail_list %}
+  								<li><strong>{{d}}</strong></li>
+  								{% endfor %}
+    							<li><strong>Genres:</strong> {{b.genres}}</li>
+    						</ul>
+    						<p>{{b.detail_description}}</p>
+    					</td>
+    					<td>${{b.compemsation}}</td>
+    				</tr>
+    				{% endfor %}
+    			</tbody>
+  			</table>
+  			<hr>
+  			<br>
+  			<h4>Biography</h4>
+  			<p>{{bio}}</p>
+  			<br>				
+  		</div>
+    </div>    
+    <div class="row">
+			<h2><a href="#" class="btn btn-primary pull-right">Add Video</a>Your Videos</h2>
+			<hr class="clear">
+			<div class="col-lg-6 video featured">
+
+				<iframe width="490" height="300" frameborder="0" allowfullscreen="" src="http://www.youtube.com/embed/_t431MAUQlQ?rel=0"></iframe>
+
+				<h2 class="text-center featured"><span>Featured</span> No Interruption <br><small>900 Likes. Wins 75% of Match Ups</small></h2>
+					<br>
+				<p class="text-center"><a class="btn btn-primary" href="#">Un-Feature</a></p>
+				<p class="text-center"><a class="btn" href="#">Remove Video</a></p>
+
+
+			</div>
+			<div class="col-lg-6 video">
+
+				<iframe width="490" height="300" frameborder="0" allowfullscreen="" src="http://www.youtube.com/embed/2KRa_FjTs2U?rel=0"></iframe>
+
+				<h2 class="text-center">You Are Not a Robot <br><small>600 Likes. Wins 40% of Match Ups</small></h2>
+				<br>
+				<p class="text-center"><a class="btn btn-primary" href="#">Feature</a></p>
+				<p class="text-center"><a class="btn" href="#">Remove Video</a></p>
+
+			</div>
+
+		</div>
+    
+    {% include 'footer.html' %}
+  </div>
+</body>
+</html>
+
+
+
+
+
+ 
+

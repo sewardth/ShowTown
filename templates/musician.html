@@ -1,0 +1,26 @@
+<div class="row">
+  <div class="col-lg-2 profile-pic">
+		<img src="images/_test_profile.jpg">
+		<p class="text-center"><a href="#" class="btn btn-default">Twitter</a></p>
+		<p class="text-center"><a href="#" class="btn btn-default">Facebook</a></p>
+		<p class="text-center"><a href="#" class="btn btn-default">SoundCloud</a></p>
+	</div>
+  <div class="col-lg-10">
+    <h1 class="pull-left">{{musician_name}} <small>You have {{likes_count}} Likes and {{followers_count}} Followers</h1>
+    <h1 class="pull-right">
+      <a href="/musician_profile_edit" class="btn btn-default">Edit Profile</a>
+      <a href="#" class="btn btn-primary">Find Gigs</a>
+    </h1>
+    <div class="clearfix"></div>
+    <div class="microcopy">
+      <p>
+        <strong>Genre: </strong>{{genre}} 
+        <span class="left_spaced">Location: <strong>{{musician_city}}, {{musician_state}}</strong></span>
+        <span class="left_spaced">Born: <strong>{{musician_dob}}</strong>
+      </p>
+      <p>
+        <a class="trending" href="/trending">
+          You Are Trending: <strong>#{{trending_rank}}</strong> out of <strong>{{trending_category}}</strong> in <strong>{{trending_state}}</strong>
+        </a>
+      </p>
+		</div>

@@ -3,7 +3,7 @@
 <head>
 	<meta charset="utf-8">
   {% include 'common_links.inc' %}
-	<title>signup_fan</title>
+	<title>Edit your Showtown Profile</title>
 	<!--[if lt IE 9]>
 	<script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script>
 	<![endif]-->
@@ -13,18 +13,9 @@
     {% include 'header.html' %}
     <div class="row">
 			<div class="col-lg-8 col-lg-offset-2">
-				<h1>Sign Up to Showtown</h1>
-				<p>Sign up to ShowTown as a fan <strong>to vote on match ups</strong> and <strong>follow your favorite artists.</strong></p>
+				<h1>Edit your Showtown Profile</h1>
 				<br>
-				<form class="form-horizontal" action="/signup" method="POST">
-				  <input type="hidden" name="user_type" value="fan">
-					<fieldset>
-						<p class="float_left">Signup Using Your Social Media Account</p>
-						<a href="#" class="btn btn-default float_left">Twitter</a>
-						<a href="#" class="btn btn-default float_left">Facebook</a>
-						<a href="#" class="btn btn-default float_left">Google+</a>
-					</fieldset>
-					<br>
+				<form class="form-horizontal" action="/fan_profile_edit" method="POST">
   				<fieldset>
     				<div class="control-group" id="email_wrapper">
     				  <label for="email" class="control-label">Email</label>

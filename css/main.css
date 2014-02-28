@@ -13,6 +13,7 @@ h4 {font-size: 24px;}
 .no_padding{padding: 0 !important}
 .clearfix:after {clear: both; content: "."; display: block; height: 0; visibility: hidden;}
 .clearfix {display: block;}
+.bold {font-weight: bold;}
 
 #page {width: 1181px; margin: 0 auto;}
 
@@ -80,6 +81,16 @@ fieldset legend {margin: 0}
 #city, #state {margin-right: 20px;}
 #num_of_members_wrapper {width: 350px;}
 #venue_type_wrapper, #age_limit_wrapper, #capacity_wrapper {width: 240px;}
+
+/* Misc */
+.left_spaced {margin: 0 0 0 20px;}
+.prev-vid img {border-radius: 100%; margin-right: 20px;}
+.prev-vid-row h1 {color: #AAAAAA; font-size: 52px; font-weight: bold; margin: 0;}
+.prev-vid h4, .prev-vid h1 {margin-top: 0;}
+#gig_name{width: 200px;}
+.trending {color: #777777;}
+.profile-pic img {border-radius: 100%; display: block; margin: 0 auto 8px;}
+.video iframe {margin-bottom: 30px;}
 
 /* Footer */
 .footer {border-top: 1px solid #EFEFEF; margin: 60px 0 0;}

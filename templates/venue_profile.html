@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+  {% include 'common_links.inc' %}
+  <script src="javascript/venues.js"></script>
+	<title>{{venue_name}}</title>
+	<!--[if lt IE 9]>
+	<script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+	<![endif]-->
+</head>
+<body>
+  <div id="page">
+    {% include 'header.html' %}
+    <h1 class="pull-left">{{venue_name}} <small>{{venue_type}}</small></h1>
+    <h1 class="pull-right">
+      <a href="/venue_profile_edit" class="btn btn-default">Edit Profile</a>
+      <a href="/venue_add_edit_gig" class="btn btn-primary">Post Gig</a>
+    </h1>
+    <div class="clearfix"></div>
+		<hr/>
+		<div class="row">
+      <div class="col-lg-4">
+        <img src="images/_test_venue.jpg">
+      </div>        
+      <div class="col-lg-8">
+  			<h4>About</h4>
+  			<h5>{{venue_address}}</h5>
+  			<p><strong>Ph:</strong> {{venue_phone}} | <strong>Web:</strong> <a href="{{venue_url}}" target="_blank">{{venue_url_text}}</a></p>
+  			<br>
+  			<h4>Details</h4>
+  			<ul>
+  				<li><strong>Venue Type:</strong> {{venue_type}}</li>
+  				<li><strong>Age Limit:</strong> {{venue_age_limit}}</li>
+  				<li><strong>Capacity:</strong> {{venue_capacity}} people</li>
+  			</ul>
+  			<br>
+  		</div>
+    </div>
+    <div class="row">
+			<div class="col-lg-12">
+			  <h4>Available Gigs</h4>
+				<table class="table gigs">
+				<thead>
+					<tr>
+						<th id="gig_name">Gig Name</th>
+						<th>Date / Time <b class="caret"></b></th>
+						<th>Details</th>
+						<th>Compensation</th>
+						<th>&nbsp;</th>
+					</tr>
+				</thead>
+				<tbody>
+				  {% for ag in available_gigs %}
+					<tr>
+						<td>{{ag.gig_name}}<br><a href="/venue_add_edit_gig?id={{ag.gig_id}}">Edit</a> | <a href="#">Delete</a></td>
+						<td><strong>{{ag.date}}</strong><br> {{ag.time}}</td>
+						<td>
+							<ul>
+							  {% for d in ag.detail_list %}
+								<li><strong>{{d}}</strong></li>
+								{% endfor %}
+								<li><strong>Genres:</strong> {{ag.genres}}</li>
+							</ul>
+							<p>{{ag.detail_description}}</p>
+						</td>
+						<td>${{ag.compemsation}}</td>
+						<td>
+							<a class="btn btn-default signup" href="#applicants">{{ag.applicant_count}} Applicants</a></td>
+					</tr>
+					{% endfor %}
+				</tbody>
+				</table>
+				<hr>
+				<p class="pull-right"><a class="btn btn-primary" href="/venue_add_edit_gig">Post Another Gig</a></p>
+      </div>
+		</div>
+    {% include 'footer.html' %}
+  </div>
+</body>
+</html>
+
+
+
+
+
+ 
+
