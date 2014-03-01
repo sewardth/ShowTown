@@ -52,7 +52,7 @@
 					<tbody>
 					  {% for o in new_offers %}
     				<tr>
-    					<td><a href="/venue_profile?id={{o.venue_id}}">{{o.venue}}</a></td>
+    					<td><a href="/venue?id={{o.venue_id}}">{{o.venue}}</a></td>
     					<td>{{o.gig_name}}</td>
     					<td><strong>{{o.date}}</strong><br> {{o.time}}</td>
     					<td>
@@ -84,7 +84,7 @@
     			<tbody>
 					  {% for b in booked_gigs %}
     				<tr>
-    					<td><a href="/venue-profile?id={{venue_id}}">{{b.venue}}</a></td>
+    					<td><a href="/venue?id={{b.venue_id}}">{{b.venue}}</a></td>
     					<td>{{b.gig_name}}</td>
     					<td><strong>{{b.date}}</strong><br> {{b.time}}</td>
     					<td>
@@ -111,30 +111,24 @@
     <div class="row">
 			<h2><a href="#" class="btn btn-primary pull-right">Add Video</a>Your Videos</h2>
 			<hr class="clear">
-			<div class="col-lg-6 video featured">
-
-				<iframe width="490" height="300" frameborder="0" allowfullscreen="" src="http://www.youtube.com/embed/_t431MAUQlQ?rel=0"></iframe>
-
-				<h2 class="text-center featured"><span>Featured</span> No Interruption <br><small>900 Likes. Wins 75% of Match Ups</small></h2>
+			{% for v in videos %}
+			<div class="col-lg-6 video {% if v.featured %} featured {% endif %}">
+				<iframe width="490" height="300" frameborder="0" allowfullscreen="" src="{{v.url}}"></iframe>
+          {% if v.featured %}
+				  <h2 class="text-center featured"><span>Featured</span> {{v.title}} <br><small>{{v.likes_count}} Likes. Wins {{v.matchup_wins_percent}}% of Match Ups</small></h2>
+					{% else %}
+				  <h2 class="text-center">{{v.title}} <br><small>{{v.likes_count}} Likes. Wins {{v.matchup_wins_percent}}% of Match Ups</small></h2>
+					{% endif %}
 					<br>
-				<p class="text-center"><a class="btn btn-primary" href="#">Un-Feature</a></p>
-				<p class="text-center"><a class="btn" href="#">Remove Video</a></p>
-
-
+					{% if v.featured %}
+  				<p class="text-center"><a class="btn btn-primary" href="#">Un-Feature</a></p>
+  				{% else %}
+  				<p class="text-center"><a class="btn btn-primary" href="#">Feature</a></p>
+  				{% endif %}
+  				<p class="text-center"><a class="btn" href="#">Remove Video</a></p>
 			</div>
-			<div class="col-lg-6 video">
-
-				<iframe width="490" height="300" frameborder="0" allowfullscreen="" src="http://www.youtube.com/embed/2KRa_FjTs2U?rel=0"></iframe>
-
-				<h2 class="text-center">You Are Not a Robot <br><small>600 Likes. Wins 40% of Match Ups</small></h2>
-				<br>
-				<p class="text-center"><a class="btn btn-primary" href="#">Feature</a></p>
-				<p class="text-center"><a class="btn" href="#">Remove Video</a></p>
-
-			</div>
-
+			{% endfor %}
 		</div>
-    
     {% include 'footer.html' %}
   </div>
 </body>

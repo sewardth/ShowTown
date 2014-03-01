@@ -34,12 +34,25 @@
 		<br/>
 		<hr/>
 		<h1 class="text-center">HipHop/Rap Match Up</h1>
-<!--
-<iframe width="640" height="360" src="//www.youtube.com/embed/58kDMw779xc?feature=player_detailpage" frameborder="0" allowfullscreen></iframe>
-
-http://www.youtube.com/watch?feature=player_detailpage&v=58kDMw779xc
--->
-		
+		<p class="text-center">Please watch both videos and select the musician you prefer</p>
+		<br/>
+		<div class="col-lg-6 video">
+			<iframe id="left_iframe" width="490" height="300" frameborder="0" allowfullscreen="" src=""></iframe>
+			<p class="text-center"><a href="#" class="btn btn-primary signup">I Like This</a></p>
+			<h2 id="left_musician_name" class="text-center"></h2>
+			<h3 id="left_song_name" class="text-center"></h3>
+		</div>
+    <div class="col-lg-6 video">
+			<iframe id="right_iframe" width="490" height="300" frameborder="0" allowfullscreen="" src=""></iframe>
+			<p class="text-center"><a href="#" class="btn btn-primary signup">I Like This</a></p>
+			<h2 id="right_musician_name" class="text-center"></h2>
+			<h3 id="right_song_name" class="text-center"></h3>
+		</div>
+		<div class="row">
+			<div class="col-lg-12 clear">
+				<p class="text-center"><a href="#" class="btn btn-default text-center signup">I can't decide, it's a draw</a></p>
+			</div>
+		</div>
     {% include 'footer.html' %}
   </div>
 </body>

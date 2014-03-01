@@ -44,14 +44,73 @@ function init_page(){
 }
    
 function load_page_content(genre_code, state_code){
-console.log('Load genre=' + genre_code + ' - state=' + state_code)   
   $.ajax({
     type: "POST",
-    url: '/get_trending_page_data',
-    dataType: 'html',
+    url: '/trending',
+    dataType: 'json',
     data: {genre_code:genre_code, state_code:state_code}})
     .done(function(data, textStatus, xhr){
-console.log(data)      
+      var entries = data.trending_data;
+      for(var i = 0, len = entries.length; i < len; i++){
+        $('#trending_data')
+          .append($(document.createElement('div'))
+            .attr({"class":"row prev-vid-row prev-vid"})
+            .append($(document.createElement('div'))
+              .attr({"class":"col-lg-1"})
+              .append($(document.createElement('h1'))
+                .text('#' + entries[i].rank)
+              )
+            )
+            .append($(document.createElement('div'))
+              .attr({"class":"col-lg-7"})
+              .append($(document.createElement('a'))
+                .attr({href:"/musician?id=" + entries[i].musician_id})
+                .append($(document.createElement('img'))
+                  .attr({'class':"pull-left", src:entries[i].image_src})
+                )
+              )
+              .append($(document.createElement('h4'))
+                .append($(document.createElement('a'))
+                  .attr({href:"/musician?id=" + entries[i].musician_id})
+                  .text(entries[i].musician_name)
+                )
+                .append($(document.createElement('small'))
+                  .text(entries[i].likes_count + ' Likes and ' + entries[i].followers_count + ' Followers')
+                )
+              )
+              .append($(document.createElement('p'))
+                .append($(document.createElement('strong'))
+                  .text('Genre:')
+                )
+                .append($(document.createElement('a'))
+                  .attr({href:"#"})
+                  .text(entries[i].genre)
+                )
+                .append($(document.createElement('br')))
+                .append($(document.createElement('span'))
+                  .text('Located in ' + entries[i].musician_city + ', ')
+                )
+                .append($(document.createElement('a'))
+                  .attr({href:"#"})
+                  .text(entries[i].musician_state)
+                )
+              )
+            )
+            .append($(document.createElement('div'))
+              .attr({"class":"col-lg-4"})
+              .append($(document.createElement('h1'))
+                .attr({'class':"text-center"})
+                .text(entries[i].like_percent + '%')
+              )
+              .append($(document.createElement('p'))
+                .attr({'class':"text-center liked"})
+                .text('Liked ' + entries[i].like_percent + '% of the time')
+              )
+            )
+          );
+      }// for
+            
+            
     })
     .fail(function(xhr){ 
 console.log(xhr)

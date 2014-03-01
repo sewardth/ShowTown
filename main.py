@@ -15,25 +15,68 @@
 # limitations under the License.
 #
 
-import webapp2, views
+import webapp2, views, json
 
 class MainHandler(views.Template):
   def get(self):
     musicians_states = [{'name':'Michigan', 'abbr':'MI'}, {'name':'California', 'abbr':'CA'}, {'name':'Florida', 'abbr':'FL'}]
     template_values = {'musicians_states':musicians_states}
     self.render('index.html', template_values)
+  def post(self):
+    # NOTE: we are posting genre and state.
+    lvideo = {'url':'http://www.youtube.com/embed/OmEpkztK5Lw?rel=0', 'musician_id':0, 'musician_name':'Mac Miller', 'song_name':'Knock Knock'}
+    rvideo = {'url':'http://www.youtube.com/embed/_t431MAUQlQ?rel=0', 'musician_id':0, 'musician_name':'Hoodie Allen', 'song_name':'No Interruption'}
+    data = {'lvideo':lvideo, 'rvideo':rvideo}
+    self.response.headers.add_header('content-type', 'application/json', charset='utf-8')
+    self.response.out.write(json.dumps(data))
 
 class TrendingHandler(views.Template):
   def get(self):
     musicians_states = [{'name':'Michigan', 'abbr':'MI'}, {'name':'California', 'abbr':'CA'}, {'name':'Florida', 'abbr':'FL'}]
     template_values = {'musicians_states':musicians_states}
     self.render('trending.html', template_values)
+  def post(self):
+    # NOTE: we are posting genre, state and the cursor from a previous request or null if this is the initial one.
+    # results_per_page = 10
+    # queryset = MyModel.objects.all()
+    # cursor = self.request.get('cursor')
+    # if cursor:
+    #   queryset = set_cursor(queryset, cursor)
+    # results = queryset[0:results_per_page] # starts at the offset marked by the cursor
+    # cursor_for_next_page = get_cursor(results)
+    trending_data = [{'rank':'1', 'musician_id':0, 'image_src':'images/_test_profile.jpg', 
+      'musician_name':'Mac Miller', 'likes_count':'1,342', 'followers_count':'132', 'genre':'Hip-Hop/Rap',
+      'musician_city':'Ann Arbor', 'musician_state':'Michigan', 'like_percent':'73'},
+      {'rank':'2', 'musician_id':0, 'image_src':'images/_test_profile.jpg', 
+      'musician_name':'Hoodie Allen', 'likes_count':'1,242', 'followers_count':'122', 'genre':'Hip-Hop/Rap',
+      'musician_city':'Ann Arbor', 'musician_state':'Michigan', 'like_percent':'70'}]
+    data = {'cursor_for_next_page':'base64 encoded cursor', 'trending_data':trending_data}
+    self.response.headers.add_header('content-type', 'application/json', charset='utf-8')
+    self.response.out.write(json.dumps(data)) 
 		
 class VenuesHandler(views.Template):
   def get(self):
     venues_states = [{'name':'Michigan', 'abbr':'MI'}, {'name':'Ohio', 'abbr':'OH'}]
     template_values = {'venues_states':venues_states}
     self.render('venues.html', template_values)
+  def post(self):
+    # NOTE: we are posting venue_type, state_code, gig_offer and the cursor from a previous request or null if this is the initial one.
+    # results_per_page = 10
+    # queryset = MyModel.objects.all()
+    # cursor = self.request.get('cursor')
+    # if cursor:
+    #   queryset = set_cursor(queryset, cursor)
+    # results = queryset[0:results_per_page] # starts at the offset marked by the cursor
+    # cursor_for_next_page = get_cursor(results)
+    venue_data = [{'image_src':'images/_test_venue.jpg', 
+      'venue_name':'Andiamo', 'venue_id':0, 'venue_type':'Restaurant',
+      'venue_city':'Novi', 'venue_state':'Michigan', 'like_percent':'73'},
+      {'image_src':'images/_test_venue.jpg', 
+      'venue_name':'Ameres', 'venue_id':0, 'venue_type':'Restaurant',
+      'venue_city':'Ann Arbor', 'venue_state':'Michigan', 'like_percent':'70'}]
+    data = {'cursor_for_next_page':'base64 encoded cursor', 'venue_data':venue_data}
+    self.response.headers.add_header('content-type', 'application/json', charset='utf-8')
+    self.response.out.write(json.dumps(data))
 
 class FaqHandler(views.Template):
   def get(self):
@@ -77,23 +120,7 @@ class SignupHandler(views.Template):
 		elif user_type == 'musician':
 			pass
 		else:
-			pass
-
-        
-class GetMatchUpPageDataHandler(views.Template):
-  def post(self):
-    self.response.headers['Content-Type'] = "text/plain"
-    self.response.out.write(self.request.body)
-
-class GetMTrendingPageDataHandler(views.Template):
-  def post(self):
-    self.response.headers['Content-Type'] = "text/plain"
-    self.response.out.write(self.request.body)
-        
-class GetVenuePageDataHandler(views.Template):
-  def post(self):
-    self.response.headers['Content-Type'] = "text/plain"
-    self.response.out.write(self.request.body)  
+			pass 
 
 class FanProfileHandler(views.Template):
   def get(self):
@@ -157,11 +184,13 @@ class MusicianProfileHandler(views.Template):
         'detail_list':['Local or Touring Musicians'], 'genres':'Classical', 
         'detail_description':'Looking for a talented piano player to help set the mood for our lunch crowd..', 
         'compemsation':'125', 'applicant_count':2}]
+    videos = [{'url':'http://www.youtube.com/embed/2KRa_FjTs2U?rel=0', 'title':'You Are Not a Robot', 'likes_count':415, 'matchup_wins_percent':73, 'featured':True},
+      {'url':'http://www.youtube.com/embed/_t431MAUQlQ?rel=0', 'title':'No Interruption', 'likes_count':200, 'matchup_wins_percent':45, 'featured':False}]
     template_values = {'musician_name':'Hoodie Allen', 'likes_count':'1,234', 'followers_count':'211', 'genre':'Hip-Hop/Rap',
       'musician_city':'Ann Arbor', 'musician_state':'Michigan', 'musician_dob':'March, 19th 1989',
       'trending_rank':'3','trending_category':'All Musicians', 'trending_state':'Michigan', 'img_src':'images/_test_profile.jpg',
       'bio':'Steven Markowitz[1] was born in New York City and raised in a Jewish household in Plainview, Long Island along with his brother, Daniel.[2] He started writing lyrics as a child, and would perform raps for his friends at house parties. Allen first attended the Long Island School for the Gifted, then later attended Plainview &ndash; Old Bethpage John F. Kennedy High School. Growing up, his nickname was "Hoodie."',
-      'new_offers':new_offers, 'booked_gigs':booked_gigs}
+      'new_offers':new_offers, 'booked_gigs':booked_gigs, 'videos':videos}
     self.render('musician_profile.html', template_values)
 
 class MusicianProfileEditHandler(views.Template):
@@ -171,7 +200,21 @@ class MusicianProfileEditHandler(views.Template):
   def post(self):
     self.response.headers['Content-Type'] = "text/plain"
     self.response.out.write(self.request.body)
-                                         		
+
+class MusicianHandler(views.Template):
+  def get(self):
+		template_values = {'musician_name':'Hoodie Allen', 'likes_count':234, 'followers_count':123, 'genre':'Hip-Hop/Rap',
+      'musician_city':'Ann Arbor', 'musician_state':'Michigan', 'musician_dob':'March, 19th 1989',
+      'trending_rank':'3','trending_category':'All Musicians', 'trending_state':'Michigan', 'img_src':'images/_test_profile.jpg',}
+		self.render('musician.html', template_values)
+
+class VenueHandler(views.Template):
+  def get(self):
+		template_values = {'venue_name':'Andiamo', 'venue_type':'Restaurant', 'venue_pic_url':'images/_test_venue.jpg',
+      'venue_address':'42705 Grand River Ave, Novi, MI 48375', 'venue_phone':'248-348-3839', 'venue_url':'http://andiamoitalia.com/',
+      'venue_url_text':'Andiamoitalia.com','venue_age_limit':'none', 'venue_capacity':'190',}
+		self.render('venue.html', template_values)
+    		    		                                         		
 app = webapp2.WSGIApplication([
     ('/', MainHandler),
     ('/trending', TrendingHandler),
@@ -183,9 +226,6 @@ app = webapp2.WSGIApplication([
     ('/signup_musician', SignupMusicianHandler),
     ('/signup_venue', SignupVenueHandler),
     ('/signup', SignupHandler),
-    ('/get_match_up_page_data', GetMatchUpPageDataHandler),
-    ('/get_trending_page_data', GetMTrendingPageDataHandler),
-    ('/get_venue_page_data', GetVenuePageDataHandler),
     ('/fan_profile', FanProfileHandler),
     ('/fan_profile_edit', FanProfileEditHandler),
     ('/venue_profile', VenueProfileHandler),
@@ -193,5 +233,7 @@ app = webapp2.WSGIApplication([
     ('/venue_add_edit_gig', VenueAddEditGigHandler),
     ('/musician_profile', MusicianProfileHandler),
     ('/musician_profile_edit', MusicianProfileEditHandler),
+    ('/musician', MusicianHandler),
+    ('/venue', VenueHandler),
     
 ], debug=True)

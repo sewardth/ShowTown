@@ -39,11 +39,18 @@ function load_page_content(genre_code, state_code){
 console.log('Load genre=' + genre_code + ' - state=' + state_code)   
   $.ajax({
     type: "POST",
-    url: '/get_match_up_page_data',
-    dataType: 'html',
+    url: '/',
+    dataType: 'json',
     data: {genre_code:genre_code, state_code:state_code}})
     .done(function(data, textStatus, xhr){
-console.log(data)      
+      // Left
+      $('#left_iframe').attr('src', data.lvideo.url);
+      $('#left_musician_name').text(data.lvideo.musician_name);
+      $('#left_song_name').text(data.lvideo.song_name);
+      // Right
+      $('#right_iframe').attr('src', data.rvideo.url);
+      $('#right_musician_name').text(data.rvideo.musician_name);
+      $('#right_song_name').text(data.rvideo.song_name);
     })
     .fail(function(xhr){ 
 console.log(xhr)
