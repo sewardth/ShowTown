@@ -1,22 +1,24 @@
 from google.appengine.ext import ndb
 from address import Address
+from videos import Videos
 
 class Musician(ndb.Model):
-	user_id = ndb.KeyProperty()
+	user_key = ndb.KeyProperty()
+	user_name = ndb.StringProperty()
 	band_name = ndb.StringProperty()
 	email = ndb.StringProperty()
-	adress = ndb.StructuredProperty(Address, repeated=True)
-	submission_video = ndb.StringProperty()
-	video_two = ndb.StringProperty()
-	video_three = ndb.StringProperty()
-	video_four = ndb.StringProperty()
-	video_five = ndb.StringProperty()
-	musicians_genres = ndb.StringProperty(repeated=True)
+	address = ndb.StructuredProperty(Address, repeated=True)
+	submission_video = ndb.StructuredProperty(Videos)
+	video_two = ndb.StructuredProperty(Videos)
+	video_three = ndb.StructuredProperty(Videos)
+	video_four = ndb.StructuredProperty(Videos)
+	video_five = ndb.StructuredProperty(Videos)
 	profile_pic = ndb.BlobProperty()
 	num_of_members = ndb.IntegerProperty()
 	bio = ndb.TextProperty()
 	facebook_page = ndb.StringProperty()
 	twitter_page = ndb.StringProperty()
 	sound_cloud_page = ndb.StringProperty()
-	myspace = ndb.StringProperty()
+	youtube_page = ndb.StringProperty()
 	latest_update = ndb.DateTimeProperty(auto_now = True)
+	account_created = ndb.DateTimeProperty(auto_now_add = True)

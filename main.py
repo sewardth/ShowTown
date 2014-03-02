@@ -15,7 +15,16 @@
 # limitations under the License.
 #
 
-import webapp2, views, json
+import webapp2, views, json, models, uuid, sys
+sys.path.insert(0,'libs')
+import lassie, requests
+from google.appengine.api import urlfetch
+from datetime import datetime
+from sessions import password as pwd
+
+
+
+
 
 class MainHandler(views.Template):
   def get(self):
@@ -114,13 +123,130 @@ class SignupHandler(views.Template):
 		params = {} 
 		for field in self.request.arguments():
 			params[field] = self.request.get_all(field) 
+		params['ip_addr'] = list(self.request.remote_addr)
 		user_type = params['user_type'][0]
+		
+		
+		
 		if user_type == 'fan':
-			pass
+			self.fan_creator(params)
+			
 		elif user_type == 'musician':
-			pass
+			self.musician_creator(params)
+			
 		else:
-			pass 
+			self.venue_creator(params) 
+
+
+	
+	def account_creator(self, params):
+		password = self.validate_passwords(params['password'][0], params['conf_password'][0])
+		account = models.account.Account(password = password, email = params['email'][0], known_ip_addresses = params['ip_addr'], 
+					      				account_type = params['user_type'][0])
+		acc_key = account.put()
+		return acc_key
+		
+		
+	def validate_email(self, email):
+		if '@' in email and '.' in email:
+			return email
+		else:
+			self.error_message('Not a valid email address')
+		
+	def validate_dob(self, dob):
+		try:
+			date = datetime.strptime(dob, '%m/%d/%Y')
+			return date
+		except:
+			self.error_message('Wrong date format, should be MM/DD/YYYY')
+		
+		
+	def validate_passwords(self, password, conf_password):
+		if password == '':
+			self.error_message('Passwords cannont be blank')
+			
+		elif password != conf_password:
+			self.error_message('Passwords do not match')
+			
+		else:
+			password = pwd.Passwords.generate_hash(password)
+			return password
+		
+	def check_for_user(self, email):
+		q = models.account.Account.query_by_email(email)
+		if q == None:
+			return False
+		else:
+			self.error_message('User already exists as type: ' + q.account_type)
+		
+	def verify_link(self, link, source):
+		if len(link)>0:
+			r = urlfetch.fetch(link)
+			if r.status_code != 200 or source not in link:
+				self.error_message('Not a valid URL for source: ' + source)	
+			else:
+				return link
+		else:
+			return link
+			
+	def get_video(self, link):
+		try:
+			video = lassie.fetch(link)
+			video_data = {'embed_link' : video['videos'][1]['src'],
+			             'title' : video['title']}
+			return video_data
+		except:
+			self.error_message('Not a vaild YouTube or Vimeo page URL')
+			
+		
+	def error_message(self, error):
+		raise ValueError(error)	
+	
+	def fan_creator(self, params):
+		email = self.validate_email(params['email'][0])
+		DOB = self.validate_dob(params['dob'][0])
+		existing_user = self.check_for_user(params['email'][0])
+		acc_key = self.account_creator(params)
+		user = models.fan.Fan(user_key = acc_key, email = email, DOB = DOB, genres = params['checkboxes'])
+		user.put()
+		
+	def musician_creator(self, params):
+		email = self.validate_email(params['email'][0])
+		DOB = self.validate_dob(params['dob'][0])
+		submission_video = self.get_video(params['video_url'][0])
+		twitter = self.verify_link(params['twitter'][0],'twitter')
+		sound_cloud = self.verify_link(params['sound_cloud'][0],'soundcloud')
+		#youtube_page = self.verify_link(params['youtube'][0], 'youtube')
+		#facebook = self.verify_link(params['facebook'[0]], 'facebook')
+		existing_user = self.check_for_user(params['email'][0])
+		acc_key = self.account_creator(params)
+		user = models.musician.Musician(user_key = acc_key, 
+										band_name = params['musician_name'][0],
+										email = params['email'][0], 
+										address= [models.address.Address(city=params['city'][0],
+																		 state = params['state'][0], 
+																		 zip = int(params['zip'][0]))], 
+										submission_video = models.videos.Videos(embed_link = submission_video['embed_link'],
+																				genre_tag = params['video_genre'][0],
+																				video_title = submission_video['title']),
+										profile_pic = params['file_upload'][0],
+										num_of_members = int(params['num_of_members'][0]),
+										bio = params['bio'][0],
+										#facebook_page = facebook,
+										#youtube_page = youtube_page,
+										twitter_page = twitter,
+										sound_cloud_page = sound_cloud)
+		print 'user object created'
+		user.put()
+		print 'user stored'
+		
+		
+	def venue_creator(self, params):
+		pass
+
+
+
+
 
 class FanProfileHandler(views.Template):
   def get(self):
