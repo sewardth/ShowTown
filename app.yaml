@@ -34,6 +34,9 @@ handlers:
 - url: /(.*?)_profile.*
   script: profile.app
   
+- url: /login_handler.*
+  script: login.app
+  
 - url: .*
   script: main.app
 
