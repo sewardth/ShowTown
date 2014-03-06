@@ -1,20 +1,22 @@
 import webapp2, sys, uuid
 sys.path.insert(0,'libs')
 import models, views
-from login.password import Passwords as pwd
-from login.session import Session as ses
+from sessions.password import Passwords as pwd
+from sessions.session import Session as ses
 from helpers import messages
 
 class login(views.Template):
-  def post(self):
+  def get(self):
 	password = self.request.get('password')
 	email = self.request.get('email')
 	
 	user = models.account.Account.query_by_email(email)
+	self.response.out.write(password + email)
+
 	if user == None:
 		messages.Message('User not found.  Please verify the email: ' + email)
-	else:
-		check = pwd.compare_hash(password, stored_password.password)
+
+	check = pwd.compare_hash(password, user.password)
 	
 	
 	if check == True:   #add and user.verified == True after testing
