@@ -1,40 +1,46 @@
-import webapp2, sys, uuid
+import webapp2, sys, uuid, datetime
 sys.path.insert(0,'libs')
 import models, views
 from sessions.password import Passwords as pwd
-from sessions.session import Session as ses
 from helpers import messages
+from helpers.encryption import Encryption as enc
 
-class login(views.Template):
-  def get(self):
-	password = self.request.get('password')
-	email = self.request.get('email')
-	
-	user = models.account.Account.query_by_email(email)
-	self.response.out.write(password + email)
+class Login(views.Template):
+	def post(self):
+		password = self.request.get('password')
+		email = self.request.get('email')
 
-	if user == None:
-		messages.Message('User not found.  Please verify the email: ' + email)
+		self.user = models.account.Account.query_by_email(email)
 
-	check = pwd.compare_hash(password, user.password)
-	
-	
-	if check == True:   #add and user.verified == True after testing
-		user.session_token = uuid.uuid4().put()
-		
-		#builds cookies
-		user_cookie = ses.create_cookie('user_id', user.key)
-		session_cookie = ses.create_cookie('session_id', user.session_token)
-		self.response.headers.add_header('Set-Cookie', user_cookie + '; Path=/')
-		self.response.headers.add_header('Set-Cookie', session_cookie + '; Path=/')
-		
-	else:
-		messages.Message('Password does not match the one stored for ' + user.email)
-		
-		
+		if self.user == None:
+			messages.Message.warning('User not found.  Please check the email: ' + email)
+		else:
+			self.verify_password(password, self.user.password)
+			self.set_cookie()
 
+
+	def verify_password(self, password, pwhash):
+		check = pwd.compare_hash(password, pwhash)
+		if check == True:   #add and user.verified == True after testing
+			self.user.session_token = str(uuid.uuid4())
+			self.user.put()
+		else:
+			messages.Message.warning('Password does not match the one stored for ' + self.user.email)
+
+	def set_cookie(self):
+		session_hash = enc.generate_hash(self.user.session_token)
+		self.response.headers.add_header('Set-Cookie', self.create_cookie('_auth_',self.user.key.urlsafe()))
+		self.response.headers.add_header('Set-Cookie', self.create_cookie('_term_',session_hash))
+		
+	def create_cookie(self, name, value):
+		expires = datetime.datetime.now() + datetime.timedelta(days=14)
+		date = expires.strftime('%a, %d %b %Y %H:%M:%S')
+		cookie = ' %s=%s, expires=%s, path=/, domain=.showtown.co;' %(name, value, date)
+		self.response.out.write(cookie)
+		return cookie
+		
 
 app = webapp2.WSGIApplication([
-    ('/login_handler', login)
+    ('/login_handler', Login)
 
 ], debug=True)

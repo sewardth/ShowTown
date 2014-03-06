@@ -2,8 +2,8 @@ import webapp2, jinja2, os, datetime, sys
 from google.appengine.ext import ndb
 
 sys.path.insert(0,'libs')
-from sessions.session import Session
-
+import models
+from helpers.encryption import Encryption as enc
 
 jinja_environment = jinja2.Environment(autoescape = True, loader=jinja2.FileSystemLoader(os.path.join(os.path.dirname(__file__),'templates')))
 
@@ -22,17 +22,31 @@ class Template(webapp2.RequestHandler):
 		pageview= self.PageCreator(page, template_values)
 		self.response.out.write(pageview)
 		
-	def user_check(self):
-		user_id = self.request.cookies.get('user_id')
-		session_id = self.request.cookies.get('session_id')
-		cookie = Session.read_cookie('user',user_id)
-		if cookie != None:
-			user = self.user_data(cookie)
+	def _grab_cookies(self):
+		user_id = self.request.cookies.get('_auth_')
+		session_id = self.request.cookies.get('_term_')
+		return {'user':user_id, 'session' :session_id}
+			
+	def _user_account(self,user):
+		user = models.account.Account.query_by_key(ndb.Key(urlsafe=user))
+		return user
+		
+	def _verify_user(self, user, session_cookie):
+		test = enc.compare_hash(user.session_token, session_cookie)
+		if test == True:
+			return user
 		else:
 			return None
-		
-	def user_data(self,user):
-		pass
+
+	def user_check(self):
+		cookies = self._grab_cookies()
+		user = self._user_account(cookies['user'])
+		if user == None:
+			return None
+		else:
+			user = self._verify_user(user, cookies['session'])
+			
+			
 		
 	def email_sender(self, template, **kwargs):
 		pass

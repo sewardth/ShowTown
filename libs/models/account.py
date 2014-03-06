@@ -19,4 +19,6 @@ class Account(ndb.Model):
 		return cls.query(cls.email == email).get()
 	
 	
-	
+	@classmethod
+	def query_by_key(cls, key):
+		return cls.query(cls._key == key).get()

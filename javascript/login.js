@@ -24,7 +24,7 @@ function show_login_popup(){
   					          '<p class="fl"><label>E-mail</label> <input type="text" name="email"></p>' +
   					          '<p class="fl"><label>Password</label> <input type="password" name="password"></p>' +
   					          '<p><input class="btn btn-primary" value="Login"type="submit"/ ></p>' +
-  				          '</fieldset></div>';
+  				          '</fieldset></form></div>';
 	$('#login_popup_dialog')
 	  .append(login_html)  
 	  .parent().append('<div class="dialog_close" onclick="global.login_popup_dialog.dialog(\'close\')" title="Close"></div>') 				
