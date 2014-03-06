@@ -19,10 +19,11 @@ function show_login_popup(){
 		global.login_popup_dialog.dialog( "option", "title", "Login" );
 	}
 	$('#login_popup_dialog').empty();
-  var login_html = '<div id="login"><fieldset><legend>Login to ShowTown</legend>' +
+  var login_html = '<div id="login"><form method="POST" action="/login_handler">' +
+                    '<fieldset><legend>Login to ShowTown</legend>' +
   					          '<p class="fl"><label>E-mail</label> <input type="text" name="email"></p>' +
   					          '<p class="fl"><label>Password</label> <input type="password" name="password"></p>' +
-  					          '<p><a class="btn btn-primary" value="Sign Up" href="/login_handler">Sign Up</a></p>' +
+  					          '<p><input class="btn btn-primary" value="Login"type="submit"/ ></p>' +
   				          '</fieldset></div>';
 	$('#login_popup_dialog')
 	  .append(login_html)  
