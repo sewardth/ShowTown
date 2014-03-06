@@ -1,7 +1,7 @@
 import lassie, requests, webapp2, messages
 from datetime import datetime
 from google.appengine.api import urlfetch
-from login import password as pwd
+from sessions import password as pwd
 
 
 class Validate(webapp2.RequestHandler):

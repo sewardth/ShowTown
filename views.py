@@ -1,9 +1,9 @@
-import webapp2
-import jinja2
-import os
+import webapp2, jinja2, os, datetime, sys
 from google.appengine.ext import ndb
-import datetime
-from login.session import Session
+
+sys.path.insert(0,'libs')
+from sessions.session import Session
+
 
 jinja_environment = jinja2.Environment(autoescape = True, loader=jinja2.FileSystemLoader(os.path.join(os.path.dirname(__file__),'templates')))
 
