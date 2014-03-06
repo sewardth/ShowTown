@@ -16,6 +16,9 @@ $(document).ready(function() {
   }
 });
 
+// Stick here persistent objects such as dialogs.
+var global = {};
+
 /**
  * Objects to fill in pulldowns and get keys for AJAX calls
  */
