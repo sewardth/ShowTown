@@ -23,8 +23,9 @@ class Template(webapp2.RequestHandler):
 		self.response.out.write(pageview)
 		
 	def user_check(self):
-		user_id = self.request.cookies.get('user')
-		cookie = Session().read_cookie('user',user_id)#create cookie object / compares cookie
+		user_id = self.request.cookies.get('user_id')
+		session_id = self.request.cookies.get('session_id')
+		cookie = Session.read_cookie('user',user_id)
 		if cookie != None:
 			user = self.user_data(cookie)
 		else:
