@@ -41,6 +41,8 @@ class SignupHandler(views.Template):
 			
 		else:
 			self.venue_creator(params) 
+		
+		self.redirect('/')
 
 	def check_for_user(self, email):
 		q = models.account.Account.query_by_email(email)

@@ -1,4 +1,4 @@
-import webapp2, sys, uuid, datetime
+import webapp2, sys, uuid, datetime, time
 sys.path.insert(0,'libs')
 import models, views
 from sessions.password import Passwords as pwd
@@ -9,6 +9,7 @@ class Login(views.Template):
 	def post(self):
 		password = self.request.get('password')
 		email = self.request.get('email')
+		path = self.request.get('url_path')
 
 		self.user = models.account.Account.query_by_email(email)
 
@@ -17,6 +18,8 @@ class Login(views.Template):
 		else:
 			self.verify_password(password, self.user.password)
 			self.set_cookie()
+			time.sleep(.5)
+			self.redirect(path)
 
 
 	def verify_password(self, password, pwhash):
