@@ -20,6 +20,7 @@ function show_login_popup(){
 	}
 	$('#login_popup_dialog').empty();
   var login_html = '<div id="login"><form method="POST" action="/login_handler">' +
+                    '<input type="hidden" name="url_path" id="url_path" value="' + window.location.pathname + '" />' +
                     '<fieldset><legend>Login to ShowTown</legend>' +
   					          '<p class="fl"><label>E-mail</label> <input type="text" name="email"></p>' +
   					          '<p class="fl"><label>Password</label> <input type="password" name="password"></p>' +
