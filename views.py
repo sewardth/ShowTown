@@ -28,8 +28,11 @@ class Template(webapp2.RequestHandler):
 		return {'user':user_id, 'session' :session_id}
 			
 	def _user_account(self,user):
-		user = models.account.Account.query_by_key(ndb.Key(urlsafe=user))
-		return user
+		try:
+			user = models.account.Account.query_by_key(ndb.Key(urlsafe=user))
+			return user
+		except:
+			return None
 		
 	def _verify_user(self, user, session_cookie):
 		test = enc.compare_hash(user.session_token, session_cookie)
@@ -45,6 +48,7 @@ class Template(webapp2.RequestHandler):
 			return None
 		else:
 			user = self._verify_user(user, cookies['session'])
+		
 			
 			
 		

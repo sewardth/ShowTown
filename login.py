@@ -36,7 +36,6 @@ class Login(views.Template):
 		expires = datetime.datetime.now() + datetime.timedelta(days=14)
 		date = expires.strftime('%a, %d %b %Y %H:%M:%S')
 		cookie = ' %s=%s, expires=%s, path=/, domain=.showtown.co;' %(name, value, date)
-		self.response.out.write(cookie)
 		return cookie
 		
 
