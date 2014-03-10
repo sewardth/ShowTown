@@ -48,6 +48,7 @@ class Template(webapp2.RequestHandler):
 			return None
 		else:
 			user = self._verify_user(user, cookies['session'])
+			return user
 		
 			
 			
