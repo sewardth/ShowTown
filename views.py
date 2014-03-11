@@ -4,6 +4,7 @@ from google.appengine.ext import ndb
 sys.path.insert(0,'libs')
 import models
 from helpers.encryption import Encryption as enc
+from sessions.cookie import Cookie
 
 jinja_environment = jinja2.Environment(autoescape = True, loader=jinja2.FileSystemLoader(os.path.join(os.path.dirname(__file__),'templates')))
 
@@ -15,6 +16,7 @@ class Template(webapp2.RequestHandler):
 		page = jinja_environment.get_template(page)
 		user = self.user_check()
 		template_values['user'] = user
+		self.response.out.write(user)
 		template = page.render(template_values)
 		return template
 	
@@ -22,10 +24,6 @@ class Template(webapp2.RequestHandler):
 		pageview= self.PageCreator(page, template_values)
 		self.response.out.write(pageview)
 		
-	def _grab_cookies(self):
-		user_id = self.request.cookies.get('_auth_')
-		session_id = self.request.cookies.get('_term_')
-		return {'user':user_id, 'session' :session_id}
 			
 	def _user_account(self,user):
 		try:
@@ -42,7 +40,7 @@ class Template(webapp2.RequestHandler):
 			return None
 
 	def user_check(self):
-		cookies = self._grab_cookies()
+		cookies = Cookie._grab_cookies(self.request)
 		user = self._user_account(cookies['user'])
 		if user == None:
 			return None
