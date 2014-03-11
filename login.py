@@ -4,6 +4,7 @@ import models, views
 from sessions.password import Passwords as pwd
 from helpers import messages
 from helpers.encryption import Encryption as enc
+from sessions.cookie import Cookie
 
 class Login(views.Template):
 	def post(self):
@@ -17,7 +18,11 @@ class Login(views.Template):
 			messages.Message.warning('User not found.  Please check the email: ' + email)
 		else:
 			self.verify_password(password, self.user.password)
-			self.set_cookie()
+			session_hash = enc.generate_hash(self.user.session_token)
+			_auth_ = Cookie.create_cookie('_auth_',self.user.key.urlsafe())
+			_term_ = Cookie.create_cookie('_term_',session_hash)
+			Cookie.set_cookie(_auth_, self.response)
+			Cookie.set_cookie(_term_, self.response)
 			time.sleep(.5)
 			self.redirect(path)
 
@@ -30,19 +35,23 @@ class Login(views.Template):
 		else:
 			messages.Message.warning('Password does not match the one stored for ' + self.user.email)
 
-	def set_cookie(self):
-		session_hash = enc.generate_hash(self.user.session_token)
-		self.response.headers.add_header('Set-Cookie', self.create_cookie('_auth_',self.user.key.urlsafe()))
-		self.response.headers.add_header('Set-Cookie', self.create_cookie('_term_',session_hash))
-		
-	def create_cookie(self, name, value):
-		expires = datetime.datetime.now() + datetime.timedelta(days=14)
-		date = expires.strftime('%a, %d %b %Y %H:%M:%S')
-		cookie = ' %s=%s, expires=%s, path=/, domain=.showtown.co;' %(name, value, date)
-		return cookie
+
 		
 
+class Logout(views.Template):
+	def get(self):
+		_auth_ = Cookie.create_cookie('_auth_',self.user.key.urlsafe())
+		_term_ = Cookie.create_cookie('_term_',session_hash)
+		Cookie.set_cookie(_auth_, self.response)
+		Cookie.set_cookie(_term_, self.response)
+		time.sleep(.5)
+		self.redirect('/')
+		
+
+
+
 app = webapp2.WSGIApplication([
-    ('/login_handler', Login)
+    ('/login_handler', Login),
+    ('/logout_handler', Logout)
 
 ], debug=True)
