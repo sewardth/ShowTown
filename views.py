@@ -16,7 +16,6 @@ class Template(webapp2.RequestHandler):
 		page = jinja_environment.get_template(page)
 		user = self.user_check()
 		template_values['user'] = user
-		self.response.out.write(user)
 		template = page.render(template_values)
 		return template
 	

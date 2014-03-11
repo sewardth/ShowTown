@@ -37,6 +37,9 @@ handlers:
 - url: /login_handler.*
   script: login.app
   
+- url: /logout_handler.*
+  script: logout.app
+  
 - url: .*
   script: main.app
 
