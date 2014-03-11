@@ -38,19 +38,31 @@
 		<br/>
 		<div class="col-lg-6 video">
 			<iframe id="left_iframe" width="490" height="300" frameborder="0" allowfullscreen="" src=""></iframe>
+			  {% if user %}
 			<p class="text-center"><a href="#" class="btn btn-primary signup">I Like This</a></p>
+			  {% else %}
+			<p class="text-center">Login to vote</p>  
+			  {% endif %}
 			<h2 id="left_musician_name" class="text-center"></h2>
 			<h3 id="left_song_name" class="text-center"></h3>
 		</div>
     <div class="col-lg-6 video">
 			<iframe id="right_iframe" width="490" height="300" frameborder="0" allowfullscreen="" src=""></iframe>
+			  {% if user %}
 			<p class="text-center"><a href="#" class="btn btn-primary signup">I Like This</a></p>
+			  {% else %}
+			<p class="text-center">Login to vote</p>  
+			  {% endif %}
 			<h2 id="right_musician_name" class="text-center"></h2>
 			<h3 id="right_song_name" class="text-center"></h3>
 		</div>
 		<div class="row">
 			<div class="col-lg-12 clear">
+			    {% if user %}
 				<p class="text-center"><a href="#" class="btn btn-default text-center signup">I can't decide, it's a draw</a></p>
+				  {% else %}
+  			<p class="text-center">Login to vote</p>  
+  			  {% endif %}
 			</div>
 		</div>
     {% include 'footer.html' %}

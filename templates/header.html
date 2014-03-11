@@ -2,6 +2,16 @@
 <div class="row">
 	<ul class="nav utility">
 	  <li class="active"><a href="/">Home</a></li>
+	    {% if user %}
+	  <li><a class="top_btn btn btn-default" href="/logout_handler">Sign Out</a></li>
+	      {% if user.account_type == "fan" %}
+	  <li><a class="top_btn btn btn-default" href="/fan_profile">My Profile</a></li>
+	      {% elif user.account_type == "musician" %}
+	  <li><a class="top_btn btn btn-default" href="/musician_profile">>My Profile</a></li>
+	      {% elif user.account_type == "venue" %}
+	  <li><a class="top_btn btn btn-default" href="/venue_profile">My Profile</a></li>
+	      {% endif %}
+	    {% else %}
 	  <li><a class="top_btn btn btn-default" href="javascript:void(0)" onclick="show_login_popup()">Login</a></li>
 	  <li class=""><a data-toggle="dropdown" class="top_btn btn btn-default dropdown-toggle" href="#">Signup</a>
 			<ul class="dropdown-menu">
@@ -10,15 +20,7 @@
 				<li><a href="/signup_venue">I'm a Venue</a></li>
 			</ul>
 	  </li>
-	  <!-- temporary -->
-	  <li class="active"><a data-toggle="dropdown" class="dropdown-toggle btn btn-default" href="#">My Profile temp</a>
-			<ul class="dropdown-menu">
-				<li><a href="/musician_profile">Musician Profile</a></li>
-				<li><a href="/venue_profile">Venue Profile</a></li>
-				<li><a href="/fan_profile">User Profile</a></li>
-			</ul>					
-	  </li>
-	  <!-- /temporary -->
+	    {% endif %}
 	</ul>
 </div>
 		
