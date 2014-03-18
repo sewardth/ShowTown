@@ -15,7 +15,7 @@
 			<div class="col-lg-8 col-lg-offset-2">
 				<h1>Sign Up to Showtown</h1>
 				<p>Sign up to <strong>post gigs</strong> and <strong>book musicians.</strong></p>
-				<form class="form-horizontal" action="/signup" method="POST">
+				<form class="form-horizontal" action="/profile_edit" method="POST">
 				  <input type="hidden" name="user_type" value="venue">
 				  <fieldset>
     				<div class="control-group" id="venue_name_wrapper">
@@ -78,6 +78,13 @@
       			  </div>
       			</div>
       			<div class="clearfix"></div>
+      			<div class="control-group" id="phone1_wrapper">
+      			  <label for="phone1" class="control-label">Phone number</label>
+      			  <div class="controls">
+      			    <input type="text" class="input-xlarge" placeholder="" name="phone1" id="phone1">
+      			  </div>
+      			</div>
+      			<div class="clearfix"></div>
     				<div class="control-group" id="venue_type_wrapper">
     				  <label for="venue_type" class="control-label">Venue Type</label>
     				  <div class="controls">
@@ -110,6 +117,12 @@
     				  </div>
     				</div>
     				<div class="clearfix"></div>
+    				<div class="control-group">
+      			  <label for="file_upload" class="control-label">Venue Picture</label>
+      			  <div class="controls">
+      			    <input type="file" class="input-file" name="file_upload" id="file_upload">
+      			  </div>
+      			</div>
     				<br>
             <input class="btn btn-primary" type="submit" value="Sign Up" />
   				</fieldset>

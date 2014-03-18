@@ -14,7 +14,7 @@
     <div class="row">
   		<div class="col-lg-8 col-lg-offset-2">
   			<h1>Edit your Showtown Profile</h1>
-  			<form class="form-horizontal" action="/signup" method="POST" enctype="multipart/form-data">
+  			<form class="form-horizontal" action="/profile_edit" method="POST" enctype="multipart/form-data">
   			  <input type="hidden" name="user_type" value="musician">
     			<fieldset>
       			<div class="control-group" id="musician_name_wrapper">
@@ -73,12 +73,6 @@
       			  <div class="controls">
       			    <input type="text" class="input-xlarge" placeholder="http://" name="video_url" id="video_url">
       			    <p class="help-block">Youtube or Vimeo Supported</p>
-      			  </div>
-      			</div>
-      			<div class="control-group">
-      			  <label for="song_name" class="control-label">Song Name</label>
-      			  <div class="controls">
-      			    <input type="text" class="input-xlarge" placeholder="" name="song_name" id="song_name">
       			  </div>
       			</div>
       			<div class="control-group">
@@ -152,9 +146,9 @@
       			  </div>
       			</div>
       			<div class="control-group">
-      			  <label for="my_space" class="control-label">Myspace</label>
+      			  <label for="video_hosting_page" class="control-label">YouTube or Vimeo page</label>
       			  <div class="controls">
-      			    <input type="text" class="input-xlarge" placeholder="" name="my_space" id="my_space">
+      			    <input type="text" class="input-xlarge" placeholder="" name="video_hosting_page" id="video_hosting_page">
       			  </div>
       			</div>
       			<br>
