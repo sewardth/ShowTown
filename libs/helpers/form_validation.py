@@ -2,6 +2,7 @@ import lassie, requests, webapp2, messages
 from datetime import datetime
 from google.appengine.api import urlfetch
 from sessions import password as pwd
+import time
 
 
 class Validate(webapp2.RequestHandler):
@@ -20,6 +21,15 @@ class Validate(webapp2.RequestHandler):
 			return date
 		except:
 			messages.Message.warning('Wrong date format, should be MM/DD/YYYY')
+	
+	@staticmethod
+	def validate_time(time):
+		try:
+			t = time.strptime(time, '%H:%M')
+			time = time.strftime('%H:%M', t)
+			return time
+		except:
+			messages.Message.warning('Wrong time format, should be HH:MM')
 		
 	@staticmethod	
 	def validate_passwords(password, conf_password):

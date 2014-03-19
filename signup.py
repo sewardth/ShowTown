@@ -1,6 +1,6 @@
-import webapp2, json, sys
+import webapp2, json, sys, views
 sys.path.insert(0,'libs')
-import lassie, requests, views
+import lassie, requests
 from google.appengine.api import urlfetch
 from datetime import datetime
 from helpers.form_validation import Validate as valid

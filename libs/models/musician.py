@@ -18,3 +18,7 @@ class Musician(ndb.Model):
 	youtube_page = ndb.StringProperty()
 	latest_update = ndb.DateTimeProperty(auto_now = True)
 	account_created = ndb.DateTimeProperty(auto_now_add = True)
+	
+	@classmethod
+	def query_by_account(cls, user_key):
+		return cls.query(cls.user_key == user_key).get()

@@ -1,10 +1,11 @@
 import webapp2, jinja2, os, datetime, sys
 from google.appengine.ext import ndb
-
 sys.path.insert(0,'libs')
 import models
 from helpers.encryption import Encryption as enc
 from sessions.cookie import Cookie
+
+
 
 jinja_environment = jinja2.Environment(autoescape = True, loader=jinja2.FileSystemLoader(os.path.join(os.path.dirname(__file__),'templates')))
 
