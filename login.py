@@ -1,6 +1,6 @@
-import webapp2, sys, uuid, datetime, time
+import webapp2, sys, uuid, datetime, time, views
 sys.path.insert(0,'libs')
-import models, views
+import models
 from sessions.password import Passwords as pwd
 from helpers import messages
 from helpers.encryption import Encryption as enc

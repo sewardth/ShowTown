@@ -9,4 +9,13 @@ class Venue(ndb.Model):
 	venue_type = ndb.StringProperty()
 	age_limit = ndb.StringProperty()
 	capacity = ndb.IntegerProperty()
+	active = ndb.BooleanProperty(default = True)
 	latest_update = ndb.DateTimeProperty(auto_now = True)
+	
+	@classmethod
+	def query_by_account(cls, user_key):
+		return cls.query(cls.user_key == user_key).get()
+		
+	@classmethod
+	def fetch_venues(cls):
+		return cls.query(cls.active == True).fetch()

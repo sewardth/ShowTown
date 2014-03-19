@@ -1,1 +1,1 @@
-import account, fan, musician, venue
+import account, fan, musician, venue, events

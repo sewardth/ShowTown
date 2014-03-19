@@ -1,6 +1,6 @@
-import webapp2, sys, uuid, datetime, time
+import webapp2, sys, uuid, datetime, time, views
 sys.path.insert(0,'libs')
-import views
+
 
 from sessions.cookie import Cookie
 
