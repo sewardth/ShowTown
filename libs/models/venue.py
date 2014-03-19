@@ -7,6 +7,8 @@ class Venue(ndb.Model):
 	email = ndb.StringProperty()
 	address = ndb.StructuredProperty(Address, repeated=True)
 	venue_type = ndb.StringProperty()
+	phone = ndb.StringProperty()
+	photo = ndb.BlobProperty()
 	age_limit = ndb.StringProperty()
 	capacity = ndb.IntegerProperty()
 	active = ndb.BooleanProperty(default = True)

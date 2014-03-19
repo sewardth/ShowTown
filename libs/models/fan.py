@@ -1,4 +1,5 @@
 from google.appengine.ext import ndb
+from musician import Musician
 
 class Fan(ndb.Model):
 	user_key = ndb.KeyProperty()
@@ -8,11 +9,15 @@ class Fan(ndb.Model):
 	email = ndb.StringProperty()
 	DOB = ndb.DateProperty()
 	genres = ndb.StringProperty(repeated=True)
-	following = ndb.StringProperty(repeated = True)
+	following = ndb.KeyProperty(repeated = True)
 	latest_update = ndb.DateTimeProperty(auto_now = True)
 	
 	
 	@classmethod
 	def query_by_email(cls, email):
 		return cls.query(email == email)
+		
+	@classmethod
+	def query_by_account(cls, user_key):
+		return cls.query(cls.user_key == user_key).get()
 	

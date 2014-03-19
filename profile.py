@@ -13,8 +13,9 @@ class FanProfileHandler(views.Template):
 		{'img_src':'images/_test_profile.jpg', 'name':'Mac Miller', 'id':'0', 'liked_percent':42,
 		'voted_img_src':'images/_test_profile.jpg', 'voted_name':'Hoodie Allen', 'voted_id':'0', 'voted_liked_percent':61}]
 		
-		user = self.user_check()
-		profile = models.venue.Venue.query_by_account(user.key)
+		user = self.user_check() #returns user account info
+		fan = models.fan.Fan.query_by_account(user.key) #returns fan profile info
+		followed_artists = models.musician.Musician.fetch_artists(fan.following)  #returns an array of Musician objects - can parse in template using for loop.
 		self.response.out.write(profile)
 		
 		template_values = {'following_count':7, 'matchups_count':313, 'fav_genres':'Hip-Hop/Rap, Alternative','upcoming_shows':upcoming_shows, 
@@ -47,7 +48,7 @@ class VenueProfileHandler(views.Template):
 		
 		user = self.user_check()
 		profile = models.venue.Venue.query_by_account(user.key)
-		gigs = models.events.Event.query_by_venue_key(profile.key)
+		gigs = models.events.Event.query_by_venue_key(profile.key) #retuns an array of gig objects - can parse in template using for loop.
 		self.response.out.write(profile)
 		
 		template_values = {'venue_name':profile.venue_name, 'venue_type':profile.venue_type, 'venue_pic_url':'images/_test_venue.jpg',
@@ -80,7 +81,7 @@ class MusicianProfileHandler(views.Template):
 		{'url':'http://www.youtube.com/embed/_t431MAUQlQ?rel=0', 'title':'No Interruption', 'likes_count':200, 'matchup_wins_percent':45, 'featured':False}]
 		
 		user = self.user_check()
-		profile = models.venue.Venue.query_by_account(user.key)
+		profile = models.musician.Musician.query_by_account(user.key)
 		self.response.out.write(profile)
 		
 		

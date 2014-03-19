@@ -121,7 +121,9 @@ class SignupHandler(views.Template):
 											 address_2 = params['address2'][0])],
 								  venue_type = params['venue_type'][0],
 								  age_limit = params['age_limit'][0],
-								  capacity = int(params['capacity'][0])).put()
+								  capacity = int(params['capacity'][0]),
+								  phone = params['phone1'][0],
+								  photo = params['file_upload'][0]).put()
 		except:
 			key = str(acc_key)
 			acc_key.delete()

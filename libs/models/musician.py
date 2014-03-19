@@ -22,3 +22,11 @@ class Musician(ndb.Model):
 	@classmethod
 	def query_by_account(cls, user_key):
 		return cls.query(cls.user_key == user_key).get()
+		
+	@classmethod
+	def query_by_key(cls, key):
+		return cls.query(cls._key == key).get()
+		
+	@classmethod
+	def fetch_artists(cls, keys):
+		return cls.query(cls.key.IN(keys)).fetch()

@@ -13,8 +13,8 @@ class VenueAddEditGigHandler(views.Template):
 		
 		host_name = self.request.get('host_name')
 		event_date = Validate.validate_dob(self.request.get('event_date'))
-		start_time = Validate.validate_time(self.request.get('start_time'))
-		end_time = Validate.validate_time(self.request.get('end_time'))
+		start_time = self.request.get('start_time')
+		end_time = self.request.get('end_time')
 		compensation = self.request.get('compensation')
 		locality = self.request.get('locality')
 		description = self.request.get('description')
@@ -26,15 +26,17 @@ class VenueAddEditGigHandler(views.Template):
 									start_time = start_time,
 									end_time = end_time,
 									compensation = compensation,
-									equipment = equipment,
 									locality = locality,
 									description = description).put()
-		
-		
+									
+		self.redirect('/venue_profile')
+	
+
+
 		
 app = webapp2.WSGIApplication([
    
-    ('/venue_add_edit_gig.*', VenueAddEditGigHandler)
+    ('/venue_add_edit_gig', VenueAddEditGigHandler)
 
 
 ], debug=True)
