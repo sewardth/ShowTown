@@ -18,12 +18,13 @@
     <div class="microcopy">
       <div>
         <strong>You're following</strong> {{following_count}} Musicians. <strong>You've Participated in</strong> {{matchups_count}} Matchups
-        <span class="left_spaced bold">Favorite Genres: </span>{{fav_genres}}
+        <span class="left_spaced bold">Favorite Genres: </span>{% for x in fan_profile.genres %} {{x}}  {% endfor %}
       </div>
 		</div>
 		<hr/>
-
+	
     <h2>Upcoming Shows <small>by Musicians You Follow</small></h2>
+	{% if upcoming_shows %}
     <table class="table gigs">
 			<thead>
 				<tr>
@@ -48,8 +49,13 @@
 				{% endfor %}
 			</tbody>
 		</table>
+	{% else %}
+	<p>No scheduled upcoming shows</p>
+	{% endif %}
     <h2>Musicians You Follow</h2>
+	{% if followed_musicians %}
     {% for fm in followed_musicians %}
+	
     <div class="row prev-vid-row">
 			<div class="col-lg-6 prev-vid">
 				<div class="col-lg-8">
@@ -74,6 +80,9 @@
 			</div>
 		</div>
     {% endfor %}
+	{% else %}
+	<p>You do not currently follow any musicians</p>
+	{% endif %}
     <h2>Recent Match ups</h2>
     
     

@@ -1,10 +1,10 @@
 from google.appengine.ext import ndb
-from applicants import Applicant
 
 class Event(ndb.Model):
 	venue_key = ndb.KeyProperty()
 	venue_account_key = ndb.KeyProperty()
 	venue = ndb.StringProperty()
+	gig_name = ndb.StringProperty()
 	event_date = ndb.DateProperty()
 	start_time = ndb.StringProperty()
 	end_time = ndb.StringProperty()
@@ -13,8 +13,8 @@ class Event(ndb.Model):
 	genres = ndb.StringProperty(repeated=True)
 	locality = ndb.StringProperty()
 	description = ndb.TextProperty()
-	applicants = ndb.StructuredProperty(Applicant, repeated = True)
-	performers = ndb.StructuredProperty(Applicant, repeated = True)
+	applicants = ndb.KeyProperty(repeated = True)
+	performers = ndb.KeyProperty(repeated = True)
 	active = ndb.BooleanProperty(default = True)
 	created = ndb.DateTimeProperty(auto_now_add = True)
 	
@@ -22,4 +22,8 @@ class Event(ndb.Model):
 	@classmethod
 	def query_by_venue_key(cls, venue_key):
 		return cls.query(cls.venue_key == venue_key).fetch()
+	
+	@classmethod
+	def query_by_key(cls, key):
+		return cls.query(cls._key == key).get()
 		

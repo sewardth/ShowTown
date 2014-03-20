@@ -4,6 +4,8 @@ sys.path.insert(0,'libs')
 import models
 from helpers.encryption import Encryption as enc
 from sessions.cookie import Cookie
+from jinja2 import Undefined
+JINJA2_ENVIRONMENT_OPTIONS = { 'undefined' : Undefined }
 
 
 

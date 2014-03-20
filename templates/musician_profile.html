@@ -12,7 +12,7 @@
 <body>
   <div id="page">
     {% include 'header.html' %}
-    <h1 class="pull-left">{{musician_name}} <small>You have {{likes_count}} Likes and {{followers_count}} Followers</h1>
+    <h1 class="pull-left">{{musician.band_name}} <small>You have {{likes_count}} Likes and {{followers | count}} Followers</h1>
     <h1 class="pull-right">
       <a href="/musician_profile_edit" class="btn btn-default">Edit Profile</a>
       <a href="#" class="btn btn-primary">Find Gigs</a>
@@ -20,7 +20,7 @@
     <div class="clearfix"></div>
     <div class="microcopy">
       <p>
-        <strong>Genre: </strong>{{genre}} / Located in {{musician_city}}, {{musician_state}} / Born {{musician_dob}}
+        <strong>Genre: </strong>{{musician.genre}} / Located in {{musician.address[0].city}}, {{musician.address[0].state}} / Born {{musician.DOB}}
       </p>
       <p>
         <a class="trending" href="/trending">
@@ -38,6 +38,7 @@
     	</div>
       <div class="col-lg-10">
    			<h4>New Offers</h4>
+			{% if offers %}
   			<table class="table gigs new-gigs">
 					<thead>
 						<tr>
@@ -70,7 +71,11 @@
     				{% endfor %}
   				</tbody>
   			</table>
+			{% else %}
+			<p>No new offers at this time </p>
+			{% endif %}
   			<h4>Booked Gigs</h4>
+			{% if gigs %}
   			<table class="table gigs">
     			<thead>
     				<tr>
@@ -101,23 +106,27 @@
     				{% endfor %}
     			</tbody>
   			</table>
+			{% else %}
+			<p>No booked gigs</p>
+			{% endif %}
   			<hr>
   			<br>
   			<h4>Biography</h4>
-  			<p>{{bio}}</p>
+  			<p>{{musician.bio}}</p>
   			<br>				
   		</div>
     </div>    
     <div class="row">
 			<h2><a href="#" class="btn btn-primary pull-right">Add Video</a>Your Videos</h2>
 			<hr class="clear">
-			{% for v in videos %}
+			{% if musician.submission_video %}
+			{% for v in musician.submission_video %}
 			<div class="col-lg-6 video {% if v.featured %} featured {% endif %}">
-				<iframe width="490" height="300" frameborder="0" allowfullscreen="" src="{{v.url}}"></iframe>
+				<iframe width="490" height="300" frameborder="0" allowfullscreen="" src="{{v.embed_link}}"></iframe>
           {% if v.featured %}
-				  <h2 class="text-center featured"><span>Featured</span> {{v.title}} <br><small>{{v.likes_count}} Likes. Wins {{v.matchup_wins_percent}}% of Match Ups</small></h2>
+				  <h2 class="text-center featured"><span>Featured:</span> {{v.video_title}} <br><small>{{v.likes_count}} Likes. Wins {{v.matchup_wins_percent}}% of Match Ups</small></h2>
 					{% else %}
-				  <h2 class="text-center">{{v.title}} <br><small>{{v.likes_count}} Likes. Wins {{v.matchup_wins_percent}}% of Match Ups</small></h2>
+				  <h2 class="text-center">{{v.video_title}} <br><small>{{v.likes_count}} Likes. Wins {{v.matchup_wins_percent}}% of Match Ups</small></h2>
 					{% endif %}
 					<br>
 					{% if v.featured %}
@@ -128,6 +137,9 @@
   				<p class="text-center"><a class="btn" href="#">Remove Video</a></p>
 			</div>
 			{% endfor %}
+			{% else %}
+			<p>You don't have any videos at this time</p>
+			{% endif %}
 		</div>
     {% include 'footer.html' %}
   </div>

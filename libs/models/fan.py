@@ -15,9 +15,16 @@ class Fan(ndb.Model):
 	
 	@classmethod
 	def query_by_email(cls, email):
-		return cls.query(email == email)
+		return cls.query(cls.email == email)
 		
 	@classmethod
 	def query_by_account(cls, user_key):
 		return cls.query(cls.user_key == user_key).get()
+		
+	@classmethod
+	def followers(cls, musician_key):
+		try:
+			return cls.query(cls.following == musician_key)
+		except:
+			return None
 	

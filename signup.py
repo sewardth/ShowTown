@@ -79,8 +79,8 @@ class SignupHandler(views.Template):
 		submission_video = valid.get_video(params['video_url'][0])
 		twitter = valid.verify_link(params['twitter'][0],'twitter')
 		sound_cloud = valid.verify_link(params['sound_cloud'][0],'soundcloud')
-		#youtube_page = valid.verify_link(params['youtube'][0], 'youtube')
-		#facebook = valid.verify_link(params['facebook'[0]], 'facebook')
+		video_hosting_page = valid.verify_link(params['video_hosting_page'][0], 'YouTube/Vimeo')
+		facebook = valid.verify_link(params['facebook'[0]], 'facebook')
 		existing_user = self.check_for_user(params['email'][0])
 		acc_key = self.account_creator(params)
 		try:
@@ -96,8 +96,8 @@ class SignupHandler(views.Template):
 										profile_pic = params['file_upload'][0],
 										num_of_members = int(params['num_of_members'][0]),
 										bio = params['bio'][0],
-										#facebook_page = facebook,
-										#youtube_page = youtube_page,
+										facebook = facebook,
+										video_hosting_page = video_hosting_page,
 										twitter_page = twitter,
 										sound_cloud_page = sound_cloud).put()
 		except:

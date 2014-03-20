@@ -51,26 +51,31 @@
 					</tr>
 				</thead>
 				<tbody>
+				  {% if available_gigs %}
 				  {% for ag in available_gigs %}
 					<tr>
-						<td>{{ag.gig_name}}<br><a href="/venue_add_edit_gig?id={{ag.gig_id}}">Edit</a> | <a href="#">Delete</a></td>
-						<td><strong>{{ag.date}}</strong><br> {{ag.time}}</td>
+						<td>{{ag.venue}}<br><a href="/venue_add_edit_gig?id={{ag.key.urlsafe()}}">Edit</a> | <a href="/delete_gig?id={{ag.key.urlsafe()}}">Delete</a></td>
+						<td><strong>{{ag.event_date}}</strong><br> {{ag.start_time}}</td>
 						<td>
 							<ul>
 							  {% for d in ag.detail_list %}
 								<li><strong>{{d}}</strong></li>
 								{% endfor %}
-								<li><strong>Genres:</strong> {{ag.genres}}</li>
+								<li><strong>Genres:</strong> {% for g in ag.genres %} {{g}} {% endfor %}</li>
 							</ul>
-							<p>{{ag.detail_description}}</p>
+							<p>{{ag.description}}</p>
 						</td>
-						<td>${{ag.compemsation}}</td>
+						<td>${{ag.compensation}}</td>
 						<td>
-							<a class="btn btn-default signup" href="#applicants">{{ag.applicant_count}} Applicants</a></td>
+							<a class="btn btn-default signup" href="#applicants">{{ag.applicants | count}} Applicants</a></td>
 					</tr>
 					{% endfor %}
 				</tbody>
+				{% else %}
+				<p>No Current Gigs</p>
+				{% endif %}
 				</table>
+				
 				<hr>
 				<p class="pull-right"><a class="btn btn-primary" href="/venue_add_edit_gig">Post Another Gig</a></p>
       </div>

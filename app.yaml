@@ -34,7 +34,7 @@ handlers:
 - url: /(.*?)_profile.*
   script: profile.app
   
-- url: /(.*?)_add_edit_gig.*
+- url: /(.*?)_gig.*
   script: gigs.app
   
 - url: /login_handler.*

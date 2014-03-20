@@ -12,10 +12,11 @@ class Musician(ndb.Model):
 	profile_pic = ndb.BlobProperty()
 	num_of_members = ndb.IntegerProperty()
 	bio = ndb.TextProperty()
-	facebook_page = ndb.StringProperty()
-	twitter_page = ndb.StringProperty()
-	sound_cloud_page = ndb.StringProperty()
-	youtube_page = ndb.StringProperty()
+	DOB = ndb.DateProperty()
+	facebook = ndb.StringProperty()
+	twitter = ndb.StringProperty()
+	sound_cloud = ndb.StringProperty()
+	video_hosting_page = ndb.StringProperty()
 	latest_update = ndb.DateTimeProperty(auto_now = True)
 	account_created = ndb.DateTimeProperty(auto_now_add = True)
 	
@@ -29,4 +30,7 @@ class Musician(ndb.Model):
 		
 	@classmethod
 	def fetch_artists(cls, keys):
-		return cls.query(cls.key.IN(keys)).fetch()
+		try:
+			return cls.query(cls._key.IN(keys)).fetch()
+		except:
+			return None

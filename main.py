@@ -69,7 +69,7 @@ class VenuesHandler(views.Template):
 		venues = models.venue.Venue.fetch_venues()
 		
 		venues_states = [{'name':'Michigan', 'abbr':'MI'}, {'name':'Ohio', 'abbr':'OH'}]
-		template_values = {'venues_states':venues_states}
+		template_values = {'venues_states':venues_states, 'venues':venues}
 		self.render('venues.html', template_values)
 
 	def post(self):

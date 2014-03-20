@@ -26,32 +26,32 @@
 				  <input type="hidden" name="op" value="add">
 				  {% else %}
 				  <input type="hidden" name="op" value="edit">
-				  <input type="hidden" name="id" value="{{id}}">
+				  <input type="hidden" name="id" value="{% if gig %} {{gig.key.urlsafe()}} {% endif %}">
 				  {% endif %}
   				<fieldset>
   				<legend>Gig Details</legend>
     				<div class="control-group">
     				  <label for="textinput" class="control-label">Gig Name</label>
     				  <div class="controls">
-    				    <input type="text" class="input-xlarge" placeholder="" name="host_name" id="textinput">
+    				    <input type="text" class="input-xlarge" placeholder="" name="host_name" id="textinput" value = "{% if gig %} {{gig.host_name}} {% endif %}">
     				  </div>
     				</div>
     				<div class="control-group">
     				  <label for="Date" class="control-label">Date</label>
     				  <div class="controls">
-    				    <input type="text" class="input-xlarge" placeholder="MM/DD/YYYY" name="event_date" id="Date">
+    				    <input type="text" class="input-xlarge" placeholder="MM/DD/YYYY" name="event_date" id="Date" value ="{% if gig %} {{gig.event_date.strftime('%m/%d/%Y')}} {% endif %}">
     				  </div>
     				</div>
     				<div class="control-group">
     				  <label for="textinput" class="control-label">Start Time</label>
     				  <div class="controls">
-    				    <input type="text" class="input-xlarge" placeholder="" name="start_time" id="textinput">
+    				    <input type="text" class="input-xlarge" placeholder="" name="start_time" id="textinput" value = "{% if gig %} {{gig.start_time}} {% endif %}">
     				  </div>
     				</div>
     				<div class="control-group">
     				  <label for="textinput" class="control-label">End Time</label>
     				  <div class="controls">
-    				    <input type="text" class="input-xlarge" placeholder="" name="end_time" id="textinput">
+    				    <input type="text" class="input-xlarge" placeholder="" name="end_time" id="textinput" value ="{% if gig %} {{gig.end_time}} {% endif %}">
     				  </div>
     				</div>
     				<div class="control-group">
@@ -59,7 +59,7 @@
     				  <div class="controls">
     				    <div class="input-prepend">
     				      <span class="add-on">$</span>
-    				      <input type="text" placeholder="" class="input-xlarge" name="compensation" id="prependedtext">
+    				      <input type="text" placeholder="" class="input-xlarge" name="compensation" id="prependedtext" value ="{% if gig %} {{gig.compensation}} {% endif %}">
     				    </div>
     				  </div>
     				</div>
@@ -98,7 +98,7 @@
     				<div class="control-group">
     				  <label for="textarea" class="control-label">Brief Description</label>
     				  <div class="controls">                     
-    				    <textarea name="description" id="textarea"></textarea>
+    				    <textarea name="description" id="textarea">{% if gig %} {{gig.description}} {% endif %}</textarea>
     				  </div>
     				</div>
     				<br>

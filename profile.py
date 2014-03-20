@@ -15,17 +15,20 @@ class FanProfileHandler(views.Template):
 		
 		user = self.user_check() #returns user account info
 		fan = models.fan.Fan.query_by_account(user.key) #returns fan profile info
-		followed_artists = models.musician.Musician.fetch_artists(fan.following)  #returns an array of Musician objects - can parse in template using for loop.
-		self.response.out.write(profile)
+		followed_artists = models.musician.Musician.fetch_artists(fan.following)  #returns an array of Musician objects - can parse in template using for loop.*
 		
-		template_values = {'following_count':7, 'matchups_count':313, 'fav_genres':'Hip-Hop/Rap, Alternative','upcoming_shows':upcoming_shows, 
-		'followed_musicians':followed_musicians}
+		
+		template_values = {'following_count':len(fan.following), 'matchups_count':313, 'fav_genres':'Hip-Hop/Rap, Alternative','upcoming_shows':None, 
+		'followed_musicians':followed_artists, 'fan_profile':fan}
 		self.render('fan_profile.html', template_values)
 
 
 class FanProfileEditHandler(views.Template):
 	def get(self):
-		template_values = {}
+		user = self.user_check() #returns user account info
+		fan = models.fan.Fan.query_by_account(user.key) #returns fan profile info
+		
+		template_values = {'account':user, 'profile':fan}
 		self.render('fan_profile_edit.html', template_values)
 		
 	def post(self):
@@ -47,20 +50,22 @@ class VenueProfileHandler(views.Template):
 		'compemsation':'125', 'applicant_count':2}]
 		
 		user = self.user_check()
-		profile = models.venue.Venue.query_by_account(user.key)
-		gigs = models.events.Event.query_by_venue_key(profile.key) #retuns an array of gig objects - can parse in template using for loop.
-		self.response.out.write(profile)
+		venue = models.venue.Venue.query_by_account(user.key)
+		gigs = models.events.Event.query_by_venue_key(venue.key) #retuns an array of gig objects - can parse in template using for loop.
 		
-		template_values = {'venue_name':profile.venue_name, 'venue_type':profile.venue_type, 'venue_pic_url':'images/_test_venue.jpg',
-		'venue_address':profile.address[0].address_1  + ', ' + profile.address[0].address_2  + ' ' + profile.address[0].city  + ', ' + profile.address[0].state  + ' ' + str(profile.address[0].zip), 
+		template_values = {'venue_name':venue.venue_name, 'venue_type':venue.venue_type, 'venue_pic_url':'images/_test_venue.jpg',
+		'venue_address':venue.address[0].address_1  + ', ' + venue.address[0].address_2  + ' ' + venue.address[0].city  + ', ' + venue.address[0].state  + ' ' + str(venue.address[0].zip), 
 		'venue_phone':'Need field in DB', 'venue_url':'Need field in DB',
-		'venue_url_text':'Andiamoitalia.com','venue_age_limit':profile.age_limit, 'venue_capacity':profile.capacity, 'available_gigs':available_gigs}
+		'venue_url_text':'Andiamoitalia.com','venue_age_limit':venue.age_limit, 'venue_capacity':venue.capacity, 'available_gigs':gigs}
 		self.render('venue_profile.html', template_values)
 
 class VenueProfileEditHandler(views.Template):
 	def get(self):
-		template_values = {}
+		user = self.user_check()
+		venue = models.venue.Venue.query_by_account(user.key)
+		template_values = {'profile':venue}
 		self.render('venue_profile_edit.html', template_values)
+		
 	def post(self):
 		self.response.headers['Content-Type'] = "text/plain"
 		self.response.out.write(self.request.body)
@@ -81,11 +86,12 @@ class MusicianProfileHandler(views.Template):
 		{'url':'http://www.youtube.com/embed/_t431MAUQlQ?rel=0', 'title':'No Interruption', 'likes_count':200, 'matchup_wins_percent':45, 'featured':False}]
 		
 		user = self.user_check()
-		profile = models.musician.Musician.query_by_account(user.key)
-		self.response.out.write(profile)
+		musician = models.musician.Musician.query_by_account(user.key)
+		followers = models.fan.Fan.followers(musician.key)
+
 		
 		
-		template_values = {'musician_name':'Hoodie Allen', 'likes_count':'1,234', 'followers_count':'211', 'genre':'Hip-Hop/Rap',
+		template_values = {'musician':musician,'musician_name':musician.band_name, 'likes_count':'1,234', 'followers_count':followers, 'genre':'Hip-Hop/Rap',
 		'musician_city':'Ann Arbor', 'musician_state':'Michigan', 'musician_dob':'March, 19th 1989',
 		'trending_rank':'3','trending_category':'All Musicians', 'trending_state':'Michigan', 'img_src':'images/_test_profile.jpg',
 		'bio':'Steven Markowitz[1] was born in New York City and raised in a Jewish household in Plainview, Long Island along with his brother, Daniel.[2] He started writing lyrics as a child, and would perform raps for his friends at house parties. Allen first attended the Long Island School for the Gifted, then later attended Plainview &ndash; Old Bethpage John F. Kennedy High School. Growing up, his nickname was "Hoodie."',
@@ -94,7 +100,10 @@ class MusicianProfileHandler(views.Template):
 
 class MusicianProfileEditHandler(views.Template):
 	def get(self):
-		template_values = {}
+		user = self.user_check()
+		musician = models.musician.Musician.query_by_account(user.key)
+		
+		template_values = {'account':user, 'profile':musician}
 		self.render('musician_profile_edit.html', template_values)
 	def post(self):
 		self.response.headers['Content-Type'] = "text/plain"
