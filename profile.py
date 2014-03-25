@@ -82,12 +82,12 @@ class MusicianProfileHandler(views.Template):
 		'detail_list':['Local or Touring Musicians'], 'genres':'Classical', 
 		'detail_description':'Looking for a talented piano player to help set the mood for our lunch crowd..', 
 		'compemsation':'125', 'applicant_count':2}]
-		videos = [{'url':'http://www.youtube.com/embed/2KRa_FjTs2U?rel=0', 'title':'You Are Not a Robot', 'likes_count':415, 'matchup_wins_percent':73, 'featured':True},
-		{'url':'http://www.youtube.com/embed/_t431MAUQlQ?rel=0', 'title':'No Interruption', 'likes_count':200, 'matchup_wins_percent':45, 'featured':False}]
+		
 		
 		user = self.user_check()
 		musician = models.musician.Musician.query_by_account(user.key)
 		followers = models.fan.Fan.followers(musician.key)
+		videos = models.videos.Videos.query_by_account(user.key)
 
 		
 		

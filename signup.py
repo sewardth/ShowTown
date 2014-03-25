@@ -79,31 +79,44 @@ class SignupHandler(views.Template):
 		submission_video = valid.get_video(params['video_url'][0])
 		twitter = valid.verify_link(params['twitter'][0],'twitter')
 		sound_cloud = valid.verify_link(params['sound_cloud'][0],'soundcloud')
-		video_hosting_page = valid.verify_link(params['video_hosting_page'][0], 'YouTube/Vimeo')
-		facebook = valid.verify_link(params['facebook'[0]], 'facebook')
+		video_hosting_page = valid.verify_link(params['video_hosting_page'][0], 'youtube')
+		facebook = valid.verify_link(params['facebook'][0], 'facebook')
 		existing_user = self.check_for_user(params['email'][0])
 		acc_key = self.account_creator(params)
-		try:
+		
+		video = models.videos.Videos(embed_link = submission_video['embed_link'],
+													acc_key = acc_key,
+													genre_tag = params['video_genre'][0],
+													video_title = submission_video['title'],
+													featured = True).put()
+		
+		try:								
 			user = models.musician.Musician(user_key = acc_key, 
-										band_name = params['musician_name'][0],
-										email = params['email'][0], 
-										address= [models.address.Address(city=params['city'][0],
-																		 state = params['state'][0], 
-																		 zip = int(params['zip'][0]))], 
-										submission_video = [models.videos.Videos(embed_link = submission_video['embed_link'],
-																				genre_tag = params['video_genre'][0],
-																				video_title = submission_video['title'])],
-										profile_pic = params['file_upload'][0],
-										num_of_members = int(params['num_of_members'][0]),
-										bio = params['bio'][0],
-										facebook = facebook,
-										video_hosting_page = video_hosting_page,
-										twitter_page = twitter,
-										sound_cloud_page = sound_cloud).put()
+							band_name = params['musician_name'][0],
+							email = params['email'][0], 
+							address= [models.address.Address(city=params['city'][0],
+															 state = params['state'][0], 
+															 zip = int(params['zip'][0]))], 
+							
+							profile_pic = params['file_upload'][0],
+							num_of_members = int(params['num_of_members'][0]),
+							bio = params['bio'][0],
+							DOB = DOB,
+							facebook = facebook,
+							video_hosting_page = video_hosting_page,
+							twitter = twitter,
+							sound_cloud = sound_cloud).put()
+		
+
+		
 		except:
 			key = str(acc_key)
 			acc_key.delete()
+			video.delete()
 			messages.Message.warning('Put() failed.  Deleting ' + key)
+		
+		
+		
 		
 		
 	def venue_creator(self, params):

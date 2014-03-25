@@ -42,6 +42,9 @@ handlers:
   
 - url: /logout_handler.*
   script: logout.app
+
+- url: /video.*
+  script: videos.app
   
 - url: .*
   script: main.app

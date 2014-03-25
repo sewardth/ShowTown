@@ -119,8 +119,8 @@
     <div class="row">
 			<h2><a href="#" class="btn btn-primary pull-right">Add Video</a>Your Videos</h2>
 			<hr class="clear">
-			{% if musician.submission_video %}
-			{% for v in musician.submission_video %}
+			{% if videos %}
+			{% for v in videos %}
 			<div class="col-lg-6 video {% if v.featured %} featured {% endif %}">
 				<iframe width="490" height="300" frameborder="0" allowfullscreen="" src="{{v.embed_link}}"></iframe>
           {% if v.featured %}
@@ -130,11 +130,11 @@
 					{% endif %}
 					<br>
 					{% if v.featured %}
-  				<p class="text-center"><a class="btn btn-primary" href="#">Un-Feature</a></p>
+  				<p class="text-center"><a class="btn btn-primary" href="/video_unfeature?id={{v.key.urlsafe()}}">Un-Feature</a></p>
   				{% else %}
-  				<p class="text-center"><a class="btn btn-primary" href="#">Feature</a></p>
+  				<p class="text-center"><a class="btn btn-primary" href="/video_feature?id={{v.key.urlsafe()}}">Feature</a></p>
   				{% endif %}
-  				<p class="text-center"><a class="btn" href="#">Remove Video</a></p>
+  				<p class="text-center"><a class="btn" href="/video_remove?id={{v.key.urlsafe()}}">Remove Video</a></p>
 			</div>
 			{% endfor %}
 			{% else %}
