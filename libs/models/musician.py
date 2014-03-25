@@ -8,7 +8,6 @@ class Musician(ndb.Model):
 	band_name = ndb.StringProperty()
 	email = ndb.StringProperty()
 	address = ndb.StructuredProperty(Address, repeated=True)
-	submission_video = ndb.StructuredProperty(Videos, repeated = True)
 	profile_pic = ndb.BlobProperty()
 	num_of_members = ndb.IntegerProperty()
 	bio = ndb.TextProperty()

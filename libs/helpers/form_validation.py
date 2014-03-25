@@ -48,7 +48,7 @@ class Validate(webapp2.RequestHandler):
 	def verify_link(link, source):
 		if len(link)>0:
 			r = urlfetch.fetch(link)
-			if r.status_code != 200 or source not in link:
+			if source not in link:
 				messages.Message.warning('Not a valid URL for source: ' + source)	
 			else:
 				return link
@@ -59,8 +59,12 @@ class Validate(webapp2.RequestHandler):
 	def get_video(link):
 		try:
 			video = lassie.fetch(link)
-			video_data = {'embed_link' : video['videos'][1]['src'],
-			             'title' : video['title']}
+			if 'embed' in link:
+				video_data = {'embed_link': link,
+							  'title': video}
+			else:
+				video_data = {'embed_link' : video['videos'][1]['src'],
+				             'title' : video['title']}
 			return video_data
 		except:
 			messages.Message.warning('Not a vaild YouTube or Vimeo page URL')
