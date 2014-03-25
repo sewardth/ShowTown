@@ -17,7 +17,6 @@ class FanProfileHandler(views.Template):
 		fan = models.fan.Fan.query_by_account(user.key) #returns fan profile info
 		followed_artists = models.musician.Musician.fetch_artists(fan.following)  #returns an array of Musician objects - can parse in template using for loop.*
 		
-		
 		template_values = {'following_count':len(fan.following), 'matchups_count':313, 'fav_genres':'Hip-Hop/Rap, Alternative','upcoming_shows':None, 
 		'followed_musicians':followed_artists, 'fan_profile':fan}
 		self.render('fan_profile.html', template_values)
