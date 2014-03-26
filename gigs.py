@@ -14,7 +14,7 @@ class VenueAddEditGigHandler(views.Template):
 				gig_key = ndb.Key(urlsafe=self.request.get('id'))
 				check_key = models.events.Event.query_by_key(gig_key)
 				if user.key == check_key.venue_account_key:
-					template_values = {'add':1, 'gig':check_key}
+					template_values = {'add':0, 'gig':check_key}
 					self.render('venue_add_edit_gig.html', template_values) 
 			
 				else:
