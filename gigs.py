@@ -27,29 +27,44 @@ class VenueAddEditGigHandler(views.Template):
 	def post(self):
 		user = self.user_check()
 		venue = models.venue.Venue.query_by_account(user.key)
+		if user.key == venue.user_key:
+			gig_name = self.request.get('gig_name')
+			event_date = Validate.validate_dob(self.request.get('event_date'))
+			start_time = self.request.get('start_time')
+			end_time = self.request.get('end_time')
+			compensation = self.request.get('compensation')
+			locality = self.request.get('locality')
+			description = self.request.get('description')
 		
-		host_name = self.request.get('host_name')
-		event_date = Validate.validate_dob(self.request.get('event_date'))
-		start_time = self.request.get('start_time')
-		end_time = self.request.get('end_time')
-		compensation = self.request.get('compensation')
-		locality = self.request.get('locality')
-		description = self.request.get('description')
+			try:
+				gig_key = ndb.Key(urlsafe=self.request.get('id'))
+				gig = gig_key.get()
+				gig.venue = venue.venue_name
+				gig.gig_name = gig_name
+				gig.event_date = event_date
+				gig.start_time = start_time
+				gig.end_time = end_time
+				gig.compensation = compensation
+				gig.locality = locality
+				gig.description = description
+				gig.put()
+			
+			except:
+				gig = models.events.Event(venue_key = venue.key,
+											venue_account_key = user.key,
+											venue = venue.venue_name,
+											gig_name = gig_name,
+											event_date = event_date,
+											start_time = start_time,
+											end_time = end_time,
+											compensation = compensation,
+											locality = locality,
+											description = description).put()
 		
-		gig = models.events.Event(venue_key = venue.key,
-									venue_account_key = user.key,
-									venue = venue.venue_name,
-									gig_name = host_name,
-									event_date = event_date,
-									start_time = start_time,
-									end_time = end_time,
-									compensation = compensation,
-									locality = locality,
-									description = description).put()
-		
-		time.sleep(.5)							
-		self.redirect('/venue_profile')
-	
+			time.sleep(.5)							
+			self.redirect('/venue_profile')
+		else:
+			self.response.out.write('Not Authorized')
 
 class DeleteGigHandler(views.Template):
 	def get(self):

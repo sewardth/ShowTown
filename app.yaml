@@ -46,6 +46,9 @@ handlers:
 - url: /video.*
   script: videos.app
   
+- url: /venue.*
+  script: venues.app
+  
 - url: .*
   script: main.app
 

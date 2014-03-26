@@ -12,9 +12,10 @@
 <body>
   <div id="page">
     {% include 'header.html' %}
-    <h1 class="pull-left">{{venue_name}} <small>{{venue_type}}</small></h1>
+	{% if venue %}
+    <h1 class="pull-left">{{venue.venue_name}} <small>{{venue.venue_type}}</small></h1>
     <h1 class="pull-right">
-      <a href="/venue_profile_edit" class="btn btn-primary">Follow {{venue_name}}</a>
+      <a href="/venue_profile_edit" class="btn btn-primary">Follow {{venue.venue_name}}</a>
     </h1>
     <div class="clearfix"></div>
 		<hr/>
@@ -24,19 +25,21 @@
       </div>        
       <div class="col-lg-8">
   			<h4>About</h4>
-  			<h5>{{venue_address}}</h5>
-  			<p><strong>Ph:</strong> {{venue_phone}} | <strong>Web:</strong> <a href="{{venue_url}}" target="_blank">{{venue_url_text}}</a></p>
+  			<h5>{{venue.venue_address}}</h5>
+  			<p><strong>Ph:</strong> {{venue.phone}} | <strong>Web:</strong> <a href="{{venue.venue_url}}" target="_blank">{{venue.venue_name}}</a></p>
   			<br>
   			<h4>Details</h4>
   			<ul>
-  				<li><strong>Venue Type:</strong> {{venue_type}}</li>
-  				<li><strong>Age Limit:</strong> {{venue_age_limit}}</li>
-  				<li><strong>Capacity:</strong> {{venue_capacity}} people</li>
+  				<li><strong>Venue Type:</strong> {{venue.venue_type}}</li>
+  				<li><strong>Age Limit:</strong> {{venue.age_limit}}</li>
+  				<li><strong>Capacity:</strong> {{venue.capacity}} people</li>
   			</ul>
   			<br>
   		</div>
     </div>
-
+	{% else %}
+	<p>Look's like something went wrong, please go back and try again</p>
+	{% endif %}
 
 
 
@@ -44,7 +47,6 @@
   </div>
 </body>
 </html>
-
 
 
 

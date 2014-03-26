@@ -65,7 +65,7 @@ console.log('Load venue_type=' + venue_type + ' - state=' + state_code + ' - gig
             .append($(document.createElement('td'))
               .append($(document.createElement('h3'))
                 .append($(document.createElement('a'))
-                  .attr({href:'/venue?id=' + entries[i].venue_id})
+                  .attr({href:'/venue?id=' + entries[i].venue_key})
                   .text(entries[i].venue_name)
                 )
               )
