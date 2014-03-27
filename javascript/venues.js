@@ -87,7 +87,10 @@ console.log('Load venue_type=' + venue_type + ' - state=' + state_code + ' - gig
             )
             .append($(document.createElement('td'))
               .append($(document.createElement('a'))
-                .attr({href:'#',  'class':"btn btn-primary signup"})
+                .attr({href:'javascript:void(0)',  'class':"btn btn-primary signup"})
+                .bind('click',{venue_id:entries[i].venue_key}, function(e){
+                  show_available_gigs_popup(e.data.venue_id)
+                })
                 .text('Available Gigs')
               )
             )
@@ -98,4 +101,31 @@ console.log('Load venue_type=' + venue_type + ' - state=' + state_code + ' - gig
     .fail(function(xhr){ 
 console.log(xhr)
     });
+}
+
+function show_available_gigs_popup(venue_id){
+  if(global.available_gigs_popup_dialog == undefined){
+		global.available_gigs_popup_dialog = $('#generic_popup_dialog').dialog({ 
+			autoOpen: false,
+			modal: true, 
+			width: 'auto',
+			height: 'auto',
+			position: Array(150,100),
+			resizable: false,
+			overlay: { 
+				opacity: 0.8, 
+				background: "black" 
+			},
+		});
+		global.available_gigs_popup_dialog.dialog( "option", "title", "Add a video" );
+	}
+	$('#generic_popup_dialog').empty();
+  var available_gigs_html = '<div id="available_gigs"><h2>Avaliable gigs for </h2><br/>venue_id=' + venue_id + '</div>';
+	$('#generic_popup_dialog')
+	  .append(available_gigs_html)  
+	  .parent().append('<div class="dialog_close" onclick="global.available_gigs_popup_dialog.dialog(\'close\')" title="Close"></div>') 				
+		
+	global.available_gigs_popup_dialog.dialog('open');
+	// Reset the width so it doesn't go over.
+	$('#generic_popup_dialog').attr("style","width:900px;");
 }

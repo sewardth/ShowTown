@@ -67,7 +67,7 @@
 						</td>
 						<td>${{ag.compensation}}</td>
 						<td>
-							<a class="btn btn-default signup" href="#applicants">{{ag.applicants | count}} Applicants</a></td>
+							<a class="btn btn-default signup" href="/venue_profile_applicants?id={{ag.key.urlsafe()}}">{{ag.applicants | count}} Applicants</a></td>
 					</tr>
 					{% endfor %}
 				</tbody>

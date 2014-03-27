@@ -3,7 +3,7 @@
 <head>
 	<meta charset="utf-8">
   {% include 'common_links.inc' %}
-  <script src="javascript/venues.js"></script>
+  <script src="javascript/musician_add_video.js"></script>
 	<title>{{musician_name}}</title>
 	<!--[if lt IE 9]>
 	<script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script>
@@ -117,7 +117,7 @@
   		</div>
     </div>    
     <div class="row">
-			<h2><a href="#" class="btn btn-primary pull-right">Add Video</a>Your Videos</h2>
+			<h2><a href="#" onclick="show_add_video_popup()" class="btn btn-primary pull-right">Add Video</a>Your Videos</h2>
 			<hr class="clear">
 			{% if videos %}
 			{% for v in videos %}

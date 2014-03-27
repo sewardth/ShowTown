@@ -69,7 +69,15 @@ class VenueProfileEditHandler(views.Template):
 		self.response.headers['Content-Type'] = "text/plain"
 		self.response.out.write(self.request.body)
 
-
+class VenueProfileApplicantsHandler(views.Template):
+	def get(self):
+		user = self.user_check()
+		template_values = {}
+		self.render('venue_profile_applicants.html', template_values)
+		
+	def post(self):
+		self.response.headers['Content-Type'] = "text/plain"
+		self.response.out.write(self.request.body)
 
 class MusicianProfileHandler(views.Template):
 	def get(self):
@@ -117,6 +125,7 @@ app = webapp2.WSGIApplication([
     ('/fan_profile_edit', FanProfileEditHandler),
     ('/venue_profile', VenueProfileHandler),
     ('/venue_profile_edit', VenueProfileEditHandler),
+    ('/venue_profile_applicants', VenueProfileApplicantsHandler),
     ('/musician_profile', MusicianProfileHandler),
     ('/musician_profile_edit', MusicianProfileEditHandler),
 
