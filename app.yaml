@@ -48,6 +48,9 @@ handlers:
   
 - url: /venue.*
   script: venues.app
+ 
+-url: /imgs.*
+  script: image_handler.app
   
 - url: .*
   script: main.app

@@ -61,7 +61,7 @@ class Validate(webapp2.RequestHandler):
 			video = lassie.fetch(link)
 			if 'embed' in link:
 				video_data = {'embed_link': link,
-							  'title': video}
+							  'title': video['title']}
 			else:
 				video_data = {'embed_link' : video['videos'][1]['src'],
 				             'title' : video['title']}
