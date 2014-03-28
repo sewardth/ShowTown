@@ -1,4 +1,5 @@
 import webapp2, json, sys, views
+from google.appengine.api import images
 sys.path.insert(0,'libs')
 import lassie, requests
 from google.appengine.api import urlfetch
@@ -76,6 +77,7 @@ class SignupHandler(views.Template):
 	def musician_creator(self, params):
 		email = valid.validate_email(params['email'][0])
 		DOB = valid.validate_dob(params['dob'][0])
+		profile_pic = self.image_handler(params['file_upload'][0],150,150)
 		submission_video = valid.get_video(params['video_url'][0])
 		twitter = valid.verify_link(params['twitter'][0],'twitter')
 		sound_cloud = valid.verify_link(params['sound_cloud'][0],'soundcloud')
@@ -93,12 +95,12 @@ class SignupHandler(views.Template):
 		try:								
 			user = models.musician.Musician(user_key = acc_key, 
 							band_name = params['musician_name'][0],
-							email = params['email'][0], 
+							email = email, 
 							address= [models.address.Address(city=params['city'][0],
 															 state = params['state'][0], 
 															 zip = int(params['zip'][0]))], 
 							
-							profile_pic = params['file_upload'][0],
+							profile_pic = profile_pic,
 							num_of_members = int(params['num_of_members'][0]),
 							bio = params['bio'][0],
 							DOB = DOB,
@@ -106,7 +108,6 @@ class SignupHandler(views.Template):
 							video_hosting_page = video_hosting_page,
 							twitter = twitter,
 							sound_cloud = sound_cloud).put()
-		
 
 		
 		except:
@@ -122,6 +123,7 @@ class SignupHandler(views.Template):
 	def venue_creator(self, params):
 		email = valid.validate_email(params['email'][0])
 		existing_user = self.check_for_user(params['email'][0])
+		profile_pic = self.image_handler(params['file_upload'][0],310,219)
 		acc_key = self.account_creator(params)
 		try:
 			user = models.venue.Venue(user_key = acc_key,
@@ -136,11 +138,36 @@ class SignupHandler(views.Template):
 								  age_limit = params['age_limit'][0],
 								  capacity = int(params['capacity'][0]),
 								  phone = params['phone1'][0],
-								  photo = params['file_upload'][0]).put()
+								  profile_pic = profile_pic).put()
 		except:
 			key = str(acc_key)
 			acc_key.delete()
 			messages.Message.warning('Put() failed.  Deleting ' + key)
+			
+			
+	def image_handler(self, image, width, height):
+		if image == '':
+			return None
+		else:
+			image = images.Image(image_data = image)
+			desired_wh_ratio = float(width) / float(height)
+			wh_ratio = float(image.width) / float(image.height)
+
+			if desired_wh_ratio > wh_ratio:
+				# resize to width, then crop to heigh
+				image.resize(width=width)
+				image.execute_transforms()
+				trim_y = (float(image.height - height) / 2) / image.height
+				image.crop(0.0, 0.0, 1.0, 1 - (2 * trim_y))
+			else:
+				# resize to height, then crop to width
+				image.resize(height=height)
+				image.execute_transforms()
+				trim_x = (float(image.width - width) / 2) / image.width
+				image.crop(trim_x, 0.0, 1 - trim_x, 1.0)
+
+			img = image.execute_transforms(output_encoding=images.JPEG)
+			return img
 
 
 app = webapp2.WSGIApplication([

@@ -4,7 +4,7 @@
 	<meta charset="utf-8">
   {% include 'common_links.inc' %}
   <script src="javascript/musician_add_video.js"></script>
-	<title>{{musician_name}}</title>
+	<title>{{musician.band_name}}</title>
 	<!--[if lt IE 9]>
 	<script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script>
 	<![endif]-->
@@ -31,10 +31,11 @@
 		<hr/>
     <div class="row">
       <div class="col-lg-2 profile-pic">
-    		<img src="{{img_src}}">
-    		<p class="text-center"><a href="#" class="btn btn-default">Twitter</a></p>
-    		<p class="text-center"><a href="#" class="btn btn-default">Facebook</a></p>
-    		<p class="text-center"><a href="#" class="btn btn-default">SoundCloud</a></p>
+    		<img src="/imgs?id={{musician.key.urlsafe()}}&width=100&height=100">
+    		{% if musician.twitter %}<p class="text-center"><a href="{{musician.twitter}}" target="_blank" class="btn btn-default">Twitter</a></p>{% endif %}
+    		{% if musician.facebook %}<p class="text-center"><a href="{{musician.facebook}}" target="_blank" class="btn btn-default">Facebook</a></p>{% endif %}
+    		{% if musician.sound_cloud %}<p class="text-center"><a href="{{musician.sound_cloud}}" target="_blank" class="btn btn-default">SoundCloud</a></p>{% endif %}
+			{% if musician.video_hosting_page %}<p class="text-center"><a href="{{musician.video_hosting_page}}" target="_blank" class="btn btn-default">YouTube / Vimeo</a></p>{% endif %}
     	</div>
       <div class="col-lg-10">
    			<h4>New Offers</h4>

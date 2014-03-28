@@ -9,7 +9,7 @@ class Venue(ndb.Model):
 	venue_type = ndb.StringProperty()
 	venue_url = ndb.StringProperty()
 	phone = ndb.StringProperty()
-	photo = ndb.BlobProperty()
+	profile_pic = ndb.BlobProperty()
 	age_limit = ndb.StringProperty()
 	capacity = ndb.IntegerProperty()
 	active = ndb.BooleanProperty(default = True)
