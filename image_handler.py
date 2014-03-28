@@ -6,11 +6,11 @@ from google.appengine.ext import ndb
 class ImageHandler(views.Template):
 	def get(self):
 		key = ndb.Key(urlsafe = self.request.get('id'))
-		width self.request.get('width')
-		height = self.request.get('height')
+		width = int(self.request.get('width'))
+		height = int(self.request.get('height'))
 		pic = key.get()
 		if pic.profile_pic:
-			image = images.Image(image_data = pic.band_2_photo)
+			image = images.Image(image_data = pic.profile_pic)
 			desired_wh_ratio = float(width) / float(height)
 			wh_ratio = float(image.width) / float(image.height)
 			image.resize(width=width, height = height)
