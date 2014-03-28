@@ -19,7 +19,7 @@ function show_add_video_popup(){
 		global.add_video_popup_dialog.dialog( "option", "title", "Add a video" );
 	}
 	$('#generic_popup_dialog').empty();
-  var add_video_html = '<div id="add_video"><form method="POST" action="/musician_profile_add_video">' +
+  var add_video_html = '<div id="add_video"><form method="POST" action="/video_add">' +
                     '<fieldset><legend>Add a video to your profile</legend>' +
                       '<div class="control-group">' +
                 			  '<label for="video_url" class="control-label">Video URL</label>' +

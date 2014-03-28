@@ -1,5 +1,5 @@
 import views, webapp2, models, time
-from helpers.form_validation import Validate
+from helpers.form_validation import Validate as valid
 from google.appengine.ext import ndb
 
 
@@ -55,10 +55,18 @@ class RemoveHandler(views.Template):
 			self.response.out.write('Not Authorized')
 	
 class AddHandler(views.Template):
-	pass
+	def post(self):
+		submission_video = valid.get_video(self.request.get('video_url'))
+		acc_key = self.user_check()
+		video = models.videos.Videos(embed_link = submission_video['embed_link'],
+									acc_key = acc_key.key,
+									genre_tag = None,
+									video_title = submission_video['title'],
+									featured = False).put()
+		time.sleep(.5)
+		self.redirect('/musician_profile')
 
-		
-		
+	
 app = webapp2.WSGIApplication([
    
     ('/video_unfeature*', UnFeatureHandler),
