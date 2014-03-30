@@ -95,7 +95,10 @@ class SignupHandler(views.Template):
 	
 	def fan_creator(self, params):
 		email = valid.validate_email(params['email'][0])
-		DOB = valid.validate_dob(params['dob'][0])
+		if params['dob'][0] != '': 
+			DOB = valid.validate_dob(params['dob'][0])
+		else:
+			DOB = None
 		existing_user = self.check_for_user(params['email'][0])
 		password = valid.validate_passwords(params['password'][0], params['conf_password'][0])
 		
@@ -123,7 +126,10 @@ class SignupHandler(views.Template):
 		
 	def musician_creator(self, params):
 		email = valid.validate_email(params['email'][0])
-		DOB = valid.validate_dob(params['dob'][0])
+		if params['dob'][0] != '': 
+			DOB = valid.validate_dob(params['dob'][0])
+		else:
+			DOB = None
 		try:
 			profile_pic = self.image_handler(params['file_upload'][0],150,150)
 		except:
@@ -155,44 +161,45 @@ class SignupHandler(views.Template):
 		validation = [email, DOB, profile_pic, submission_video, twitter, sound_cloud, video_hosting_page, facebook, existing_user, password]
 		
 		if False in validation:
+			self.response.out.write(validation)
 			for x in params:
 				self.template_values[x] = params[x]
 			self.render_errors('signup_musician.html')
 		else:
 			acc_key = self.account_creator(params, password)
 		
-			try:								
-				user = models.musician.Musician(user_key = acc_key, 
-								band_name = params['musician_name'][0],
-								email = email, 
-								address= [models.address.Address(city=params['city'][0],
-																 state = params['state'][0], 
-																 zip = int(params['zip'][0]))], 
-							
-								profile_pic = profile_pic,
-								num_of_members = int(params['num_of_members'][0]),
-								bio = params['bio'][0],
-								DOB = DOB,
-								facebook = facebook,
-								video_hosting_page = video_hosting_page,
-								twitter = twitter,
-								sound_cloud = sound_cloud).put()
-							
-				video = models.videos.Videos(embed_link = submission_video['embed_link'],
-															acc_key = acc_key,
-															musician_key = user,
-															musician_name = params['musician_name'][0],
-															genre_tag = params['video_genre'][0],
-															video_title = submission_video['title'],
-															featured = True).put()
-				self.redirect('/')
+			#try:								
+			user = models.musician.Musician(user_key = acc_key, 
+							band_name = params['musician_name'][0],
+							email = email, 
+							address= [models.address.Address(city=params['city'][0],
+															 state = params['state'][0], 
+															 zip = int(params['zip'][0]))], 
+						
+							profile_pic = profile_pic,
+							num_of_members = int(params['num_of_members'][0]),
+							bio = params['bio'][0],
+							DOB = DOB,
+							facebook = facebook,
+							video_hosting_page = video_hosting_page,
+							twitter = twitter,
+							sound_cloud = sound_cloud).put()
+						
+			video = models.videos.Videos(embed_link = submission_video['embed_link'],
+														acc_key = acc_key,
+														musician_key = user,
+														musician_name = params['musician_name'][0],
+														genre_tag = params['video_genre'][0],
+														video_title = submission_video['title'],
+														featured = True).put()
+			self.redirect('/')
 		
-			except:
+		"""	except:
 				acc_key.delete()
 				if user: user.delete()
 				if video: video.delete()
 				self.template_values['error'] = 'Something went wrong, please try again'
-				self.render_errors('signup_musician.html')
+				self.render_errors('signup_musician.html') """
 		
 		
 		
