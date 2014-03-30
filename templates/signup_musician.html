@@ -18,17 +18,19 @@
   			<form class="form-horizontal" action="/signup" method="POST" enctype="multipart/form-data">
   			  <input type="hidden" name="user_type" value="musician">
     			<fieldset>
+				<div class ="warning">{{error}}</div>
       			<div class="control-group" id="musician_name_wrapper">
       			  <label for="musician_name" class="control-label">Musician or Band Name</label>
       			  <div class="controls">
-      			    <input type="text" class="input-xlarge" placeholder="" name="musician_name" id="musician_name">
+      			    <input type="text" class="input-xlarge" placeholder="" name="musician_name" id="musician_name" value="{{musician_name[0]}}">
       			  </div>
       			</div>
     				<div class="control-group" id="email_wrapper">
     				  <label for="email" class="control-label">Email</label>
     				  <div class="controls">
-    				    <input type="text" required="" class="input-xlarge" placeholder="email@domain.com" name="email" id="email">
+    				    <input type="text" required="" class="input-xlarge" placeholder="email@domain.com" name="email" id="email" value="{{email[0]}}">
     				  </div>
+					<div class ="warning">{{email_error}}</div>
     				</div>
     				<div class="clearfix"></div>
     				<div class="control-group" id="password_wrapper">
@@ -44,24 +46,25 @@
     				    <input type="password" class="input-xlarge" placeholder="" name="conf_password" id="conf_password">
     				    <p class="help-block">Confirm password</p>
     				  </div>
+					<div class ="warning">{{passwords_error}}</div>
     				</div>
     				<div class="clearfix"></div>
       			<div class="control-group" id="city_wrapper">
       			  <label for="city" class="control-label">City</label>
       			  <div class="controls">
-      			    <input type="text" class="input-xlarge" placeholder="" name="city" id="city">
+      			    <input type="text" class="input-xlarge" placeholder="" name="city" id="city" value="{{city[0]}}">
       			  </div>
       			</div>
       			<div class="control-group" id="state_wrapper">
       			  <label for="state" class="control-label">State</label>
       			  <div class="controls">
-      			    <input type="text" class="input-xlarge" placeholder="" name="state" id="state">
+      			    <input type="text" class="input-xlarge" placeholder="" name="state" id="state" value="{{state[0]}}">
       			  </div>
       			</div>
       			<div class="control-group" id="zip_wrapper">
       			  <label for="zip" class="control-label">Zipcode</label>
       			  <div class="controls">
-      			    <input type="text" class="input-xlarge" placeholder="" name="zip" id="zip">
+      			    <input type="text" class="input-xlarge" placeholder="" name="zip" id="zip" value="{{zip[0]}}">
       			  </div>
       			</div>
     			</fieldset>
@@ -72,9 +75,10 @@
       			<div class="control-group">
       			  <label for="video_url" class="control-label">Video URL</label>
       			  <div class="controls">
-      			    <input type="text" class="input-xlarge" placeholder="http://" name="video_url" id="video_url">
+      			    <input type="text" class="input-xlarge" placeholder="http://" name="video_url" id="video_url" value="{{video_url[0]}}">
       			    <p class="help-block">Youtube or Vimeo Supported</p>
       			  </div>
+				<div class ="warning">{{video_error}}</div>
       			</div>
       			<div class="control-group">
       			  <label for="video_genre" class="control-label">Video Genre</label>
@@ -104,7 +108,8 @@
     			<fieldset>
     				<legend>Customize Your Profile (optional)</legend>
       			<div class="control-group">
-      			  <label for="file_upload" class="control-label">Profile Picture - <i>Must be less than 1MB in Size</i></label>
+      			  <label for="file_upload" class="control-label"><b>Profile Picture</b> - <i style="color:red;">Must be less than 1MB in Size</i></label>
+				  <p>Note: Images are centered and cropped for consistency.  For best results, smaller images with content centered work the best.</p>
       			  <div class="controls">
       			    <input type="file" class="input-file" name="file_upload" id="file_upload">
       			  </div>
@@ -112,45 +117,50 @@
       			<div class="control-group"  id="num_of_members_wrapper">
       			  <label for="num_of_members" class="control-label"># of Band Members</label>
       			  <div class="controls">
-      			    <input type="text" class="input-xlarge" placeholder="" name="num_of_members" id="num_of_members">
+      			    <input type="text" class="input-xlarge" placeholder="" name="num_of_members" id="num_of_members" value="{{num_of_members[0]}}">
       			  </div>
       			</div>
 	    			<div class="control-group"  id="dob_wrapper">
       			  <label for="dob" class="control-label">Date of Birth</label>
       			  <div class="controls">
-      			    <input type="text" class="input-xlarge" placeholder="MM/DD/YYYY" name="dob" id="dob">
+      			    <input type="text" class="input-xlarge" placeholder="MM/DD/YYYY" name="dob" id="dob" value="{{dob[0]}}">
       			  </div>
+				<div class ="warning">{{dob_error}}</div>
       			</div>
       			<div class="clearfix"></div>
       			<div class="control-group">
       			  <label for="bio" class="control-label">Brief Bio (500 charecters)</label>
       			  <div class="controls">                     
-      			    <textarea name="bio" id="bio"></textarea>
+      			    <textarea name="bio" id="bio">{{bio[0]}}</textarea>
       			  </div>
       			</div>
       			<div class="control-group">
       			  <label for="facebook" class="control-label">Facebook</label>
       			  <div class="controls">
-      			    <input type="text" class="input-xlarge" placeholder="" name="facebook" id="facebook">
+      			    <input type="text" class="input-xlarge" placeholder="" name="facebook" id="facebook" value="{{facebook[0]}}">
       			  </div>
+				<div class ="warning">{{facebook_error}}</div>
       			</div>
       			<div class="control-group">
       			  <label for="twitter" class="control-label">Twitter</label>
       			  <div class="controls">
-      			    <input type="text" class="input-xlarge" placeholder="" name="twitter" id="twitter">
+      			    <input type="text" class="input-xlarge" placeholder="" name="twitter" id="twitter" value="{{twitter[0]}}">
       			  </div>
+				<div class ="warning">{{twitter_error}}</div>
       			</div>
       			<div class="control-group">
       			  <label for="sound_cloud" class="control-label">Sound Cloud</label>
       			  <div class="controls">
-      			    <input type="text" class="input-xlarge" placeholder="" name="sound_cloud" id="sound_cloud">
+      			    <input type="text" class="input-xlarge" placeholder="" name="sound_cloud" id="sound_cloud" value="{{sound_cloud[0]}}">
       			  </div>
+				<div class ="warning">{{sound_cloud_error}}</div>
       			</div>
       			<div class="control-group">
       			  <label for="video_hosting_page" class="control-label">YouTube or Vimeo page</label>
       			  <div class="controls">
-      			    <input type="text" class="input-xlarge" placeholder="" name="video_hosting_page" id="video_hosting_page">
+      			    <input type="text" class="input-xlarge" placeholder="" name="video_hosting_page" id="video_hosting_page" value="{{video_hosting_page[0]}}">
       			  </div>
+				<div class ="warning">{{video_page_error}}</div>
       			</div>
       			<br>
       			<input class="btn btn-primary" type="submit" value="Sign Up" />

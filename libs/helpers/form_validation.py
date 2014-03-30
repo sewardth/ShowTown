@@ -47,24 +47,30 @@ class Validate(webapp2.RequestHandler):
 	@staticmethod	
 	def verify_link(link, source):
 		if len(link)>0:
-			r = urlfetch.fetch(link)
-			if source not in link:
-				return False	
-			else:
-				return link
+			try:
+				r = urlfetch.fetch(link)
+				if source not in link:
+					return False	
+				else:
+					return link
+			except:
+				return False
 		else:
 			return link
 	
 	@staticmethod		
 	def get_video(link):
-		try:
-			video = lassie.fetch(link)
-			if 'embed' in link:
-				video_data = {'embed_link': link,
-							  'title': video['title']}
-			else:
-				video_data = {'embed_link' : video['videos'][1]['src'],
-				             'title' : video['title']}
-			return video_data
-		except:
-			return False
+		if link == '':
+			return None
+		else:
+			try:
+				video = lassie.fetch(link)
+				if 'embed' in link:
+					video_data = {'embed_link': link,
+								  'title': video['title']}
+				else:
+					video_data = {'embed_link' : video['videos'][1]['src'],
+					             'title' : video['title']}
+				return video_data
+			except:
+				return False

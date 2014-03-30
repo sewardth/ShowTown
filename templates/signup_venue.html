@@ -18,17 +18,19 @@
 				<form class="form-horizontal" action="/signup" method="POST" enctype="multipart/form-data">
 				  <input type="hidden" name="user_type" value="venue">
 				  <fieldset>
+					<div class ="warning">{{error}}</div>
     				<div class="control-group" id="venue_name_wrapper">
     				  <label for="venue_name" class="control-label">Venue Name</label>
     				  <div class="controls">
-    				    <input type="text" class="input-xlarge" placeholder="" name="venue_name" id="venue_name">
+    				    <input type="text" class="input-xlarge" placeholder="" name="venue_name" id="venue_name" value="{{venue_name[0]}}">
     				  </div>
     				</div>
     				<div class="control-group" id="email_wrapper">
     				  <label for="email" class="control-label">Email</label>
     				  <div class="controls">
-    				    <input type="text" required="" class="input-xlarge" placeholder="email@domain.com" name="email" id="email">
+    				    <input type="text" required="" class="input-xlarge" placeholder="email@domain.com" name="email" id="email" value="{{email[0]}}">
     				  </div>
+					<div class ="warning">{{email_error}}</div>
     				</div>
     				<div class="clearfix"></div>
     				<div class="control-group" id="password_wrapper">
@@ -44,44 +46,45 @@
     				    <input type="password" class="input-xlarge" placeholder="" name="conf_password" id="conf_password">
     				    <p class="help-block">Confirm password</p>
     				  </div>
+					<div class ="warning">{{passwords_error}}</div>
     				</div>
     				<div class="clearfix"></div>
     				<div class="control-group" id="address_wrapper">
     				  <label for="address" class="control-label">Address</label>
     				  <div class="controls">
-    				    <input type="text" class="input-xlarge" placeholder="" name="address" id="address">
+    				    <input type="text" class="input-xlarge" placeholder="" name="address" id="address" value="{{address[0]}}">
     				  </div>
     				</div>
     				<div class="control-group" id="address2_wrapper">
     				  <label for="address2" class="control-label">Address 2</label>
     				  <div class="controls">
-    				    <input type="text" class="input-xlarge" placeholder="" name="address2" id="address2">
+    				    <input type="text" class="input-xlarge" placeholder="" name="address2" id="address2" value="{{address2[0]}}">
     				  </div>
     				</div>
     				<div class="clearfix"></div>
       			<div class="control-group" id="city_wrapper">
       			  <label for="city" class="control-label">City</label>
       			  <div class="controls">
-      			    <input type="text" class="input-xlarge" placeholder="" name="city" id="city">
+      			    <input type="text" class="input-xlarge" placeholder="" name="city" id="city" value = "{{city[0]}}">
       			  </div>
       			</div>
       			<div class="control-group" id="state_wrapper">
       			  <label for="state" class="control-label">State</label>
       			  <div class="controls">
-      			    <input type="text" class="input-xlarge" placeholder="" name="state" id="state">
+      			    <input type="text" class="input-xlarge" placeholder="" name="state" id="state" value="{{state[0]}}">
       			  </div>
       			</div>
       			<div class="control-group" id="zip_wrapper">
       			  <label for="zip" class="control-label">Zipcode</label>
       			  <div class="controls">
-      			    <input type="text" class="input-xlarge" placeholder="" name="zip" id="zip">
+      			    <input type="text" class="input-xlarge" placeholder="" name="zip" id="zip" value="{{zip[0]}}">
       			  </div>
       			</div>
       			<div class="clearfix"></div>
       			<div class="control-group" id="phone1_wrapper">
       			  <label for="phone1" class="control-label">Phone number</label>
       			  <div class="controls">
-      			    <input type="text" class="input-xlarge" placeholder="" name="phone1" id="phone1">
+      			    <input type="text" class="input-xlarge" placeholder="" name="phone1" id="phone1" value="{{phone1[0]}}">
       			  </div>
       			</div>
       			<div class="clearfix"></div>
@@ -104,24 +107,26 @@
     				  <label for="age_limit" class="control-label">Age Limit</label>
     				  <div class="controls">
     				    <select class="input-xlarge" name="age_limit" id="age_limit">
-    				      <option value="0">None</option>
-    				      <option value="18">18 &amp; Up</option>
-    				      <option value="21">21 &amp; Up</option>
+    				     <option value="0">None</option>
+    				     <option value="18">18 &amp; Up</option>
+    				     <option value="21">21 &amp; Up</option>
     				    </select>
     				  </div>
     				</div>
     				<div class="control-group" id="capacity_wrapper">
     				  <label for="capacity" class="control-label">Capacity</label>
     				  <div class="controls">
-    				    <input type="text" class="input-xlarge" placeholder="" name="capacity" id="capacity">
+    				    <input type="text" class="input-xlarge" placeholder="" name="capacity" id="capacity" value="{{capacity[0]}}">
     				  </div>
     				</div>
     				<div class="clearfix"></div>
     				<div class="control-group">
-      			  <label for="file_upload" class="control-label">Venue Picture</label>
+      			  <label for="file_upload" class="control-label"><b>Venue Picture</b> - <i style="color:red;">Must be less than 1MB in Size</i></label>
+				  <p>Note: Images are centered and cropped for consistency.  For best results, smaller images with content centered work the best.</p>
       			  <div class="controls">
       			    <input type="file" class="input-file" name="file_upload" id="file_upload">
       			  </div>
+				<div class ="warning">{{picture_error}}</div>
       			</div>
     				<br>
             <input class="btn btn-primary" type="submit" value="Sign Up" />
