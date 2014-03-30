@@ -54,9 +54,7 @@ handlers:
   
 - url: /vote.*
   script: vote_handler.app
-  
-- url: /tasklist.*
-  script: cron.app
+
   
 - url: .*
   script: main.app

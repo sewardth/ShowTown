@@ -1,6 +1,0 @@
-cron:
-- description: Video choice population
-  url: /taskslist/video_population
-  #schedule: every 1 minutes from 8:00 to 7:59
-  timezone: America/Detroit
-  target: version-10
