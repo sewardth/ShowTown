@@ -59,7 +59,7 @@ console.log('Load venue_type=' + venue_type + ' - state=' + state_code + ' - gig
           .append($(document.createElement('tr'))
             .append($(document.createElement('td'))
               .append($(document.createElement('img'))
-                .attr({src:'/imgs?id='+entires[i].venue_key+'&width=210&height=119'})
+                .attr({src:'/imgs?id='+entries[i].venue_key+'&width=210&height=119'})
               )	
             )
             .append($(document.createElement('td'))
