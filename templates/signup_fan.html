@@ -26,17 +26,20 @@
 					</fieldset>
 					<br>
   				<fieldset>
+					<div class ="warning">{{error}}</div>
     				<div class="control-group" id="email_wrapper">
     				  <label for="email" class="control-label">Email</label>
     				  <div class="controls">
-    				    <input type="text" required="" class="input-xlarge" placeholder="email@domain.com" name="email" id="email">
+    				    <input type="text" required="" class="input-xlarge" placeholder="email@domain.com" name="email" id="email" value="{{email[0]}}">
     				  </div>
+					<div class ="warning">{{email_error}}</div>
     				</div>
     				<div class="control-group" id="dob_wrapper">
     				  <label for="dob" class="control-label">Date of Birth</label>
     				  <div class="controls">
-    				    <input type="text" class="input-xlarge" placeholder="MM/DD/YYYY" name="dob" id="dob">
+    				    <input type="text" class="input-xlarge" placeholder="MM/DD/YYYY" name="dob" id="dob" value ="{{dob[0]}}">
     				  </div>
+					<div class ="warning">{{dob_error}}</div>
     				</div>
     				<div class="clearfix"></div>
     				<div class="control-group" id="password_wrapper">
@@ -52,6 +55,7 @@
     				    <input type="password" class="input-xlarge" placeholder="" name="conf_password" id="conf_password">
     				    <p class="help-block">Confirm password</p>
     				  </div>
+					<div class="warning">{{passwords_error}}</div>
     				</div>
     				<div class="clearfix"></div>
     				<div class="control-group">

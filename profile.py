@@ -15,9 +15,10 @@ class FanProfileHandler(views.Template):
 		
 		user = self.user_check() #returns user account info
 		fan = models.fan.Fan.query_by_account(user.key) #returns fan profile info
+		participation = models.voting.Voting.query_by_user(user.key)
 		followed_artists = models.musician.Musician.fetch_artists(fan.following)  #returns an array of Musician objects - can parse in template using for loop.*
 		
-		template_values = {'following_count':len(fan.following), 'matchups_count':313, 'fav_genres':'Hip-Hop/Rap, Alternative','upcoming_shows':None, 
+		template_values = {'following_count':len(fan.following), 'matchups_count':len(participation), 'fav_genres':'Hip-Hop/Rap, Alternative','upcoming_shows':None, 
 		'followed_musicians':followed_artists, 'fan_profile':fan}
 		self.render('fan_profile.html', template_values)
 
@@ -52,10 +53,10 @@ class VenueProfileHandler(views.Template):
 		venue = models.venue.Venue.query_by_account(user.key)
 		gigs = models.events.Event.query_by_venue_key(venue.key) #retuns an array of gig objects - can parse in template using for loop.
 		
-		template_values = {'venue_name':venue.venue_name, 'venue_type':venue.venue_type, 'venue_pic_url':'images/_test_venue.jpg',
+		template_values = {'venue_name':venue.venue_name, 'venue_type':venue.venue_type,
 		'venue_address':venue.address[0].address_1  + ', ' + venue.address[0].address_2  + ' ' + venue.address[0].city  + ', ' + venue.address[0].state  + ' ' + str(venue.address[0].zip), 
-		'venue_phone':'Need field in DB', 'venue_url':'Need field in DB',
-		'venue_url_text':'Andiamoitalia.com','venue_age_limit':venue.age_limit, 'venue_capacity':venue.capacity, 'available_gigs':gigs}
+		'venue_phone':venue.phone, 'venue_url':'Need field in DB',
+		'venue_url_text':'Andiamoitalia.com','venue_age_limit':venue.age_limit, 'venue_capacity':venue.capacity, 'available_gigs':gigs, 'venue':venue}
 		self.render('venue_profile.html', template_values)
 
 class VenueProfileEditHandler(views.Template):

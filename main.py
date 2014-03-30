@@ -15,27 +15,67 @@
 # limitations under the License.
 #
 
-import webapp2, json, sys, views
+import webapp2, json, sys, views, random
 sys.path.insert(0,'libs')
 import models
 
 
-
-
-
 class MainHandler(views.Template):
 	def get(self):
+		videos = models.videos.Videos.fetch_featured()
+		try:
+			vids = random.sample(videos,2)
+		except:
+			vids = None
 		musicians_states = [{'name':'Michigan', 'abbr':'MI'}, {'name':'California', 'abbr':'CA'}, {'name':'Florida', 'abbr':'FL'}]
-		template_values = {'musicians_states':musicians_states}
+		template_values = {'musicians_states':musicians_states, 'vids': vids}
 		self.render('index.html', template_values)
+					
 
 	def post(self):
 		# NOTE: we are posting genre and state.
-		lvideo = {'url':'http://www.youtube.com/embed/OmEpkztK5Lw?rel=0', 'musician_id':0, 'musician_name':'Mac Miller', 'song_name':'Knock Knock'}
-		rvideo = {'url':'http://www.youtube.com/embed/_t431MAUQlQ?rel=0', 'musician_id':0, 'musician_name':'Hoodie Allen', 'song_name':'No Interruption'}
+		user = self.user_check()
+		self.videos = models.videos.Videos.fetch_featured()
+		
+		try:
+			random.sample(self.videos,2)
+	
+			if user:
+				self.user_votes = models.voting.Voting.query_by_user(user.key)
+			
+				if self.user_votes != None:
+					self.user_votes = [[x.video_one,x.video_two] for x in self.user_votes]
+					page_vids = False
+					while page_vids == False and len(self.videos)>1:
+						rand_vid = random.choice(self.videos)
+						page_vids = self.find_match(rand_vid)
+						self.videos.remove(rand_vid)
+				else:
+					page_vids = random.sample(self.videos,2)
+					
+			else:
+				page_vids = random.sample(self.videos,2)
+				
+		except:
+			page_vids = None
+		
+
+		
+		lvideo = {'url':page_vids[0].embed_link, 'musician_id':page_vids[0].musician_key.urlsafe(), 'musician_name':page_vids[0].musician_name, 'song_name':page_vids[0].video_title, 'key':page_vids[0].key.urlsafe()}
+		rvideo = {'url':page_vids[1].embed_link, 'musician_id':page_vids[1].musician_key.urlsafe(), 'musician_name':page_vids[1].musician_name, 'song_name':page_vids[1].video_title, 'key':page_vids[1].key.urlsafe()}
 		data = {'lvideo':lvideo, 'rvideo':rvideo}
 		self.response.headers.add_header('content-type', 'application/json', charset='utf-8')
-		self.response.out.write(json.dumps(data))
+		self.response.out.write(json.dumps(data)) 
+		
+		
+	def find_match(self, rand_vid):
+		i =0
+		
+		while i < len(self.videos):
+			if rand_vid.key != self.videos[i].key and ([rand_vid.key,self.videos[i].key] not in self.user_votes and [self.videos[i].key, rand_vid.key] not in self.user_votes):
+				return [rand_vid,self.videos[i]]
+			i+=1
+		return False
 
 
 class TrendingHandler(views.Template):
@@ -64,32 +104,6 @@ class TrendingHandler(views.Template):
 		self.response.out.write(json.dumps(data)) 
 
 
-class VenuesHandler(views.Template):
-	def get(self):
-		venues = models.venue.Venue.fetch_venues()
-		
-		venues_states = [{'name':'Michigan', 'abbr':'MI'}, {'name':'Ohio', 'abbr':'OH'}]
-		template_values = {'venues_states':venues_states, 'venues':venues}
-		self.render('venues.html', template_values)
-
-	def post(self):
-		# NOTE: we are posting venue_type, state_code, gig_offer and the cursor from a previous request or null if this is the initial one.
-		# results_per_page = 10
-		# queryset = MyModel.objects.all()
-		# cursor = self.request.get('cursor')
-		# if cursor:
-		#   queryset = set_cursor(queryset, cursor)
-		# results = queryset[0:results_per_page] # starts at the offset marked by the cursor
-		# cursor_for_next_page = get_cursor(results)
-		venue_data = [{'image_src':'images/_test_venue.jpg', 
-		'venue_name':'Andiamo', 'venue_id':0, 'venue_type':'Restaurant',
-		'venue_city':'Novi', 'venue_state':'Michigan', 'like_percent':'73'},
-		{'image_src':'images/_test_venue.jpg', 
-		'venue_name':'Ameres', 'venue_id':0, 'venue_type':'Restaurant',
-		'venue_city':'Ann Arbor', 'venue_state':'Michigan', 'like_percent':'70'}]
-		data = {'cursor_for_next_page':'base64 encoded cursor', 'venue_data':venue_data}
-		self.response.headers.add_header('content-type', 'application/json', charset='utf-8')
-		self.response.out.write(json.dumps(data))
 
 class FaqHandler(views.Template):
 	def get(self):
@@ -106,36 +120,12 @@ class TermsHandler(views.Template):
 		template_values = {}
 		self.render('terms.html', template_values)
 
-
-
-
-
-
-
-
-
-class MusicianHandler(views.Template):
-	def get(self):
-		template_values = {'musician_name':'Hoodie Allen', 'likes_count':234, 'followers_count':123, 'genre':'Hip-Hop/Rap',
-		'musician_city':'Ann Arbor', 'musician_state':'Michigan', 'musician_dob':'March, 19th 1989',
-		'trending_rank':'3','trending_category':'All Musicians', 'trending_state':'Michigan', 'img_src':'images/_test_profile.jpg',}
-		self.render('musician.html', template_values)
-
-class VenueHandler(views.Template):
-	def get(self):
-		template_values = {'venue_name':'Andiamo', 'venue_type':'Restaurant', 'venue_pic_url':'images/_test_venue.jpg',
-		'venue_address':'42705 Grand River Ave, Novi, MI 48375', 'venue_phone':'248-348-3839', 'venue_url':'http://andiamoitalia.com/',
-		'venue_url_text':'Andiamoitalia.com','venue_age_limit':'none', 'venue_capacity':'190',}
-		self.render('venue.html', template_values)
     		    		                                         		
 app = webapp2.WSGIApplication([
     ('/', MainHandler),
     ('/trending', TrendingHandler),
-    ('/venues', VenuesHandler),
     ('/faq', FaqHandler),
     ('/privacy', PrivacyHandler),
-    ('/terms', TermsHandler),
-    ('/musician', MusicianHandler),
-    ('/venue', VenueHandler),
+    ('/terms', TermsHandler)
     
 ], debug=True)

@@ -12,7 +12,7 @@ class Validate(webapp2.RequestHandler):
 		if '@' in email and '.' in email:
 			return email
 		else:
-			messages.Message.warning('Not a valid email address')
+			return False
 	
 	@staticmethod	
 	def validate_dob(dob):
@@ -20,7 +20,7 @@ class Validate(webapp2.RequestHandler):
 			date = datetime.strptime(dob, '%m/%d/%Y')
 			return date
 		except:
-			messages.Message.warning('Wrong date format, should be MM/DD/YYYY')
+			return False
 	
 	@staticmethod
 	def validate_time(time):
@@ -29,15 +29,15 @@ class Validate(webapp2.RequestHandler):
 			time = time.strftime('%H:%M', t)
 			return time
 		except:
-			messages.Message.warning('Wrong time format, should be HH:MM')
+			return False
 		
 	@staticmethod	
 	def validate_passwords(password, conf_password):
 		if password == '':
-			messages.Message.warning('Passwords cannont be blank')
+			return False
 			
 		elif password != conf_password:
-			messages.Message.warning('Passwords do not match')
+			return False
 			
 		else:
 			password = pwd.Passwords.generate_hash(password)
@@ -49,7 +49,7 @@ class Validate(webapp2.RequestHandler):
 		if len(link)>0:
 			r = urlfetch.fetch(link)
 			if source not in link:
-				messages.Message.warning('Not a valid URL for source: ' + source)	
+				return False	
 			else:
 				return link
 		else:
@@ -67,4 +67,4 @@ class Validate(webapp2.RequestHandler):
 				             'title' : video['title']}
 			return video_data
 		except:
-			messages.Message.warning('Not a vaild YouTube or Vimeo page URL')
+			return False

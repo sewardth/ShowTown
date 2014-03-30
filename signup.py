@@ -10,7 +10,8 @@ import models
 
 class SignupFanHandler(views.Template):
   def get(self):
-		template_values = {}
+		template_values = {'email':[],
+							'dob':[]}
 		self.render('signup_fan.html', template_values)
 
 class SignupMusicianHandler(views.Template):
@@ -23,15 +24,21 @@ class SignupVenueHandler(views.Template):
 		template_values = {}
 		self.render('signup_venue.html', template_values)
 
-class SignupHandler(views.Template): 
+class SignupHandler(views.Template): 	
+	def render_errors(self, page):
+		self.render(page, self.template_values)
+		
 	def post(self): 
 		self.response.headers['Content-Type'] = "text/plain" 
+		self.template_values ={'email_error':'',
+								'error':'',
+								'passwords_error':'',
+								'dob_error':''}
 		params = {} 
 		for field in self.request.arguments():
 			params[field] = self.request.get_all(field) 
 		params['ip_addr'] = [self.request.remote_addr]
 		user_type = params['user_type'][0]
-		
 		
 		
 		if user_type == 'fan':
@@ -43,35 +50,51 @@ class SignupHandler(views.Template):
 		else:
 			self.venue_creator(params) 
 		
-		self.redirect('/')
+		
 
 	def check_for_user(self, email):
 		q = models.account.Account.query_by_email(email)
 		if q == None:
-			return False
+			return True
 		else:
-			messages.Message.warning('User already exists as type: ' + q.account_type)
+			return False
 			
 	
-	def account_creator(self, params):
-		password = valid.validate_passwords(params['password'][0], params['conf_password'][0])
+	def account_creator(self, params, password):
 		account = models.account.Account(password = password, email = params['email'][0], known_ip_addresses = params['ip_addr'], 
 					      				account_type = params['user_type'][0])
 		acc_key = account.put()
 		return acc_key
 	
+	def errors(self, params, page):
+		for x in params:
+			self.template_values[x] = params[x]
+			self.render_errors(page)
 	
 	def fan_creator(self, params):
 		email = valid.validate_email(params['email'][0])
 		DOB = valid.validate_dob(params['dob'][0])
 		existing_user = self.check_for_user(params['email'][0])
-		acc_key = self.account_creator(params)
-		try:
-			user = models.fan.Fan(user_key = acc_key, email = email, DOB = DOB, genres = params['checkboxes']).put()
-		except:
-			key = str(acc_key)
-			acc_key.delete()
-			messages.Message.warning('Put() failed.  Deleting ' + key)
+		password = valid.validate_passwords(params['password'][0], params['conf_password'][0])
+		
+		#Error Checks
+		if email == False: self.template_values['email_error'] = 'Not a valid email address'
+		if params['dob'][0] != '' and DOB == False: self.template_values['dob_error'] = 'Not a valid date format.  Must be MM/DD/YYYY'
+		if existing_user == False: self.template_values['email_error'] = 'Account alredy exists. Please Login.'
+		if password == False: self.template_values['passwords_error'] = 'Passwords do not match'
+		if self.template_values['email_error'] != '' or self.template_values['dob_error'] != '' or self.template_values['passwords_error']!= '':
+			for x in params:
+				self.template_values[x] = params[x]
+			self.render_errors('signup_fan.html')
+		else:
+			acc_key = self.account_creator(params, password)
+			try:
+				user = models.fan.Fan(user_key = acc_key, email = email, DOB = DOB, genres = params['checkboxes']).put()
+				self.redirect('/')
+			except:
+				acc_key.delete()
+				self.template_values['error'] = 'Something went wrong, please try again'
+				self.render_errors('signup_fan.html')
 			
 		
 	def musician_creator(self, params):
@@ -84,13 +107,10 @@ class SignupHandler(views.Template):
 		video_hosting_page = valid.verify_link(params['video_hosting_page'][0], 'youtube')
 		facebook = valid.verify_link(params['facebook'][0], 'facebook')
 		existing_user = self.check_for_user(params['email'][0])
-		acc_key = self.account_creator(params)
+		password = valid.validate_passwords(params['password'][0], params['conf_password'][0])
+		acc_key = self.account_creator(params, password)
 		
-		video = models.videos.Videos(embed_link = submission_video['embed_link'],
-													acc_key = acc_key,
-													genre_tag = params['video_genre'][0],
-													video_title = submission_video['title'],
-													featured = True).put()
+		
 		
 		try:								
 			user = models.musician.Musician(user_key = acc_key, 
@@ -108,6 +128,14 @@ class SignupHandler(views.Template):
 							video_hosting_page = video_hosting_page,
 							twitter = twitter,
 							sound_cloud = sound_cloud).put()
+							
+			video = models.videos.Videos(embed_link = submission_video['embed_link'],
+														acc_key = acc_key,
+														musician_key = user,
+														musician_name = params['musician_name'][0],
+														genre_tag = params['video_genre'][0],
+														video_title = submission_video['title'],
+														featured = True).put()
 
 		
 		except:
@@ -124,7 +152,8 @@ class SignupHandler(views.Template):
 		email = valid.validate_email(params['email'][0])
 		existing_user = self.check_for_user(params['email'][0])
 		profile_pic = self.image_handler(params['file_upload'][0],310,219)
-		acc_key = self.account_creator(params)
+		password = valid.validate_passwords(params['password'][0], params['conf_password'][0])
+		acc_key = self.account_creator(params, password)
 		try:
 			user = models.venue.Venue(user_key = acc_key,
 								  venue_name = params['venue_name'][0],

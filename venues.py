@@ -46,7 +46,7 @@ class VenuesHandler(views.Template):
 		ven_data =[]
 		for x in vens:
 			data = x.to_dict()
-			del data['photo'], data['latest_update'], data['user_key']
+			del data['profile_pic'], data['latest_update'], data['user_key']
 			data['venue_key'] = x.key.urlsafe()
 			ven_data.append(data)
 		if more and next_curs:

@@ -44,13 +44,19 @@ handlers:
   script: logout.app
 
 - url: /video.*
-  script: videos.app
+  script: video_handler.app
   
 - url: /venue.*
   script: venues.app
  
 - url: /imgs.*
   script: image_handler.app
+  
+- url: /vote.*
+  script: vote_handler.app
+  
+- url: /tasklist.*
+  script: cron.app
   
 - url: .*
   script: main.app
