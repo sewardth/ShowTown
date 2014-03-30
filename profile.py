@@ -55,8 +55,13 @@ class VenueProfileHandler(views.Template):
 		
 		template_values = {'venue_name':venue.venue_name, 'venue_type':venue.venue_type,
 		'venue_address':venue.address[0].address_1  + ', ' + venue.address[0].address_2  + ' ' + venue.address[0].city  + ', ' + venue.address[0].state  + ' ' + str(venue.address[0].zip), 
+<<<<<<< HEAD
 		'venue_phone':venue.phone, 'venue_url':'Need field in DB',
 		'venue_url_text':'Andiamoitalia.com','venue_age_limit':venue.age_limit, 'venue_capacity':venue.capacity, 'available_gigs':gigs, 'venue':venue}
+=======
+		'venue_phone':'Need field in DB', 'venue_url':'Need field in DB', 'venue':venue,
+		'venue_url_text':'Andiamoitalia.com','venue_age_limit':venue.age_limit, 'venue_capacity':venue.capacity, 'available_gigs':gigs}
+>>>>>>> 29d2343e2e2174973509bcccec869d52c854e543
 		self.render('venue_profile.html', template_values)
 
 class VenueProfileEditHandler(views.Template):
