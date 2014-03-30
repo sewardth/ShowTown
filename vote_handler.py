@@ -9,7 +9,10 @@ class VoteHandler(views.Template):
 		video_one_artist_key = ndb.Key(urlsafe = self.request.get('left_mus'))
 		video_two = ndb.Key(urlsafe = self.request.get('right_vid'))
 		video_two_artist_key = ndb.Key(urlsafe = self.request.get('right_mus'))
-		voter_choice =  ndb.Key(urlsafe = self.request.get('win'))
+		if self.request.get('win') == '':
+			voter_choice = None
+		else:
+			voter_choice =  ndb.Key(urlsafe = self.request.get('win'))
 		
 		vote = models.voting.Voting(voter_acc_key = user.key,
 									voter_type = user.account_type,
