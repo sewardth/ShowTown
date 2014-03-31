@@ -76,7 +76,13 @@ class VenueProfileEditHandler(views.Template):
 class VenueProfileApplicantsHandler(views.Template):
 	def get(self):
 		user = self.user_check()
-		template_values = {}
+		applicants_data = [{'musician_id':0, 'image_src':'images/_test_profile.jpg', 
+		'musician_name':'Mac Miller', 'likes_count':'1,342', 'followers_count':'132', 'genre':'Hip-Hop/Rap',
+		'musician_city':'Ann Arbor', 'musician_state':'Michigan', 'like_percent':'73'},
+		{'musician_id':0, 'image_src':'images/_test_profile.jpg', 
+		'musician_name':'Hoodie Allen', 'likes_count':'1,242', 'followers_count':'122', 'genre':'Hip-Hop/Rap',
+		'musician_city':'Ann Arbor', 'musician_state':'Michigan', 'like_percent':'70'}]
+		template_values = {'applicants_data':applicants_data}
 		self.render('venue_profile_applicants.html', template_values)
 		
 	def post(self):
