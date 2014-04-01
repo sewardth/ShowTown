@@ -11,13 +11,29 @@
 <body>
   <div id="page">
     {% include 'header.html' %}
-    <div class="row">
-			<div class="col-lg-8 col-lg-offset-2">
-				<h1>Applicants for gig</h1>
-
-
-			</div>
-		</div>
+		<h1>Applicants for gig</h1>
+		<hr/>
+      {% for ad in applicants_data %}
+        <div class="row prev-vid-row prev-vid">
+          <div class="col-lg-1">
+            <div><a class="btn btn-primary" href="#">Accept</a></div>
+            <div>&nbsp;</div>
+            <div><a class="btn btn-primary" href="#">Deny</a></div>
+          </div>
+          <div class="col-lg-7">
+            <a href="/musician?id={{ad.musician_id}}"><img class="pull-left" src="{{ad.image_src}}"></a>
+            <h4><a href="/musician?id={{ad.musician_id}}">{{ad.musician_name}}</a> <small>{{ad.likes_count}} Likes and {{ad.followers_count}} Followers</small></h4>
+            <p><strong>Genre:</strong>
+              <a href="#">{{ad.genre}}</a><br><span>Located in {{ad.musician_city}}, </span>
+              <a href="#">{{ad.musician_state}}</a>
+            </p>
+          </div>
+          <div class="col-lg-4">
+            <h1 class="text-center">73%</h1>
+            <p class="text-center liked">Liked 73% of the time</p>
+          </div>
+        </div>
+      {% endfor %}
     {% include 'footer.html' %}
   </div>
 </body>
