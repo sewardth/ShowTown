@@ -27,7 +27,7 @@
     				<div class="control-group" id="dob_wrapper">
     				  <label for="dob" class="control-label">Date of Birth</label>
     				  <div class="controls">
-    				    <input type="text" class="input-xlarge" placeholder="MM/DD/YYYY" name="dob" id="dob" value="{{profile.DOB.strftime('%m/%d/%Y')}}">
+    				    <input type="text" class="input-xlarge" placeholder="MM/DD/YYYY" name="dob" id="dob" {% if profile.DOB %} value="{{profile.DOB.strftime('%m/%d/%Y')}}" {% endif %}>
     				  </div>
     				</div>
     				<div class="clearfix"></div>

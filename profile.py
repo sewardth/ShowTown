@@ -16,10 +16,10 @@ class FanProfileHandler(views.Template):
 		user = self.user_check() #returns user account info
 		fan = models.fan.Fan.query_by_account(user.key) #returns fan profile info
 		participation = models.voting.Voting.query_by_user(user.key)
-		followed_artists = models.musician.Musician.fetch_artists(fan.following)  #returns an array of Musician objects - can parse in template using for loop.*
+		#followed_artists = models.musician.Musician.fetch_artists(fan.following)  #returns an array of Musician objects - can parse in template using for loop.*
 		
-		template_values = {'following_count':len(fan.following), 'matchups_count':len(participation), 'fav_genres':'Hip-Hop/Rap, Alternative','upcoming_shows':None, 
-		'followed_musicians':followed_artists, 'fan_profile':fan}
+		template_values = {'following_count':0, 'matchups_count':len(participation), 'fav_genres':'Hip-Hop/Rap, Alternative','upcoming_shows':None, 
+		'followed_musicians':None, 'fan_profile':fan}
 		self.render('fan_profile.html', template_values)
 
 
