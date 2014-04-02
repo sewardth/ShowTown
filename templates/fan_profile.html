@@ -24,7 +24,7 @@
 		<hr/>
 	
     <h2>Upcoming Shows <small>by Musicians You Follow</small></h2>
-	<hr>
+	  <hr>
 	{% if upcoming_shows %}
     <table class="table gigs">
 			<thead>
@@ -51,13 +51,12 @@
 			</tbody>
 		</table>
 	{% else %}
-	<p>No scheduled upcoming shows</p>
+	  <p>No scheduled upcoming shows</p>
 	{% endif %}
     <h2>Musicians You Follow</h2>
-	<hr>
+	  <hr>
 	{% if followed_musicians %}
     {% for fm in followed_musicians %}
-	
     <div class="row prev-vid-row">
 			<div class="col-lg-6 prev-vid">
 				<div class="col-lg-8">
@@ -83,13 +82,36 @@
 		</div>
     {% endfor %}
 	{% else %}
-	<p>You do not currently follow any musicians</p>
+	  <p>You do not currently follow any musicians</p>
 	{% endif %}
     <h2>Recent Match ups</h2>
 	  <hr>
-    
-    
-    
+    {% if matchups %}
+      {% for m in matchups %}
+      <div class="row prev-vid-row">
+  			<div class="col-lg-6 prev-vid">
+  				<div class="col-lg-8">
+  					<img class="pull-left" src="/imgs?id={{m.video_one_artist_key.urlsafe()}}&width=310&height=219">
+  					<h4>{{m.artist_name}}</h4>
+  					<div>{% if m.voter_choice == m.video_one %}<img src="/images/voted.png"/>{% endif %}</div>
+  					<div><a href="/musician?id={{m.video_one_artist_key.urlsafe()}}"><img src="/images/profile.png"/>Profile</a></div>
+  					<div><img src="/images/follow.png"/>Follow</div>
+  				</div>
+  			</div>
+  			<div class="col-lg-6 prev-vid voted">
+  				<div class="col-lg-8">
+  					<img class="pull-left" src="/imgs?id={{m.video_two_artist_key.urlsafe()}}&width=310&height=219">
+  					<h4>{{m.artist_name}}</h4>
+  					<div>{% if m.voter_choice == m.video_two %}<img src="/images/voted.png"/>{% endif %}</div>
+  					<div><a href="/musician?id={{m.video_two_artist_key.urlsafe()}}"><img src="/images/profile.png"/>Profile</a></div>
+  					<div><img src="/images/follow.png"/>Follow</div>
+  				</div>
+  			</div>
+  		</div>
+      {% endfor %}
+  	{% else %}
+  	<p>No matchups</p>
+  	{% endif %}
     {% include 'footer.html' %}
   </div>
 </body>
