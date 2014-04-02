@@ -18,7 +18,7 @@ class FanProfileHandler(views.Template):
 		participation = models.voting.Voting.query_by_user(user.key)
 		followed_artists = models.musician.Musician.fetch_artists(fan.following)  #returns an array of Musician objects - can parse in template using for loop.*
 		
-		template_values = {'following_count':len(fan.following), 'matchups_count':len(participation), 'fav_genres':'Hip-Hop/Rap, Alternative','upcoming_shows':None, 
+		template_values = {'following_count':len(fan.following), 'matchups_count':len(participation), 'matchups':participation, 'fav_genres':'Hip-Hop/Rap, Alternative','upcoming_shows':None, 
 		'followed_musicians':followed_artists, 'fan_profile':fan}
 		self.render('fan_profile.html', template_values)
 
