@@ -29,7 +29,11 @@ class MainHandler(views.Template):
 			vids = None
 		
 		user = self.user_check()
-		participation = models.voting.Voting.query_by_user(user.key)
+		if user:
+			participation = models.voting.Voting.query_by_user(user.key)
+		else:
+			participation = None
+			
 		musicians_states = [{'name':'Michigan', 'abbr':'MI'}, {'name':'California', 'abbr':'CA'}, {'name':'Florida', 'abbr':'FL'}]
 		template_values = {'musicians_states':musicians_states, 'vids': vids, 'matchups':participation}
 		self.render('index.html', template_values)

@@ -12,6 +12,7 @@ class FollowHandler(views.Template):
 		result = self.request.get('result')
 		user = self.user_check()
 		
+		
 		if result == 'f':
 			follow = models.following.Following(followed_entity_key = to_follow,
 												follower_key = user.key).put()
@@ -19,7 +20,8 @@ class FollowHandler(views.Template):
 			record = models.following.Following.get_by_keys(user.key, to_follow)
 			record.key.delete()
 		time.sleep(.5)
-		self.redirect(call_back)
+		redirect = '/%s?id=%s' %(call_back, self.request.get('id'))
+		self.redirect(redirect)
 	
 
     		    		                                         		

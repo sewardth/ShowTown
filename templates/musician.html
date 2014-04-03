@@ -14,9 +14,9 @@
     <h1 class="pull-left">{{musician.band_name}} <small>{{likes}} Likes and {{followers}} Followers</h1>
     <h1 class="pull-right">
       {% if is_following %}
-		<a href="/follow?id={{musician.key.urlsafe()}}&call_b={{call_b}}&result=u" class="btn btn-primary">Unfollow {{musician.band_name}}</a>
+		<a href="/follow?id={{musician.key.urlsafe()}}&call_b=musician&result=u" class="btn btn-primary">Unfollow {{musician.band_name}}</a>
 	  {% else %}
-		<a href="/follow?id={{musician.key.urlsafe()}}&call_b={{call_b}}&result=f" class="btn btn-primary">Follow {{musician.band_name}}</a>
+		<a href="/follow?id={{musician.key.urlsafe()}}&call_b=musician&result=f" class="btn btn-primary">Follow {{musician.band_name}}</a>
 	  {% endif %}
 
     </h1>
