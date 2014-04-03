@@ -55,6 +55,11 @@ handlers:
 - url: /vote.*
   script: vote_handler.app
 
+- url: /musician.*
+  script: musician.app
+
+- url: /follow.*
+  script: follow.app
   
 - url: .*
   script: main.app

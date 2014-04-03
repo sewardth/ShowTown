@@ -91,8 +91,8 @@
       <div class="row prev-vid-row">
   			<div class="col-lg-6 prev-vid">
   				<div class="col-lg-8">
-  					<img class="pull-left" src="/imgs?id={{m.video_one_artist_key.urlsafe()}}&width=310&height=219">
-  					<h4>{{m.artist_name}}</h4>
+  					<img class="pull-left" src="/imgs?id={{m.video_one_artist_key.urlsafe()}}&width=100&height=100">
+  					<h4>{{m.video_one_name}}</h4>
   					<div>{% if m.voter_choice == m.video_one %}<img src="/images/voted.png"/>{% endif %}</div>
   					<div><a href="/musician?id={{m.video_one_artist_key.urlsafe()}}"><img src="/images/profile.png"/>Profile</a></div>
   					<div><img src="/images/follow.png"/>Follow</div>
@@ -100,8 +100,8 @@
   			</div>
   			<div class="col-lg-6 prev-vid voted">
   				<div class="col-lg-8">
-  					<img class="pull-left" src="/imgs?id={{m.video_two_artist_key.urlsafe()}}&width=310&height=219">
-  					<h4>{{m.artist_name}}</h4>
+  					<img class="pull-left" src="/imgs?id={{m.video_two_artist_key.urlsafe()}}&width=100&height=100">
+  					<h4>{{m.video_two_name}}</h4>
   					<div>{% if m.voter_choice == m.video_two %}<img src="/images/voted.png"/>{% endif %}</div>
   					<div><a href="/musician?id={{m.video_two_artist_key.urlsafe()}}"><img src="/images/profile.png"/>Profile</a></div>
   					<div><img src="/images/follow.png"/>Follow</div>

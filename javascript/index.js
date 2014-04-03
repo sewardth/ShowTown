@@ -45,16 +45,16 @@ console.log('Load genre=' + genre_code + ' - state=' + state_code)
     .done(function(data, textStatus, xhr){
       // Left
       $('#left_iframe').attr('src', data.lvideo.url);
-	  $('#left_url').attr('href','/vote?left_vid=' + data.lvideo.key + '&left_mus=' +data.lvideo.musician_id + '&right_vid=' +data.rvideo.key+ '&right_mus=' +data.rvideo.musician_id +'&win=' + data.lvideo.key)
+	  $('#left_url').attr('href','/vote?left_vid=' + data.lvideo.key + '&left_mus_id=' +data.lvideo.musician_id + '&left_mus_name=' +data.lvideo.musician_name+ '&right_vid=' +data.rvideo.key+ '&right_mus_id=' +data.rvideo.musician_id + '&right_mus_name=' +data.rvideo.musician_name +'&win=' + data.lvideo.key)
       $('#left_musician_name').text(data.lvideo.musician_name);
       $('#left_song_name').text(data.lvideo.song_name);
       // Right
       $('#right_iframe').attr('src', data.rvideo.url);
-	  $('#right_url').attr('href','/vote?left_vid=' + data.lvideo.key + '&left_mus=' +data.lvideo.musician_id + '&right_vid=' +data.rvideo.key+ '&right_mus=' +data.rvideo.musician_id +'&win=' + data.rvideo.key)
+	  $('#right_url').attr('href','/vote?left_vid=' + data.lvideo.key + '&left_mus_id=' +data.lvideo.musician_id + '&left_mus_name=' +data.lvideo.musician_name+ '&right_vid=' +data.rvideo.key+ '&right_mus_id=' +data.rvideo.musician_id + '&right_mus_name=' +data.rvideo.musician_name +'&win=' + data.rvideo.key)
       $('#right_musician_name').text(data.rvideo.musician_name);
       $('#right_song_name').text(data.rvideo.song_name);
 	  // Draw
-      $('#draw_url').attr('href','/vote?left_vid=' + data.lvideo.key + '&left_mus=' +data.lvideo.musician_id + '&right_vid=' +data.rvideo.key+ '&right_mus=' +data.rvideo.musician_id +'&win=')
+      $('#draw_url').attr('href','/vote?left_vid=' + data.lvideo.key + '&left_mus_id=' +data.lvideo.musician_id + '&left_mus_name=' +data.lvideo.musician_name+ '&right_vid=' +data.rvideo.key+ '&right_mus_id=' +data.rvideo.musician_id + '&right_mus_name=' +data.rvideo.musician_name +'&win=')
     })
     .fail(function(xhr){ 
 console.log(xhr);

@@ -5,8 +5,10 @@ class Voting(ndb.Model):
 	voter_type = ndb.StringProperty()
 	video_one = ndb.KeyProperty()
 	video_one_artist_key = ndb.KeyProperty()
+	video_one_name = ndb.StringProperty()
 	video_two = ndb.KeyProperty()
 	video_two_artist_key = ndb.KeyProperty()
+	video_two_name = ndb.StringProperty()
 	voter_choice = ndb.KeyProperty()
 	video_set_check = ndb.KeyProperty(repeated = True)
 	voter_ip = ndb.StringProperty()
@@ -16,3 +18,7 @@ class Voting(ndb.Model):
 	@classmethod
 	def query_by_user(cls, acc_key):
 		return cls.query(cls.voter_acc_key == acc_key).fetch(2000)
+		
+	@classmethod
+	def fetch_winning_count(cls, video_list):
+		return cls.query(cls.voter_choice.IN(video_list)).fetch(10000)

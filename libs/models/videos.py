@@ -8,7 +8,6 @@ class Videos(ndb.Model):
 	genre_tag = ndb.StringProperty()
 	video_title = ndb.StringProperty()
 	featured = ndb.BooleanProperty(default = False)
-	likes_count = ndb.IntegerProperty()
 	video_added = ndb.DateTimeProperty(auto_now_add = True)
 	
 	@classmethod
@@ -18,3 +17,7 @@ class Videos(ndb.Model):
 	@classmethod
 	def fetch_featured(cls):
 		return cls.query(cls.featured == True).fetch(100)
+		
+	@classmethod
+	def fetch_by_musician(cls, musician_key):
+		return cls.query(cls.musician_key == musician_key).fetch()
