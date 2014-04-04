@@ -8,7 +8,7 @@ class Following(ndb.Model):
 	
 	@classmethod
 	def get_by_keys(cls, user_key, followed_key):
-		return cls.query(cls.followed_entity_key == followed_key and cls.follower_key == user_key).get()
+		return cls.query(cls.followed_entity_key == followed_key, cls.follower_key == user_key).get()
 		
 	@classmethod
 	def fetch_by_user(cls, user_key):

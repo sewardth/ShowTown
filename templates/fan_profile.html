@@ -17,7 +17,7 @@
     <div class="clearfix"></div>
     <div class="microcopy">
       <div>
-        <strong>You're following</strong> {{following_count}} Musicians. <strong>You've Participated in</strong> {{matchups_count}} Matchups
+        <strong>You're following</strong> {% if followed_musicians %}{{followed_musicians | count}} {% else %} 0 {% endif %} Musicians. <strong>You've Participated in</strong> {% if matchups %}{{matchups | count}} {% else %}0 {% endif %} Matchups
         <span class="left_spaced bold">Favorite Genres: </span>{% for x in fan_profile.genres %} {{x}}  {% endfor %}
       </div>
 		</div>
@@ -58,29 +58,21 @@
 	{% if followed_musicians %}
     {% for fm in followed_musicians %}
     <div class="row prev-vid-row">
-			<div class="col-lg-6 prev-vid">
-				<div class="col-lg-8">
-					<img class="pull-left" src="{{fm.img_src}}">
-					<h4>{{fm.name}}</h4>
-					<p><a href="#">View Profile</a> | <a href="#">unfollow</a></p>
-				</div>
-				<div class="col-lg-4">
-					<h1 class="text-center">{{fm.liked_percent}}%</h1>
-				</div>
-			</div>
+
 			<div class="col-lg-6 prev-vid voted">
 				<div class="col-lg-8">
-					<img class="pull-left" src="{{fm.voted_img_src}}">
-					<h4>{{fm.voted_name}}</h4>
-					<p><a href="#">View Profile</a> | <a href="#">unfollow</a></p>
+					<img class="pull-left" src="/imgs?id={{fm.key.urlsafe()}}&width=100&height=100">
+					<h4>{{fm.band_name}}</h4>
+					<p><a href="/musician?id={{fm.key.urlsafe()}}">View Profile</a> | <a href="/follow?id={{fm.key.urlsafe()}}&call_b=fan_profile&result=u">unfollow</a></p>
 				</div>
 				<div class="col-lg-4">
 					<h1 class="text-center">{{fm.voted_liked_percent}}%</h1>
 					<p class="text-center liked">Liked {{fm.voted_liked_percent}}% of the time</p>
 				</div>
 			</div>
+			    {% endfor %}
 		</div>
-    {% endfor %}
+
 	{% else %}
 	  <p>You do not currently follow any musicians</p>
 	{% endif %}

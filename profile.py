@@ -8,19 +8,18 @@ class FanProfileHandler(views.Template):
 	def get(self):
 		upcoming_shows = [{'artist':'Hoodie Allen', 'artist_href':'#', 'venue':'Andiamo', 'venue_href':'#', 'show':'Friday Night Lights', 'date':'12/13/2013', 'time':'5:30pm - 7:30pm', 'details':'Friday Night Lights is a weekly gathering where diners can enjoy soft and comfortable music with their meals.'}, 
 		{'artist':'Mac Miller', 'artist_href':'#', 'venue':'Andiamo', 'venue_href':'#', 'show':'Saturday Night Jams', 'date':'12/14/2013', 'time':'10:00pm - 2:00am', 'details':'Every saturday the venue becomes a club and we like high energy music.'}]
-		followed_musicians = [{'img_src':'images/_test_profile.jpg', 'name':'Transit', 'id':'0', 'liked_percent':41,
-		'voted_img_src':'images/_test_profile.jpg', 'voted_name':'Sage Francis', 'voted_id':'0', 'voted_liked_percent':70},
-		{'img_src':'images/_test_profile.jpg', 'name':'Mac Miller', 'id':'0', 'liked_percent':42,
-		'voted_img_src':'images/_test_profile.jpg', 'voted_name':'Hoodie Allen', 'voted_id':'0', 'voted_liked_percent':61}]
+
 		
 		user = self.user_check() #returns user account info
 		fan = models.fan.Fan.query_by_account(user.key) #returns fan profile info
 		participation = models.voting.Voting.query_by_user(user.key)
-		#followed_artists = models.musician.Musician.fetch_artists(fan.following)  #returns an array of Musician objects - can parse in template using for loop.*
+		followed = models.following.Following.fetch_by_user(user.key)
+		followed_artists = models.musician.Musician.fetch_artists([x.followed_entity_key for x in followed])  #returns an array of Musician objects - can parse in template using for loop.*
 		
-		template_values = {'following_count':0, 'matchups_count':len(participation), 'matchups':participation, 'fav_genres':'Hip-Hop/Rap, Alternative','upcoming_shows':None, 
-		'followed_musicians':None, 'fan_profile':fan}
+		template_values = {'matchups':participation, 'fav_genres':'Hip-Hop/Rap, Alternative','upcoming_shows':None, 
+		'followed_musicians':followed_artists, 'fan_profile':fan}
 		self.render('fan_profile.html', template_values)
+
 
 
 class FanProfileEditHandler(views.Template):
