@@ -101,11 +101,11 @@
     				</div>
     				<div class="control-group" id="age_limit_wrapper">
     				  <label for="age_limit" class="control-label">Age Limit</label>
-    				  <div class="controls">
+    				  <div class="controls">{{profile.venue_age_limit}}
     				    <select class="input-xlarge" name="age_limit" id="age_limit">
-    				      <option value="0" {% if profile.venue_age_limit == "0" %}selected{% endif %}>None</option>
-    				      <option value="18" {% if profile.venue_age_limit == "18" %}selected{% endif %}>18 &amp; Up</option>
-    				      <option value="21" {% if profile.venue_age_limit == "21" %}selected{% endif %}>21 &amp; Up</option>
+    				      <option value="0" {% if profile.age_limit == "0" %}selected{% endif %}>None</option>
+    				      <option value="18" {% if profile.age_limit == "18" %}selected{% endif %}>18 &amp; Up</option>
+    				      <option value="21" {% if profile.age_limit == "21" %}selected{% endif %}>21 &amp; Up</option>
     				    </select>
     				  </div>
     				</div>
