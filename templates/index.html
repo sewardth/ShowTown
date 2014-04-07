@@ -34,34 +34,39 @@
 		<br/>
 		<hr/>
 		{% if vids %}
-		<h1 class="text-center">New Video Match Up</h1>
-		<p class="text-center">Please watch both videos and select the musician you prefer</p>
+		<h1 class="text-center" id="matchup_title">New Video Match Up</h1>
+
 		<br/>
 		<p class ="text-center" id="error"></p>
-		<div class="col-lg-6 video">
-			<iframe id="left_iframe" width="490" height="300" frameborder="0" allowfullscreen="" src=""></iframe>
-			  {% if user %}
-			<p class="text-center"><a id="left_url" href="" class="btn btn-primary signup">I Like This</a></p>
-			  {% else %}
-			<!--<p class="text-center">Login to vote</p> --> 
-			  {% endif %}
-			<h2 id="left_musician_name" class="text-center"></h2>
-			<h3 id="left_song_name" class="text-center"></h3>
-		</div>
-    <div class="col-lg-6 video">
-			<iframe id="right_iframe" width="490" height="300" frameborder="0" allowfullscreen="" src=""></iframe>
-			  {% if user %}
-			<p class="text-center"><a id="right_url" href="" class="btn btn-primary signup">I Like This</a></p>
-			  {% else %}
-			<!--<p class="text-center">Login to vote</p> --> 
-			  {% endif %}
-			<h2 id="right_musician_name" class="text-center"></h2>
-			<h3 id="right_song_name" class="text-center"></h3>
-		</div>
+    <div class ="row" id="video-matchup">
+  		<div class="video">
+  			<iframe id="left_iframe" width="490" height="300" frameborder="0" allowfullscreen="" src=""></iframe>
+				<div class="text-center matchup_video_title">
+  			  <span id="left_musician_name"  class="musician_name"></span>&nbsp;
+  			  <span id="left_song_name"></span>
+    		</div>
+    		  {% if user %}
+  			<p class="text-center"><a id="left_url" href="" class="btn btn-primary signup"><i class="fa fa-thumbs-o-up"></i> I Like This</a></p>
+  			  {% endif %}
+  		</div>
+      <div class="video">
+  			<iframe id="right_iframe" width="490" height="300" frameborder="0" allowfullscreen="" src=""></iframe>
+  			<div class="text-center matchup_video_title">
+  			  <span id="right_musician_name"  class="musician_name"></span>&nbsp;
+  			  <span id="right_song_name"></span>
+  			</div>
+  			  {% if user %}
+  			<p class="text-center"><a id="right_url" href="" class="btn btn-primary signup"><i class="fa fa-thumbs-o-up"></i> I Like This</a></p>
+  			  {% endif %}
+  		</div>
+  		<img src="/images/matchup_vs.png" id="matchup_vs">
+  		<img id="left_image" class="artist_image">
+  		<img id="right_image" class="artist_image">
+    </div>
 		<div class="row">
 			<div class="col-lg-12 clear">
 			    {% if user %}
-				<p class="text-center"><a id="draw_url" href="" class="btn btn-default text-center signup">I can't decide, it's a draw</a></p>
+				<p class="text-center"><a id="draw_url" href="" class="btn btn-deemphasize text-center signup">I can't decide, it's a draw</a></p>
 				  {% else %}
   			<p class="text-center">Login to vote</p>  
   			  {% endif %}
@@ -73,25 +78,40 @@
 		{% if matchups %}
 		<h2>Previous Match ups</h2>
 	  <hr>
-    
       {% for m in matchups %}
       <div class="row prev-vid-row">
-  			<div class="col-lg-6 prev-vid">
+  			<div class="col-lg-6 prev-vid {% if m.voter_choice == m.video_one %}voted{% endif %}">
   				<div class="col-lg-8">
-  					<img class="pull-left" src="/imgs?id={{m.video_one_artist_key.urlsafe()}}&width=100&height=100">
-  					<h4>{{m.video_one_name}}</h4>
-  					<div>{% if m.voter_choice == m.video_one %}<img src="/images/voted.png"/>{% endif %}</div>
-  					<div><a href="/musician?id={{m.video_one_artist_key.urlsafe()}}"><img src="/images/profile.png"/>Profile</a></div>
-  					<div><img src="/images/follow.png"/>Follow</div>
+  					<img class="pull-left artist_image" src="/imgs?id={{m.video_one_artist_key.urlsafe()}}&width=100&height=100">
+  					<div class="previous_matchup_info">
+      			  <div>
+      			    <span class="musician_name">{{m.video_one_name}} 
+        			   {% if m.voter_choice == m.video_one %}<img src="/images/voted.png"/>{% endif %}
+        			  </span>
+      			  </div>
+      			  <div>Liked {{m.video_one_liked}}% of the time</div>
+      			  <div class="previous_matchup_info_links">
+      			    <a href="/musician?id={{m.video_one_artist_key.urlsafe()}}"><i class="fa fa-user"></i> Profile</a>
+      			    <a href="/follow?id={{m.video_one_artist_key.urlsafe()}}&call_b=musician&result=f"><i class="fa fa-arrow-circle-right"></i> Follow</a>
+      			  </div>
+        		</div>
   				</div>
   			</div>
-  			<div class="col-lg-6 prev-vid voted">
+  			<div class="col-lg-6 prev-vid {% if m.voter_choice == m.video_two %}voted{% endif %}">
   				<div class="col-lg-8">
-  					<img class="pull-left" src="/imgs?id={{m.video_two_artist_key.urlsafe()}}&width=100&height=100">
-  					<h4>{{m.video_two_name}}</h4>
-  					<div>{% if m.voter_choice == m.video_two %}<img src="/images/voted.png"/>{% endif %}</div>
-  					<div><a href="/musician?id={{m.video_two_artist_key.urlsafe()}}"><img src="/images/profile.png"/>Profile</a></div>
-  					<div><img src="/images/follow.png"/>Follow</div>
+  					<img class="pull-left artist_image" src="/imgs?id={{m.video_two_artist_key.urlsafe()}}&width=100&height=100">
+  					<div class="previous_matchup_info">
+      			  <div>
+      			    <span class="musician_name">{{m.video_two_name}} 
+        			   {% if m.voter_choice == m.video_two %}<img src="/images/voted.png"/>{% endif %}
+        			  </span>
+      			  </div>
+      			  <div>Liked {{m.video_two_liked}}% of the time</div>
+      			  <div class="previous_matchup_info_links">
+      			    <a href="/musician?id={{m.video_two_artist_key.urlsafe()}}"><i class="fa fa-user"></i> Profile</a>
+      			    <a href="/follow?id={{m.video_two_artist_key.urlsafe()}}&call_b=musician&result=f"><i class="fa fa-arrow-circle-right"></i> Follow</a>
+      			  </div>
+        		</div>
   				</div>
   			</div>
   		</div>

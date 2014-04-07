@@ -25,6 +25,8 @@ label {font-weight: normal;}
 .help-block {font-size: 14px}
 .control-group {margin: 20px 0 0 0;}
 .control-group input[type="text"], .control-group textarea {max-width: 720px; width: 100%;}
+.btn-primary {background-color: #3299bb; border-color: #3299bb;}
+.btn-primary:hover {background-color: #eee; color:#333}
   
 /* Header */
 .top_btn{background-color: #3299bb; color: white}
@@ -103,15 +105,46 @@ fieldset legend {margin: 0}
 .ui-dialog {overflow: visible !important; background: none repeat scroll 0 0 #F9F9F9 !important;}
 
 /* Misc */
+.btn-deemphasize {background-color: #929292; border-color: #929292; color: #FFFFFF;}
+.btn-deemphasize:hover {background-color: #eee;}
 .left_spaced {margin: 0 0 0 20px;}
-.prev-vid img {border-radius: 100%; margin-right: 20px;}
 .prev-vid-row {border-bottom: 1px solid #DDDDDD; margin-bottom: 20px; padding-bottom: 5px;}
 .prev-vid-row h1 {color: #AAAAAA; font-size: 52px; font-weight: bold; margin: 0;}
 .prev-vid h4, .prev-vid h1 {margin-top: 0;}
 #gig_name{width: 200px;}
 .trending {color: #777777;}
 .profile-pic img {border-radius: 100%; display: block; margin: 0 auto 8px;}
+.video {width:491px; float:left}
+#video-matchup {width:982px; margin: 0 auto 20px auto; position: relative;}
 .video iframe {margin-bottom: 30px;}
+#matchup_vs {position: absolute; top: 120px; left: 463px;}
+#left_image {
+  position: absolute; 
+  top: 250px; 
+  left: 195px;
+}
+#right_image {
+  position: absolute; 
+  top: 250px; 
+  left: 686px;
+
+}
+.matchup_video_title {margin: 40px 0 20px 0;}
+.musician_name {font-family: 'Quicksand', sans-serif; letter-spacing:-1px; font-size: 30px;}
+#left_song_name, #right_song_name {font-weight: bold}
+.artist_image{
+  border-radius: 100%; 
+  border: 7px solid rgb(233, 233, 233);
+  border: 7px solid rgba(233, 233, 233, .5);
+  -webkit-background-clip: padding-box; /* for Safari */
+  background-clip: padding-box; /* for IE9+, Firefox 4+, Opera, Chrome */
+}
+.previous_matchup_info {margin: 0 0 0 140px;}
+.previous_matchup_info_links {margin: 15px 0 0 0;}
+.previous_matchup_info_links a:nth-child(2) {margin: 0 0 0 30px;}
+.voted {background-color: #fdfeee; border: 1px solid #e6e8ca}
+.voted .previous_matchup_info_links a {color: #5c5222}
+
 .venue-table img {display: block; height: auto; max-width: 100%; width: 100%;}
 .venue-table td {vertical-align: middle !important;}
 

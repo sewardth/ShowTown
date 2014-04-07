@@ -33,9 +33,9 @@ class MainHandler(views.Template):
 			participation = models.voting.Voting.query_by_user(user.key)
 		else:
 			participation = None
-			
+
 		musicians_states = [{'name':'Michigan', 'abbr':'MI'}, {'name':'California', 'abbr':'CA'}, {'name':'Florida', 'abbr':'FL'}]
-		template_values = {'musicians_states':musicians_states, 'vids': vids, 'matchups':participation}
+		template_values = {'musicians_states':musicians_states, 'vids': vids, 'matchups':participation}			
 		self.render('index.html', template_values)
 					
 
@@ -70,7 +70,7 @@ class MainHandler(views.Template):
 		
 		lvideo = {'url':page_vids[0].embed_link, 'musician_id':page_vids[0].musician_key.urlsafe(), 'musician_name':page_vids[0].musician_name, 'song_name':page_vids[0].video_title, 'key':page_vids[0].key.urlsafe()}
 		rvideo = {'url':page_vids[1].embed_link, 'musician_id':page_vids[1].musician_key.urlsafe(), 'musician_name':page_vids[1].musician_name, 'song_name':page_vids[1].video_title, 'key':page_vids[1].key.urlsafe()}
-		data = {'lvideo':lvideo, 'rvideo':rvideo}
+		data = {'lvideo':lvideo, 'rvideo':rvideo, 'genre_tag':page_vids[0].genre_tag}
 		self.response.headers.add_header('content-type', 'application/json', charset='utf-8')
 		self.response.out.write(json.dumps(data)) 
 		

@@ -34,7 +34,7 @@
 		<hr/>
     <div class="row">
       <div class="col-lg-2 profile-pic">
-    		<img src="/imgs?id={{musician.key.urlsafe()}}&width=165&height=165">
+    		<img class="artist_image" src="/imgs?id={{musician.key.urlsafe()}}&width=165&height=165">
     		{% if musician.twitter %}<p class="text-center"><a href="{{musician.twitter}}" target="_blank" class="btn btn-default">Twitter</a></p>{% endif %}
     		{% if musician.facebook %}<p class="text-center"><a href="{{musician.facebook}}" target="_blank" class="btn btn-default">Facebook</a></p>{% endif %}
     		{% if musician.sound_cloud %}<p class="text-center"><a href="{{musician.sound_cloud}}" target="_blank" class="btn btn-default">SoundCloud</a></p>{% endif %}
