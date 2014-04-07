@@ -88,14 +88,14 @@
     				  <label for="venue_type" class="control-label">Venue Type</label>
     				  <div class="controls">
     				    <select class="input-xlarge" name="venue_type" id="venue_type">
-    				      <option>Bar</option>
-    				      <option>Coffee Shop</option>
-    				      <option>Concert House</option>
-    				      <option>Festival</option>
-    				      <option>Restaurant</option>
-    				      <option>Music Venue</option>
-    				      <option>Nightclub</option>
-    				      <option>Other</option>
+    				      <option {% if profile.venue_type == "Bar" %}selected{% endif %}>Bar</option>
+    				      <option {% if profile.venue_type == "Coffee Shop" %}selected{% endif %}>Coffee Shop</option>
+    				      <option {% if profile.venue_type == "Concert House" %}selected{% endif %}>Concert House</option>
+    				      <option {% if profile.venue_type == "Festival" %}selected{% endif %}>Festival</option>
+    				      <option {% if profile.venue_type == "Restaurant" %}selected{% endif %}>Restaurant</option>
+    				      <option {% if profile.venue_type == "Music Venue" %}selected{% endif %}>Music Venue</option>
+    				      <option {% if profile.venue_type == "Nightclub" %}selected{% endif %}>Nightclub</option>
+    				      <option {% if profile.venue_type == "Other" %}selected{% endif %}>Other</option>
     				    </select>
     				  </div>
     				</div>
@@ -103,9 +103,9 @@
     				  <label for="age_limit" class="control-label">Age Limit</label>
     				  <div class="controls">
     				    <select class="input-xlarge" name="age_limit" id="age_limit">
-    				      <option value="0">None</option>
-    				      <option value="18">18 &amp; Up</option>
-    				      <option value="21">21 &amp; Up</option>
+    				      <option value="0" {% if profile.venue_age_limit == "0" %}selected{% endif %}>None</option>
+    				      <option value="18" {% if profile.venue_age_limit == "18" %}selected{% endif %}>18 &amp; Up</option>
+    				      <option value="21" {% if profile.venue_age_limit == "21" %}selected{% endif %}>21 &amp; Up</option>
     				    </select>
     				  </div>
     				</div>
@@ -123,7 +123,7 @@
       			  </div>
       			</div>
     				<br>
-            <input class="btn btn-primary" type="submit" value="Sign Up" />
+            <input class="btn btn-primary" type="submit" value="Save" />
   				</fieldset>
 				</form>
 			</div>
