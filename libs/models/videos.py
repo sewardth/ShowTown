@@ -8,6 +8,9 @@ class Videos(ndb.Model):
 	genre_tag = ndb.StringProperty()
 	video_title = ndb.StringProperty()
 	featured = ndb.BooleanProperty(default = False)
+	wins = ndb.IntegerProperty()
+	losses = ndb.IntegerProperty()
+	draws = ndb.IntegerProperty()
 	video_added = ndb.DateTimeProperty(auto_now_add = True)
 	
 	@classmethod

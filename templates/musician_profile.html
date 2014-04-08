@@ -12,7 +12,7 @@
 <body>
   <div id="page">
     {% include 'header.html' %}
-    <h1 class="pull-left">{{musician.band_name}} <small>You have {{likes_count}} Likes and {{followers | count}} Followers</h1>
+    <h1 class="pull-left">{{musician.band_name}} <small>You have {% if likes %} {{likes | count}} {% else %} 0 {% endif %} Likes and {% if followers %}{{followers | count}} {% else %} 0 {% endif %} Followers</h1>
     <h1 class="pull-right">
       <a href="/musician_profile_edit" class="btn btn-default">Edit Profile</a>
       <a href="#" class="btn btn-primary">Find Gigs</a>
@@ -20,7 +20,7 @@
     <div class="clearfix"></div>
     <div class="microcopy">
       <p>
-        <strong>Genre: </strong>{{musician.genre}} / Located in {{musician.address[0].city}}, {{musician.address[0].state}} / Born {{musician.DOB}}
+        <strong>Genre: </strong>{{musician.genre}} / Located in {{musician.address[0].city}}, {{musician.address[0].state}} / Born: {{musician.DOB.strftime('%B %d, %Y')}}
       </p>
       <p>
         <a class="trending" href="/trending">

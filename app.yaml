@@ -64,6 +64,9 @@ handlers:
 - url: /follow.*
   script: follow.app
   
+- url: /trending.*
+  script: trending.app
+  
 - url: .*
   script: main.app
 

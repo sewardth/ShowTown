@@ -102,15 +102,14 @@ class MusicianProfileHandler(views.Template):
 		
 		user = self.user_check()
 		musician = models.musician.Musician.query_by_account(user.key)
-		followers = models.fan.Fan.followers(musician.key)
 		videos = models.videos.Videos.query_by_account(user.key)
+		followers = models.following.Following.fetch_by_followed_key(musician.key)
+		likes = models.voting.Voting.fetch_winning_count([x.key for x in videos])
 
 		
 		
-		template_values = {'musician':musician,'musician_name':musician.band_name, 'likes_count':'1,234', 'followers_count':followers, 'genre':'Hip-Hop/Rap',
-		'musician_city':'Ann Arbor', 'musician_state':'Michigan', 'musician_dob':'March, 19th 1989',
-		'trending_rank':'3','trending_category':'All Musicians', 'trending_state':'Michigan', 'img_src':'images/_test_profile.jpg',
-		'bio':'Steven Markowitz[1] was born in New York City and raised in a Jewish household in Plainview, Long Island along with his brother, Daniel.[2] He started writing lyrics as a child, and would perform raps for his friends at house parties. Allen first attended the Long Island School for the Gifted, then later attended Plainview &ndash; Old Bethpage John F. Kennedy High School. Growing up, his nickname was "Hoodie."',
+		template_values = {'musician':musician, 'likes':likes, 'followers':followers,
+		'trending_rank':'3','trending_category':'All Musicians', 'trending_state':'Michigan', 
 		'new_offers':new_offers, 'booked_gigs':booked_gigs, 'videos':videos}
 		self.render('musician_profile.html', template_values)
 

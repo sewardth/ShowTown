@@ -85,32 +85,6 @@ class MainHandler(views.Template):
 		return False
 
 
-class TrendingHandler(views.Template):
-	def get(self):
-		musicians_states = [{'name':'Michigan', 'abbr':'MI'}, {'name':'California', 'abbr':'CA'}, {'name':'Florida', 'abbr':'FL'}]
-		template_values = {'musicians_states':musicians_states}
-		self.render('trending.html', template_values)
-
-	def post(self):
-		# NOTE: we are posting genre, state and the cursor from a previous request or null if this is the initial one.
-		# results_per_page = 10
-		# queryset = MyModel.objects.all()
-		# cursor = self.request.get('cursor')
-		# if cursor:
-		#   queryset = set_cursor(queryset, cursor)
-		# results = queryset[0:results_per_page] # starts at the offset marked by the cursor
-		# cursor_for_next_page = get_cursor(results)
-		trending_data = [{'rank':'1', 'musician_id':0, 'image_src':'images/_test_profile.jpg', 
-		'musician_name':'Mac Miller', 'likes_count':'1,342', 'followers_count':'132', 'genre':'Hip-Hop/Rap',
-		'musician_city':'Ann Arbor', 'musician_state':'Michigan', 'like_percent':'73'},
-		{'rank':'2', 'musician_id':0, 'image_src':'images/_test_profile.jpg', 
-		'musician_name':'Hoodie Allen', 'likes_count':'1,242', 'followers_count':'122', 'genre':'Hip-Hop/Rap',
-		'musician_city':'Ann Arbor', 'musician_state':'Michigan', 'like_percent':'70'}]
-		data = {'cursor_for_next_page':'base64 encoded cursor', 'trending_data':trending_data}
-		self.response.headers.add_header('content-type', 'application/json', charset='utf-8')
-		self.response.out.write(json.dumps(data)) 
-
-
 
 class FaqHandler(views.Template):
 	def get(self):
@@ -130,7 +104,6 @@ class TermsHandler(views.Template):
     		    		                                         		
 app = webapp2.WSGIApplication([
     ('/', MainHandler),
-    ('/trending', TrendingHandler),
     ('/faq', FaqHandler),
     ('/privacy', PrivacyHandler),
     ('/terms', TermsHandler)
