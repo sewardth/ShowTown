@@ -11,39 +11,44 @@
 <body>
   <div id="page">
     {% include 'header.html' %}
-    <h1 class="pull-left">{{musician.band_name}} <small>{{likes}} Likes and {{followers}} Followers</h1>
-    <h1 class="pull-right">
-      {% if is_following %}
-		<a href="/follow?id={{musician.key.urlsafe()}}&call_b=musician&result=u" class="btn btn-primary">Unfollow {{musician.band_name}}</a>
-	  {% else %}
-		<a href="/follow?id={{musician.key.urlsafe()}}&call_b=musician&result=f" class="btn btn-primary">Follow {{musician.band_name}}</a>
-	  {% endif %}
-
-    </h1>
-    <div class="clearfix"></div>
-    <div class="microcopy">
-      <p>
-        <strong>Genre: </strong>{{musician.genre}} / Located in {{musician.address[0].city}}, {{musician.address[0].state}} / Born {{musician.DOB}}
-      </p>
-      <p>
-        <a class="trending" href="/trending">
-           Trending: <strong>#{{trending_rank}}</strong> out of <strong>{{trending_category}}</strong> in <strong>{{trending_state}}</strong>
-        </a>
-      </p>
-		</div>
 		<hr/>
     <div class="row">
       <div class="col-lg-2 profile-pic">
-    		<img class="artist_image" src="/imgs?id={{musician.key.urlsafe()}}&width=165&height=165">
-    		{% if musician.twitter %}<p class="text-center"><a href="{{musician.twitter}}" target="_blank" class="btn btn-default">Twitter</a></p>{% endif %}
-    		{% if musician.facebook %}<p class="text-center"><a href="{{musician.facebook}}" target="_blank" class="btn btn-default">Facebook</a></p>{% endif %}
-    		{% if musician.sound_cloud %}<p class="text-center"><a href="{{musician.sound_cloud}}" target="_blank" class="btn btn-default">SoundCloud</a></p>{% endif %}
-			{% if musician.video_hosting_page %}<p class="text-center"><a href="{{musician.video_hosting_page}}" target="_blank" class="btn btn-default">YouTube / Vimeo</a></p>{% endif %}
+    		<img class="artist_image" src="/imgs?id={{musician.key.urlsafe()}}&width=165&height=165" />
+    		<img src="/images/trending_round.png" />
+    		<p class="center">
+          <strong>Ranked #{{trending_rank}}</strong> out of <br/>
+          <a href="/trending">
+            <strong>{{trending_category}}</strong> in <strong>{{trending_state}}</strong>
+          </a>
+        </p>
     	</div>
       <div class="col-lg-10">
-   			<h4>Biography</h4>
-			<p>{{musician.bio}}</p>
-			<br>
+        <div class="row">
+          <h1 class="pull-left">{{musician.band_name}} 
+            <span class="microcopy informational middle"><i class="fa fa-thumbs-o-up"></i> {{likes}} Likes 
+              <i class="fa fa-users left_spaced"></i> {{followers}} Followers</span>
+          </h1>
+        </div>
+        <div class="row">
+          <div class="microcopy">
+            <p>
+              <strong>Genre: </strong>{{musician.genre}} / Located in {{musician.address[0].city}}, {{musician.address[0].state}} / Born {{musician.DOB}}
+            </p>
+      		</div>
+        </div>
+        
+        {% if is_following %}
+    		<a href="/follow?id={{musician.key.urlsafe()}}&call_b=musician&result=u" class="btn btn-notice"><i class="fa fa-times-circle"></i> Unfollow</a>
+    	  {% else %}
+    		<a href="/follow?id={{musician.key.urlsafe()}}&call_b=musician&result=f" class="btn btn-notice"><i class="fa fa-arrow-circle-right"></i> Follow</a>
+    	  {% endif %}
+        
+        
+        <div class="row">
+     			<h4>Biography</h4>
+  			  <p>{{musician.bio}}</p>
+  			</div>
 			
   			<h4>Upcoming Shows</h4>
 			{% if gigs %}
@@ -80,31 +85,35 @@
 			{% else %}
 			<p>No booked gigs</p>
 			{% endif %}
-  			<hr>
-  			<br>
-  			
-  		</div>
-    </div>    
-    <div class="row">
-			<h2>Videos</h2>
-			<hr class="clear">
-			{% if videos %}
-			{% for v in videos %}
-			<div class="col-lg-6 video {% if v.featured %} featured {% endif %}">
-				<iframe width="490" height="300" frameborder="0" allowfullscreen="" src="{{v.embed_link}}"></iframe>
-          {% if v.featured %}
-				  <h2 class="text-center featured"><span>Featured:</span> {{v.video_title}} <br><small>{{v.likes_count}} Likes. Wins {{v.matchup_wins_percent}}% of Match Ups</small></h2>
-					{% else %}
-				  <h2 class="text-center">{{v.video_title}} <br><small>{{v.likes_count}} Likes. Wins {{v.matchup_wins_percent}}% of Match Ups</small></h2>
-					{% endif %}
 
-  				
-			</div>
-			{% endfor %}
-			{% else %}
-			<p>No videos at this time</p>
-			{% endif %}
-		</div>
+  			
+  			<div class="row">
+    			<h2>Videos</h2>
+    			<hr class="clear">
+    			{% if videos %}
+    			{% for v in videos %}
+    			<div class="col-lg-6 video {% if v.featured %} featured {% endif %}">
+    				<iframe width="490" height="300" frameborder="0" allowfullscreen="" src="{{v.embed_link}}"></iframe>
+              {% if v.featured %}
+    				  <h2 class="text-center featured"><span>Featured:</span> {{v.video_title}} <br><small>{{v.likes_count}} Likes. Wins {{v.matchup_wins_percent}}% of Match Ups</small></h2>
+    					{% else %}
+    				  <h2 class="text-center">{{v.video_title}} <br><small>{{v.likes_count}} Likes. Wins {{v.matchup_wins_percent}}% of Match Ups</small></h2>
+    					{% endif %}
+
+
+    			</div>
+    			{% endfor %}
+    			{% else %}
+    			<p>No videos at this time</p>
+    			{% endif %}
+    		</div>
+  			
+  			
+  			
+  			
+  		</div>  <!-- col-lg-10 -->
+    </div>    <!-- row -->
+
     {% include 'footer.html' %}
   </div>
 </body>
