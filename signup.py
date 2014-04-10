@@ -1,4 +1,4 @@
-import webapp2, json, sys, views
+import webapp2, json, sys, views, time
 from google.appengine.api import images
 sys.path.insert(0,'libs')
 import lassie, requests
@@ -9,13 +9,22 @@ from helpers import messages
 import models
 
 class SignupFanHandler(views.Template):
-  def get(self):
-		template_values = {'email':[],
-							'dob':[]}
+	def get(self):
+		user = self.user_check()
+		if user:
+			profile = models.fan.Fan.query_by_account(user.key) #returns fan profile info
+			template_values = {'email':[profile.email],
+								'dob':[profile.DOB.strftime('%m/%d/%Y')],
+								'checkboxes':[x for x in profile.genres],
+								'user':user,
+								'profile': profile}
+		else:
+			template_values = {'email':[],
+								'dob':[]}
 		self.render('signup_fan.html', template_values)
 
 class SignupMusicianHandler(views.Template):
-  def get(self):
+	def get(self):
 		template_values = {'email':[],
 							'dob':[],
 							'video_url':[],
@@ -34,7 +43,7 @@ class SignupMusicianHandler(views.Template):
 
 
 class SignupVenueHandler(views.Template):
-  def get(self):
+	def get(self):
 		template_values = {'venue_name':[],
 							'email':[],
 							'city':[],
@@ -94,13 +103,22 @@ class SignupHandler(views.Template):
 	
 	
 	def fan_creator(self, params):
+		user = self.user_check()
+		if user:profile = models.fan.Fan.query_by_account(user.key) #returns fan profile info
+			
 		email = valid.validate_email(params['email'][0])
 		if params['dob'][0] != '': 
 			DOB = valid.validate_dob(params['dob'][0])
 		else:
 			DOB = None
-		existing_user = self.check_for_user(params['email'][0])
-		password = valid.validate_passwords(params['password'][0], params['conf_password'][0])
+		if user and profile.email == params['email'][0]: 
+			existing_user = None
+		else:
+			existing_user = self.check_for_user(params['email'][0])
+		if user and params['password'][0] == '':
+			password = None
+		else:
+			password = valid.validate_passwords(params['password'][0], params['conf_password'][0])
 		
 		#Error Checks
 		if email == False: self.template_values['email_error'] = 'Not a valid email address'
@@ -114,14 +132,24 @@ class SignupHandler(views.Template):
 				self.template_values[x] = params[x]
 			self.render_errors('signup_fan.html')
 		else:
-			acc_key = self.account_creator(params, password)
-			try:
-				user = models.fan.Fan(user_key = acc_key, email = email, DOB = DOB, genres = params['checkboxes']).put()
-				self.redirect('/')
-			except:
-				acc_key.delete()
-				self.template_values['error'] = 'Something went wrong, please try again'
-				self.render_errors('signup_fan.html')
+			if user:
+				user.email = email
+				if password != None: user.password = password
+				user.put()
+				profile.email = email
+				profile.DOB = DOB
+				profile.genres = params['checkboxes']
+				profile.put()
+				self.redirect('/fan_profile')
+			else:
+				acc_key = self.account_creator(params, password)
+				try:
+					user = models.fan.Fan(user_key = acc_key, email = email, DOB = DOB, genres = params['checkboxes']).put()
+					self.redirect('/')
+				except:
+					acc_key.delete()
+					self.template_values['error'] = 'Something went wrong, please try again'
+					self.render_errors('signup_fan.html')
 			
 		
 	def musician_creator(self, params):

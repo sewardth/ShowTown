@@ -24,11 +24,12 @@ class FanProfileHandler(views.Template):
 
 class FanProfileEditHandler(views.Template):
 	def get(self):
-		user = self.user_check() #returns user account info
-		fan = models.fan.Fan.query_by_account(user.key) #returns fan profile info
+		#user = self.user_check() #returns user account info
+		#fan = models.fan.Fan.query_by_account(user.key) #returns fan profile info
 		
-		template_values = {'account':user, 'profile':fan}
-		self.render('fan_profile_edit.html', template_values)
+		#template_values = {'account':user, 'profile':fan}
+		#self.render('fan_profile_edit.html', template_values)
+		self.redirect('/signup_fan')
 		
 	def post(self):
 		self.response.headers['Content-Type'] = "text/plain"
