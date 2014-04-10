@@ -13,8 +13,12 @@ class SignupFanHandler(views.Template):
 		user = self.user_check()
 		if user:
 			profile = models.fan.Fan.query_by_account(user.key) #returns fan profile info
+			if profile.DOB:
+				dob = profile.DOB.strftime('%m/%d/%Y')
+			else:
+				dob = ''
 			template_values = {'email':[profile.email],
-								'dob':[profile.DOB.strftime('%m/%d/%Y')],
+								'dob':[dob],
 								'checkboxes':[x for x in profile.genres],
 								'user':user,
 								'profile': profile}

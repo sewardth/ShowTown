@@ -123,7 +123,7 @@
   				  </div>
   				  <div class="clearfix"></div>
   				  <br>
-            <input class="btn btn-primary" type="submit" value="Sign Up" />
+            <input class="btn btn-primary" type="submit" {% if user %} value="Update Profile" {% else %} value="Sign Up" {% endif %}/>
   				</fieldset>
 				</form>
 			</div>
