@@ -1,6 +1,6 @@
 
 
-import webapp2, json, sys, views, random
+import webapp2, json, sys, views
 from google.appengine.ext import ndb
 from google.appengine.datastore.datastore_query import Cursor
 sys.path.insert(0,'libs')
@@ -39,7 +39,7 @@ class TrendingHandler(views.Template):
 
     		    		                                         		
 app = webapp2.WSGIApplication([
-    ('/trending', TrendingHandler)
+    ('/trending.*', TrendingHandler)
 
     
 ], debug=True)
