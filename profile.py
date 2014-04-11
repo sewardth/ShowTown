@@ -22,20 +22,6 @@ class FanProfileHandler(views.Template):
 
 
 
-class FanProfileEditHandler(views.Template):
-	def get(self):
-		#user = self.user_check() #returns user account info
-		#fan = models.fan.Fan.query_by_account(user.key) #returns fan profile info
-		
-		#template_values = {'account':user, 'profile':fan}
-		#self.render('fan_profile_edit.html', template_values)
-		self.redirect('/signup_fan')
-		
-	def post(self):
-		self.response.headers['Content-Type'] = "text/plain"
-		self.response.out.write(self.request.body)
-
-
 
 
 class VenueProfileHandler(views.Template):
@@ -58,20 +44,9 @@ class VenueProfileHandler(views.Template):
 		'venue_phone':venue.phone, 'venue_url':'Need field in DB',
 		'venue_url_text':'Andiamoitalia.com','venue_age_limit':venue.age_limit, 'venue_capacity':venue.capacity, 'available_gigs':gigs, 'venue':venue}
 
-
-
 		self.render('venue_profile.html', template_values)
 
-class VenueProfileEditHandler(views.Template):
-	def get(self):
-		user = self.user_check()
-		venue = models.venue.Venue.query_by_account(user.key)
-		template_values = {'profile':venue}
-		self.render('venue_profile_edit.html', template_values)
-		
-	def post(self):
-		self.response.headers['Content-Type'] = "text/plain"
-		self.response.out.write(self.request.body)
+
 
 class VenueProfileApplicantsHandler(views.Template):
 	def get(self):
@@ -114,16 +89,6 @@ class MusicianProfileHandler(views.Template):
 		'new_offers':new_offers, 'booked_gigs':booked_gigs, 'videos':videos}
 		self.render('musician_profile.html', template_values)
 
-class MusicianProfileEditHandler(views.Template):
-	def get(self):
-		user = self.user_check()
-		musician = models.musician.Musician.query_by_account(user.key)
-		
-		template_values = {'account':user, 'profile':musician}
-		self.render('musician_profile_edit.html', template_values)
-	def post(self):
-		self.response.headers['Content-Type'] = "text/plain"
-		self.response.out.write(self.request.body)
 
 
 
@@ -131,12 +96,10 @@ class MusicianProfileEditHandler(views.Template):
 
 app = webapp2.WSGIApplication([
     ('/fan_profile', FanProfileHandler),
-    ('/fan_profile_edit', FanProfileEditHandler),
     ('/venue_profile', VenueProfileHandler),
-    ('/venue_profile_edit', VenueProfileEditHandler),
     ('/venue_profile_applicants', VenueProfileApplicantsHandler),
     ('/musician_profile', MusicianProfileHandler),
-    ('/musician_profile_edit', MusicianProfileEditHandler),
+
 
     
 ], debug=True)

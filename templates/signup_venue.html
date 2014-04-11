@@ -3,7 +3,11 @@
 <head>
 	<meta charset="utf-8">
   {% include 'common_links.inc' %}
-	<title>signup_venue</title>
+	{% if user %}
+	<title>Edit your Showtown Profile</title>
+	{% else %}
+	<title>Venue Sign Up</title>
+	{% endif %}
 	<!--[if lt IE 9]>
 	<script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script>
 	<![endif]-->
@@ -13,8 +17,12 @@
     {% include 'header.html' %}
     <div class="row">
 			<div class="col-lg-8 col-lg-offset-2">
+				{% if user %}
+				<h1>Edit your Showtown Profile</h1>
+				{% else %}
 				<h1>Sign Up to Showtown</h1>
 				<p>Sign up to <strong>post gigs</strong> and <strong>book musicians.</strong></p>
+				{% endif %}
 				<form class="form-horizontal" action="/signup" method="POST" enctype="multipart/form-data">
 				  <input type="hidden" name="user_type" value="venue">
 				  <fieldset>
@@ -36,14 +44,14 @@
     				<div class="control-group" id="password_wrapper">
     				  <label for="password" class="control-label">Password</label>
     				  <div class="controls">
-    				    <input type="password" class="input-xlarge" placeholder="" name="password" id="password">
+    				    <input type="password" class="input-xlarge" {% if user %} placeholder="Enter new password to change" {% endif %} name="password" id="password">
     				    <p class="help-block">Type in password</p>
     				  </div>
     				</div>
     				<div class="control-group" id="conf_password_wrapper">
     				  <label for="conf_password" class="control-label">&nbsp;</label>
     				  <div class="controls">
-    				    <input type="password" class="input-xlarge" placeholder="" name="conf_password" id="conf_password">
+    				    <input type="password" class="input-xlarge" {% if user %} placeholder="Confirm New Password" {% endif %} name="conf_password" id="conf_password">
     				    <p class="help-block">Confirm password</p>
     				  </div>
 					<div class ="warning">{{passwords_error}}</div>
@@ -98,14 +106,14 @@
     				  <label for="venue_type" class="control-label">Venue Type</label>
     				  <div class="controls">
     				    <select class="input-xlarge" name="venue_type" id="venue_type">
-    				      <option>Bar</option>
-    				      <option>Coffee Shop</option>
-    				      <option>Concert House</option>
-    				      <option>Festival</option>
-    				      <option>Restaurant</option>
-    				      <option>Music Venue</option>
-    				      <option>Nightclub</option>
-    				      <option>Other</option>
+    				      <option {% if venue_type[0] == "Bar" %} selected="true" {% endif %}>Bar</option>
+    				      <option {% if venue_type[0] == "Coffee Shop" %} selected="true" {% endif %}>Coffee Shop</option>
+    				      <option {% if venue_type[0] == "Concert House" %} selected="true" {% endif %}>Concert House</option>
+    				      <option {% if venue_type[0] == "Festival" %} selected="true" {% endif %}>Festival</option>
+    				      <option {% if venue_type[0] == "Restaurant" %} selected="true" {% endif %}>Restaurant</option>
+    				      <option {% if venue_type[0] == "Music Venue" %} selected="true" {% endif %}>Music Venue</option>
+    				      <option {% if venue_type[0] == "Nightclub" %} selected="true" {% endif %}>Nightclub</option>
+    				      <option {% if venue_type[0] == "Other" %} selected="true" {% endif %}>Other</option>
     				    </select>
     				  </div>
     				</div>
@@ -113,9 +121,9 @@
     				  <label for="age_limit" class="control-label">Age Limit</label>
     				  <div class="controls">
     				    <select class="input-xlarge" name="age_limit" id="age_limit">
-    				     <option value="0">None</option>
-    				     <option value="18">18 &amp; Up</option>
-    				     <option value="21">21 &amp; Up</option>
+    				     <option {% if age_limit[0] == "0" %} selected="true" {% endif %} value="0">None</option>
+    				     <option {% if age_limit[0] == "18" %} selected="true" {% endif %} value="18">18 &amp; Up</option>
+    				     <option {% if age_limit[0] == "21" %} selected="true" {% endif %} value="21">21 &amp; Up</option>
     				    </select>
     				  </div>
     				</div>
@@ -135,7 +143,7 @@
 				<div class ="warning">{{picture_error}}</div>
       			</div>
     				<br>
-            <input class="btn btn-primary" type="submit" value="Sign Up" />
+            <input class="btn btn-primary" type="submit" {% if user %} value="Update Profile" {% else %} value="Sign Up" {% endif %} />
   				</fieldset>
 				</form>
 			</div>
