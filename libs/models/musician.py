@@ -6,6 +6,7 @@ class Musician(ndb.Model):
 	user_key = ndb.KeyProperty()
 	user_name = ndb.StringProperty()
 	band_name = ndb.StringProperty()
+	band_genre = ndb.StringProperty()
 	email = ndb.StringProperty()
 	address = ndb.StructuredProperty(Address, repeated=True)
 	profile_pic = ndb.BlobProperty()

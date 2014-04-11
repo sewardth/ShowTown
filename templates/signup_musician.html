@@ -3,7 +3,12 @@
 <head>
 	<meta charset="utf-8">
   {% include 'common_links.inc' %}
+	{% if user %}
+	<title>Edit your Showtown Profile</title>
+	{% else %}
 	<title>signup_musician</title>
+	{% endif %}
+	
 	<!--[if lt IE 9]>
 	<script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script>
 	<![endif]-->
@@ -13,8 +18,12 @@
     {% include 'header.html' %}
     <div class="row">
   		<div class="col-lg-8 col-lg-offset-2">
+			{% if user %}
+			<h1>Edit your Showtown profile</h1>
+			{% else %}
   			<h1>Sign Up to Showtown</h1>
   			<p>Sign up to ShowTown as a musician <strong>to add your videos, compete in match ups, get new finds</strong> and <strong>book new gigs.</strong></p>
+			{% endif %}
   			<form class="form-horizontal" action="/signup" method="POST" enctype="multipart/form-data">
   			  <input type="hidden" name="user_type" value="musician">
     			<fieldset>
@@ -36,14 +45,14 @@
     				<div class="control-group" id="password_wrapper">
     				  <label for="password" class="control-label">Password</label>
     				  <div class="controls">
-    				    <input type="password" class="input-xlarge" placeholder="" name="password" id="password">
+    				    <input type="password" class="input-xlarge" {% if user %} placeholder="Enter new password to change" {% endif %} name="password" id="password">
     				    <p class="help-block">Type in password</p>
     				  </div>
     				</div>
     				<div class="control-group" id="conf_password_wrapper">
     				  <label for="conf_password" class="control-label">&nbsp;</label>
     				  <div class="controls">
-    				    <input type="password" class="input-xlarge" placeholder="" name="conf_password" id="conf_password">
+    				    <input type="password" class="input-xlarge" {% if user %} placeholder="Confirm new password" {% endif %} name="conf_password" id="conf_password">
     				    <p class="help-block">Confirm password</p>
     				  </div>
 					<div class ="warning">{{passwords_error}}</div>
@@ -71,6 +80,8 @@
     			<div class="clearfix"></div>
     			<br/>
     			<fieldset>
+				{% if user %}
+				{% else %}
     				<legend>Music Video</legend>
       			<div class="control-group">
       			  <label for="video_url" class="control-label">Video URL</label>
@@ -80,26 +91,30 @@
       			  </div>
 				<div class ="warning">{{video_error}}</div>
       			</div>
+				{% endif %}
       			<div class="control-group">
-      			  <label for="video_genre" class="control-label">Video Genre</label>
+      			  <label for="video_genre" class="control-label">Band Genre</label>
       			  <div class="controls">
-      			    <select class="input-xlarge" name="video_genre" id="video_genre">
-      			      <option>Alternative</option>
-    		          <option>Blues</option>
-    		          <option>Classical</option>
-    		          <option>Country</option>
-    		          <option>Dance</option>
-    		          <option>Easy Listening</option>
-    		          <option>Electronic</option>
-    		          <option>Hip-Hop/Rap</option>
-    		          <option>Classical</option>
-    		          <option>Industrial</option>
-    		          <option>Instrumental</option>
-    		          <option>Jazz</option>
-    		          <option>Pop</option>
-    		          <option>Rock</option>
-    		          <option>Singer/Songwriter</option>
-    		          <option>Vocal</option>
+      			    <select class="input-xlarge" name="band_genre" id="video_genre">
+					 {% if band_genre != None %}
+      			      <option {% if band_genre[0] == "Alternative" %} selected = "true" {% endif %}>Alternative</option>
+    		          <option {% if band_genre[0] == "Blues" %} selected = "true" {% endif %}>Blues</option>
+    		          <option {% if band_genre[0] == "Classical" %} selected = "true" {% endif %}>Classical</option>
+    		          <option {% if band_genre[0] == "Country" %} selected = "true" {% endif %}>Country</option>
+    		          <option {% if band_genre[0] == "Dance" %} selected = "true" {% endif %}>Dance</option>
+    		          <option {% if band_genre[0] == "Easy Listening" %} selected = "true" {% endif %}>Easy Listening</option>
+    		          <option {% if band_genre[0] == "Electronic" %} selected = "true" {% endif %}>Electronic</option>
+    		          <option {% if band_genre[0] == "Hip-Hop/Rap" %} selected = "true" {% endif %}>Hip-Hop/Rap</option>
+    		          <option {% if band_genre[0] == "Industrial" %} selected = "true" {% endif %}>Industrial</option>
+    		          <option {% if band_genre[0] == "Instrumental" %} selected = "true" {% endif %}>Instrumental</option>
+    		          <option {% if band_genre[0] == "Jazz" %} selected = "true" {% endif %}>Jazz</option>
+    		          <option {% if band_genre[0] == "Pop" %} selected = "true" {% endif %}>Pop</option>
+    		          <option {% if band_genre[0] == "Rock" %} selected = "true" {% endif %}>Rock</option>
+    		          <option {% if band_genre[0] == "Singer/Songwriter" %} selected = "true" {% endif %}>Singer/Songwriter</option>
+    		          <option {% if band_genre[0] == "Vocal" %} selected = "true" {% endif %}>Vocal</option>
+					{% else %}
+					  <option selected = True>None</option>
+					{% endif %}
       			    </select>
       			  </div>
       			</div>
@@ -164,7 +179,7 @@
 				<div class ="warning">{{video_page_error}}</div>
       			</div>
       			<br>
-      			<input class="btn btn-primary" type="submit" value="Sign Up" />
+      			<input class="btn btn-primary" type="submit" {% if user %} value="Update Profile" {% else %} value="Sign Up" {% endif %} />
     			</fieldset>
   			</form>
   		</div>

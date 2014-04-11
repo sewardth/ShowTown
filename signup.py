@@ -29,7 +29,32 @@ class SignupFanHandler(views.Template):
 
 class SignupMusicianHandler(views.Template):
 	def get(self):
-		template_values = {'email':[],
+		user = self.user_check()
+		if user:
+			profile = models.musician.Musician.query_by_account(user.key) # Returns musician profile data.
+			if profile.DOB:
+				dob = profile.DOB.strftime('%m/%d/%Y')
+			else:
+				dob = ''
+			
+			template_values = {'email':[profile.email],
+							'dob':[dob],
+							'video_url':[],
+							'twitter':[profile.twitter],
+							'sound_cloud':[profile.sound_cloud],
+							'video_hosting_page':[profile.video_hosting_page],
+							'facebook':[profile.facebook],
+							'musician_name':[profile.band_name],
+							'city':[profile.address[0].city],
+							'state':[profile.address[0].state],
+							'zip':[profile.address[0].zip],
+							'num_of_members':[profile.num_of_members],
+							'bio':[profile.bio],
+							'band_genre':[profile.band_genre],
+							'user':user,
+							'profile':profile}
+		else:
+			template_values = {'email':[],
 							'dob':[],
 							'video_url':[],
 							'twitter':[],
@@ -41,14 +66,34 @@ class SignupMusicianHandler(views.Template):
 							'state':[],
 							'zip':[],
 							'num_of_members':[],
-							'bio':[]}
+							'bio':[],
+							'band_genre':[]}
 		self.render('signup_musician.html', template_values)
 
 
 
 class SignupVenueHandler(views.Template):
 	def get(self):
-		template_values = {'venue_name':[],
+		user = self.user_check()
+		if user:
+			profile = models.venue.Venue.query_by_account(user.key)
+			template_values = {'venue_name':[profile.venue_name],
+								'email':[profile.email],
+								'city':[profile.address[0].city],
+								'state':[profile.address[0].state],
+								'zip':[profile.address[0].zip],
+								'address':[profile.address[0].address_1],
+								'address2':[profile.address[0].address_2],
+								'age_limit':[profile.age_limit],
+								'capacity':[profile.capacity],
+								'phone1':[profile.phone],
+								'venue_type':[profile.venue_type],
+								'user':user,
+								'profile':profile}
+			
+			
+		else:
+			template_values = {'venue_name':[],
 							'email':[],
 							'city':[],
 							'state':[],
@@ -157,16 +202,33 @@ class SignupHandler(views.Template):
 			
 		
 	def musician_creator(self, params):
+		user = self.user_check()
+		if user:profile = models.musician.Musician.query_by_account(user.key) # Returns musician profile data.
+		
+		
 		email = valid.validate_email(params['email'][0])
 		if params['dob'][0] != '': 
 			DOB = valid.validate_dob(params['dob'][0])
 		else:
 			DOB = None
-		try:
-			profile_pic = self.image_handler(params['file_upload'][0],150,150)
-		except:
-			profile_pic = False
-		submission_video = valid.get_video(params['video_url'][0])
+		if user and profile.email == params['email'][0]: 
+			existing_user = None
+		else:
+			existing_user = self.check_for_user(params['email'][0])
+		if user and params['password'][0] == '':
+			password = None
+		else:
+			password = valid.validate_passwords(params['password'][0], params['conf_password'][0])
+		
+		if params['file_upload']!= '':
+			try:
+				profile_pic = self.image_handler(params['file_upload'][0],150,150)
+			except:
+				profile_pic = False
+		if user:
+			submission_video = None
+		else:
+			submission_video = valid.get_video(params['video_url'][0])
 		twitter = valid.verify_link(params['twitter'][0],'twitter')
 		sound_cloud = valid.verify_link(params['sound_cloud'][0],'soundcloud')
 		if 'youtu' in params['video_hosting_page'][0]:
@@ -174,8 +236,6 @@ class SignupHandler(views.Template):
 		else:
 			video_hosting_page = valid.verify_link(params['video_hosting_page'][0], 'vimeo')
 		facebook = valid.verify_link(params['facebook'][0], 'facebook')
-		existing_user = self.check_for_user(params['email'][0])
-		password = valid.validate_passwords(params['password'][0], params['conf_password'][0])
 		
 		
 		
@@ -193,57 +253,91 @@ class SignupHandler(views.Template):
 		validation = [email, DOB, profile_pic, submission_video, twitter, sound_cloud, video_hosting_page, facebook, existing_user, password]
 		
 		if False in validation:
-			self.response.out.write(validation)
 			for x in params:
 				self.template_values[x] = params[x]
 			self.render_errors('signup_musician.html')
 		else:
-			acc_key = self.account_creator(params, password)
+			if user:
+				user.email = email
+				if password != None: user.password = password
+				user.put()
+				profile.email = email
+				profile.DOB = DOB
+				profile.address[0].city = params['city'][0]
+				profile.address[0].state = params['state'][0]
+				profile.address[0].zip = int(params['zip'][0])
+				profile.num_of_members = int(params['num_of_members'][0])
+				profile.bio = params['bio'][0]
+				profile.facebook = params['facebook'][0]
+				profile.twitter = params['twitter'][0]
+				profile.sound_cloud = params['sound_cloud'][0]
+				profile.video_hosting_page = params['video_hosting_page'][0]
+				profile.band_genre = params['band_genre'][0]
+				if profile_pic: profile.profile_pic = profile_pic
+				
+				profile.put()
+				time.sleep(.5)
+				self.redirect('/musician_profile')
+			else:
+			
+				acc_key = self.account_creator(params, password)
 		
-			#try:								
-			user = models.musician.Musician(user_key = acc_key, 
-							band_name = params['musician_name'][0],
-							email = email, 
-							address= [models.address.Address(city=params['city'][0],
-															 state = params['state'][0], 
-															 zip = int(params['zip'][0]))], 
+				try:								
+					user = models.musician.Musician(user_key = acc_key, 
+									band_name = params['musician_name'][0],
+									email = email, 
+									address= [models.address.Address(city=params['city'][0],
+																	 state = params['state'][0], 
+																	 zip = int(params['zip'][0]))], 
 						
-							profile_pic = profile_pic,
-							num_of_members = int(params['num_of_members'][0]),
-							bio = params['bio'][0],
-							DOB = DOB,
-							facebook = facebook,
-							video_hosting_page = video_hosting_page,
-							twitter = twitter,
-							sound_cloud = sound_cloud).put()
+									profile_pic = profile_pic,
+									num_of_members = int(params['num_of_members'][0]),
+									bio = params['bio'][0],
+									DOB = DOB,
+									facebook = facebook,
+									video_hosting_page = video_hosting_page,
+									twitter = twitter,
+									sound_cloud = sound_cloud,
+									band_genre = params['band_genre'][0]).put()
 						
-			video = models.videos.Videos(embed_link = submission_video['embed_link'],
-														acc_key = acc_key,
-														musician_key = user,
-														musician_name = params['musician_name'][0],
-														genre_tag = params['video_genre'][0],
-														video_title = submission_video['title'],
-														featured = True).put()
-			self.redirect('/')
+					video = models.videos.Videos(embed_link = submission_video['embed_link'],
+																acc_key = acc_key,
+																musician_key = user,
+																musician_name = params['musician_name'][0],
+																genre_tag = params['band_genre'][0],
+																video_title = submission_video['title'],
+																featured = True).put()
+					self.redirect('/')
 		
-		"""	except:
-				acc_key.delete()
-				if user: user.delete()
-				if video: video.delete()
-				self.template_values['error'] = 'Something went wrong, please try again'
-				self.render_errors('signup_musician.html') """
+				except:
+					acc_key.delete()
+					if user: user.delete()
+					if video: video.delete()
+					self.template_values['error'] = 'Something went wrong, please try again'
+					self.render_errors('signup_musician.html') 
 		
 		
 		
 		
 	def venue_creator(self, params):
+		user = self.user_check()
+		if user:profile = models.venue.Venue.query_by_account(user.key)
+		
 		email = valid.validate_email(params['email'][0])
-		existing_user = self.check_for_user(params['email'][0])
-		try:
-			profile_pic = self.image_handler(params['file_upload'][0],310,219)
-		except:
-			profile_pic = False
-		password = valid.validate_passwords(params['password'][0], params['conf_password'][0])
+		if user and profile.email == params['email'][0]: 
+			existing_user = None
+		else:
+			existing_user = self.check_for_user(params['email'][0])
+		if user and params['password'][0] == '':
+			password = None
+		else:
+			password = valid.validate_passwords(params['password'][0], params['conf_password'][0])
+		
+		if params['file_upload']!= '':
+			try:
+				profile_pic = self.image_handler(params['file_upload'][0],310,219)
+			except:
+				profile_pic = False
 		
 		#Error Checks
 		if email == False: self.template_values['email_error'] = 'Not a valid email address'
@@ -258,27 +352,50 @@ class SignupHandler(views.Template):
 			self.render_errors('signup_venue.html')
 			
 		else:
-			acc_key = self.account_creator(params, password)
-			try:
-				user = models.venue.Venue(user_key = acc_key,
-									  venue_name = params['venue_name'][0],
-									  email = params['email'][0],
-									  address = [models.address.Address(city = params['city'][0],
-									             state = params['state'][0],
-									             zip = int(params['zip'][0]),
-									             address_1 = params['address'][0],
-												 address_2 = params['address2'][0])],
-									  venue_type = params['venue_type'][0],
-									  age_limit = params['age_limit'][0],
-									  capacity = int(params['capacity'][0]),
-									  phone = params['phone1'][0],
-									  profile_pic = profile_pic).put()
+			if user:
+				user.email = email
+				if password != None: user.password = password
+				user.put()
+				profile.email = email
+				profile.venue_name = params['venue_name'][0]
+				profile.venue_type = params['venue_type'][0]
+				profile.age_limit = params['age_limit'][0]
+				profile.capacity = int(params['capacity'][0])
+				profile.phone = params['phone1'][0]
+				profile.address[0].city = params['city'][0]
+				profile.address[0].state = params['state'][0]
+				profile.address[0].zip = int(params['zip'][0])
+				profile.address[0].address_1 = params['address'][0]
+				profile.address[0].address_2 = params['address2'][0]
+				if profile_pic: profile.profile_pic = profile_pic
+				profile.put()
+				time.sleep(.5)
+				self.redirect('/venue_profile')
+				
+
+				
+			else:
+				acc_key = self.account_creator(params, password)
+				try:
+					user = models.venue.Venue(user_key = acc_key,
+										  venue_name = params['venue_name'][0],
+										  email = params['email'][0],
+										  address = [models.address.Address(city = params['city'][0],
+										             state = params['state'][0],
+										             zip = int(params['zip'][0]),
+										             address_1 = params['address'][0],
+													 address_2 = params['address2'][0])],
+										  venue_type = params['venue_type'][0],
+										  age_limit = params['age_limit'][0],
+										  capacity = int(params['capacity'][0]),
+										  phone = params['phone1'][0],
+										  profile_pic = profile_pic).put()
 									
-				self.redirect('/')
-			except:
-				acc_key.delete()
-				self.template_values['error'] = 'Something went wrong, please try again'
-				self.render_errors('signup_venue.html')
+					self.redirect('/')
+				except:
+					acc_key.delete()
+					self.template_values['error'] = 'Something went wrong, please try again'
+					self.render_errors('signup_venue.html')
 	
 			
 	def image_handler(self, image, width, height):
