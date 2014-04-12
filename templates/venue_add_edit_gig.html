@@ -3,7 +3,11 @@
 <head>
 	<meta charset="utf-8">
   {% include 'common_links.inc' %}
+	{% if gig %}
+	<title>Edit gig</title>
+	{% else %}
 	<title>Edit your Showtown Profile</title>
+	{% endif %}
 	<!--[if lt IE 9]>
 	<script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script>
 	<![endif]-->
@@ -13,61 +17,57 @@
     {% include 'header.html' %}
     <div class="row">
 			<div class="col-lg-8 col-lg-offset-2">
-			  {% if add %}
-				<h1>List a Gig</h1>
-				{% else %}
+			  {% if gig %}
 				<h1>Edit Gig</h1>
-				{% endif %}
+				{% else %}
+				<h1>List a Gig</h1>
 				<hr>
 				<p>Find and book musicians by listing gigs on ShowTown.</p>
+				{% endif %}
 				<br>
 				<form class="form-horizontal" action="/venue_add_edit_gig" method="POST">
-				  {% if add %}
-				  <input type="hidden" name="op" value="add">
-				  {% else %}
-				  <input type="hidden" name="op" value="edit">
-				  <input type="hidden" name="id" value="{% if gig %}{{gig.key.urlsafe()}}{% endif %}">
-				  {% endif %}
+				 {% if gig %} <input type="hidden" name="id" value="{{gig.key.urlsafe()}}">{% endif %}
   				<fieldset>
   				<legend>Gig Details</legend>
     				<div class="control-group">
     				  <label for="textinput" class="control-label">Gig Name</label>
     				  <div class="controls">
-    				    <input type="text" class="input-xlarge" placeholder="" name="gig_name" id="textinput" value = "{% if gig %}{{gig.gig_name}}{% endif %}">
+    				    <input type="text" class="input-xlarge" placeholder="" name="gig_name" id="textinput" value = "{{gig_name}}">
     				  </div>
     				</div>
     				<div class="control-group">
     				  <label for="Date" class="control-label">Date</label>
     				  <div class="controls">
-    				    <input type="text" class="input-xlarge" placeholder="MM/DD/YYYY" name="event_date" id="date" value ="{% if gig %}{{gig.event_date.strftime('%m/%d/%Y')}}{% endif %}">
+    				    <input type="text" class="input-xlarge" placeholder="MM/DD/YYYY" name="event_date" id="date" value ="{{event_date}}">
     				  </div>
+					<div class="warning">{{date_error}}</div>
     				</div>
     				<div class="control-group">
     				  <label for="textinput" class="control-label">Start Time</label>
     				  <div class="controls">
     				    <select class="input-xlarge" name="start_time_hour">
-    				      <option{% if gig %}{% if gig.start_time_hour == "1" %} selected="true"{% endif %}{% endif %}>1</option>
-    				      <option{% if gig %}{% if gig.start_time_hour == "2" %} selected="true"{% endif %}{% endif %}>2</option>
-    				      <option{% if gig %}{% if gig.start_time_hour == "3" %} selected="true"{% endif %}{% endif %}>3</option>
-    				      <option{% if gig %}{% if gig.start_time_hour == "4" %} selected="true"{% endif %}{% endif %}>4</option>
-    				      <option{% if gig %}{% if gig.start_time_hour == "5" %} selected="true"{% endif %}{% endif %}>5</option>
-    				      <option{% if gig %}{% if gig.start_time_hour == "6" %} selected="true"{% endif %}{% endif %}>6</option>
-    				      <option{% if gig %}{% if gig.start_time_hour == "7" %} selected="true"{% endif %}{% endif %}>7</option>
-    				      <option{% if gig %}{% if gig.start_time_hour == "8" %} selected="true"{% endif %}{% endif %}>8</option>
-    				      <option{% if gig %}{% if gig.start_time_hour == "9" %} selected="true"{% endif %}{% endif %}>9</option>
-    				      <option{% if gig %}{% if gig.start_time_hour == "10" %} selected="true"{% endif %}{% endif %}>10</option>
-    				      <option{% if gig %}{% if gig.start_time_hour == "11" %} selected="true"{% endif %}{% endif %}>11</option>
-    				      <option{% if gig %}{% if gig.start_time_hour == "12" %} selected="true"{% endif %}{% endif %}>12</option>
+    				      <option{% if start_time_hour == "01" %} selected="true"{% endif %}>01</option>
+    				      <option{% if start_time_hour == "02" %} selected="true"{% endif %}>02</option>
+    				      <option{% if start_time_hour == "03" %} selected="true"{% endif %}>03</option>
+    				      <option{% if start_time_hour == "04" %} selected="true"{% endif %}>04</option>
+    				      <option{% if start_time_hour == "05" %} selected="true"{% endif %}>05</option>
+    				      <option{% if start_time_hour == "06" %} selected="true"{% endif %}>06</option>
+    				      <option{% if start_time_hour == "07" %} selected="true"{% endif %}>07</option>
+    				      <option{% if start_time_hour == "08" %} selected="true"{% endif %}>08</option>
+    				      <option{% if start_time_hour == "09" %} selected="true"{% endif %}>09</option>
+    				      <option{% if start_time_hour == "10" %} selected="true"{% endif %}>10</option>
+    				      <option{% if start_time_hour == "11" %} selected="true"{% endif %}>11</option>
+    				      <option{% if start_time_hour == "12" %} selected="true"{% endif %}>12</option>
     				    </select> : 
     				    <select class="input-xlarge" name="start_time_minutes">
-    				      <option{% if gig %}{% if gig.start_time_minutes == "0" %} selected="true"{% endif %}{% endif %}>00</option>
-    				      <option{% if gig %}{% if gig.start_time_minutes == "15" %} selected="true"{% endif %}{% endif %}>15</option>
-    				      <option{% if gig %}{% if gig.start_time_minutes == "30" %} selected="true"{% endif %}{% endif %}>30</option>
-    				      <option{% if gig %}{% if gig.start_time_minutes == "45" %} selected="true"{% endif %}{% endif %}>45</option>
+    				      <option{% if start_time_minutes == "00" %} selected="true"{% endif %}>00</option>
+    				      <option{% if start_time_minutes == "15" %} selected="true"{% endif %}>15</option>
+    				      <option{% if start_time_minutes == "30" %} selected="true"{% endif %}>30</option>
+    				      <option{% if start_time_minutes == "45" %} selected="true"{% endif %}>45</option>
     				    </select>&nbsp;
     				    <select class="input-xlarge" name="start_time_am_pm">
-    				      <option{% if gig %}{% if gig.start_time_am_pm == "AM" %} selected="true"{% endif %}{% endif %}>AM</option>
-    				      <option{% if gig %}{% if gig.start_time_am_pm == "PM" %} selected="true"{% endif %}{% endif %}>PM</option>
+    				      <option{% if start_time_am_pm == "AM" %} selected="true"{% endif %}>AM</option>
+    				      <option{% if start_time_am_pm == "PM" %} selected="true"{% endif %}>PM</option>
     				    </select>
     				  </div>
   				  </div>
@@ -75,28 +75,28 @@
     				  <label for="textinput" class="control-label">End Time</label>
     				  <div class="controls">
     				    <select class="input-xlarge" name="end_time_hour">
-    				      <option{% if gig %}{% if gig.end_time_hour == "1" %} selected="true"{% endif %}{% endif %}>1</option>
-    				      <option{% if gig %}{% if gig.end_time_hour == "2" %} selected="true"{% endif %}{% endif %}>2</option>
-    				      <option{% if gig %}{% if gig.end_time_hour == "3" %} selected="true"{% endif %}{% endif %}>3</option>
-    				      <option{% if gig %}{% if gig.end_time_hour == "4" %} selected="true"{% endif %}{% endif %}>4</option>
-    				      <option{% if gig %}{% if gig.end_time_hour == "5" %} selected="true"{% endif %}{% endif %}>5</option>
-    				      <option{% if gig %}{% if gig.end_time_hour == "6" %} selected="true"{% endif %}{% endif %}>6</option>
-    				      <option{% if gig %}{% if gig.end_time_hour == "7" %} selected="true"{% endif %}{% endif %}>7</option>
-    				      <option{% if gig %}{% if gig.end_time_hour == "8" %} selected="true"{% endif %}{% endif %}>8</option>
-    				      <option{% if gig %}{% if gig.end_time_hour == "9" %} selected="true"{% endif %}{% endif %}>9</option>
-    				      <option{% if gig %}{% if gig.end_time_hour == "10" %} selected="true"{% endif %}{% endif %}>10</option>
-    				      <option{% if gig %}{% if gig.end_time_hour == "11" %} selected="true"{% endif %}{% endif %}>11</option>
-    				      <option{% if gig %}{% if gig.end_time_hour == "12" %} selected="true"{% endif %}{% endif %}>12</option>
+    				      <option{% if end_time_hour == "01" %} selected="true"{% endif %}>01</option>
+    				      <option{% if end_time_hour == "02" %} selected="true"{% endif %}>02</option>
+    				      <option{% if end_time_hour == "03" %} selected="true"{% endif %}>03</option>
+    				      <option{% if end_time_hour == "04" %} selected="true"{% endif %}>04</option>
+    				      <option{% if end_time_hour == "05" %} selected="true"{% endif %}>05</option>
+    				      <option{% if end_time_hour == "06" %} selected="true"{% endif %}>06</option>
+    				      <option{% if end_time_hour == "07" %} selected="true"{% endif %}>07</option>
+    				      <option{% if end_time_hour == "08" %} selected="true"{% endif %}>08</option>
+    				      <option{% if end_time_hour == "09" %} selected="true"{% endif %}>09</option>
+    				      <option{% if end_time_hour == "10" %} selected="true"{% endif %}>10</option>
+    				      <option{% if end_time_hour == "11" %} selected="true"{% endif %}>11</option>
+    				      <option{% if end_time_hour == "12" %} selected="true"{% endif %}>12</option>
     				    </select> : 
     				    <select class="input-xlarge" name="end_time_minutes">
-    				      <option{% if gig %}{% if gig.end_time_minutes == "0" %} selected="true"{% endif %}{% endif %}>0</option>
-    				      <option{% if gig %}{% if gig.end_time_minutes == "15" %} selected="true"{% endif %}{% endif %}>15</option>
-    				      <option{% if gig %}{% if gig.end_time_minutes == "30" %} selected="true"{% endif %}{% endif %}>30</option>
-    				      <option{% if gig %}{% if gig.end_time_minutes == "45" %} selected="true"{% endif %}{% endif %}>45</option>
+    				      <option{% if end_time_minutes == "00" %} selected="true"{% endif %}>00</option>
+    				      <option{% if end_time_minutes == "15" %} selected="true"{% endif %}>15</option>
+    				      <option{% if end_time_minutes == "30" %} selected="true"{% endif %}>30</option>
+    				      <option{% if end_time_minutes == "45" %} selected="true"{% endif %}>45</option>
     				    </select>&nbsp;
     				    <select class="input-xlarge" name="end_time_am_pm">
-    				      <option{% if gig %}{% if gig.end_time_am_pm == "AM" %} selected="true"{% endif %}{% endif %}>AM</option>
-    				      <option{% if gig %}{% if gig.end_time_am_pm == "PM" %} selected="true"{% endif %}{% endif %}>PM</option>
+    				      <option{% if end_time_am_pm == "AM" %} selected="true"{% endif %}>AM</option>
+    				      <option{% if end_time_am_pm == "PM" %} selected="true"{% endif %}>PM</option>
     				    </select>
     				  </div>
     				</div>
@@ -105,7 +105,7 @@
     				  <div class="controls">
     				    <div class="input-prepend">
     				      <span class="add-on">$</span>
-    				      <input type="text" placeholder="" class="input-xlarge" name="compensation" id="prependedtext" value ="{% if gig %}{{gig.compensation}}{% endif %}">
+    				      <input type="text" placeholder="" class="input-xlarge" name="compensation" id="prependedtext" value ="{{compensation}}">
     				    </div>
     				  </div>
     				</div>
@@ -135,16 +135,16 @@
     				  <label for="selectbasic" class="control-label">Locality</label>
     				  <div class="controls">
     				    <select class="input-xlarge" name="locality" id="selectbasic">
-    				      <option>Local</option>
-    				      <option>Touring</option>
-    				      <option>Either</option>
+    				      <option {% if locality == "Local" %} selected="true"{% endif %}>Local</option>
+    				      <option {% if locality == "Touring" %} selected="true"{% endif %}>Touring</option>
+    				      <option {% if locality == "Either" %} selected="true"{% endif %}>Either</option>
     				    </select>
     				  </div>
     				</div>
     				<div class="control-group">
     				  <label for="textarea" class="control-label">Brief Description</label>
     				  <div class="controls">                     
-    				    <textarea name="description" id="textarea">{% if gig %}{{gig.description}}{% endif %}</textarea>
+    				    <textarea name="description" id="textarea">{{description}}</textarea>
     				  </div>
     				</div>
     				<br>

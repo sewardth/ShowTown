@@ -17,7 +17,7 @@ class Validate(webapp2.RequestHandler):
 	@staticmethod	
 	def validate_dob(dob):
 		try:
-			date = datetime.strptime(dob, '%m/%d/%Y')
+			date = datetime.strptime(dob, '%m/%d/%Y').date()
 			return date
 		except:
 			return False
