@@ -154,12 +154,66 @@ class AvailableGigsHandler(views.Template):
 		self.response.headers.add_header('content-type', 'application/json', charset='utf-8')
 		self.response.out.write(json.dumps(data))
 			
+
+class ApplyWindowHandler(views.Template):
+	def post(self):
+		#requires musician to be logged in and id=gig_id
+		user = self.user_check()
+		musician = models.musician.Musician.query_by_account(user.key)
+		videos = models.videos.Videos.query_by_account(user.key)
+		gig_id = ndb.Key(urlsafe=self.request.get('id'))
+		gig = gig_id.get()
+		venue = gig.venue_key.get()
 		
+		
+		
+		gig_data = gig.to_dict()
+		del gig_data['venue_key'], gig_data['venue_account_key'], gig_data['event_date'], gig_data['start_time'], gig_data['end_time'], gig_data['created']
+		gig_data['gig_key'] = gig.key.urlsafe()
+		gig_data['event_date'] = str(gig.event_date.strftime('%m/%d/%Y'))
+		gig_data['start_time'] = str(gig.start_time.strftime('%I:%M%p'))
+		gig_data['end_time'] = str(gig.end_time.strftime('%I:%M%p'))
+
+		venue = venue.to_dict()
+		del venue['profile_pic'], venue['latest_update'], venue['user_key']
+		
+		musician_data = musician.to_dict()
+		del musician_data['user_key'], musician_data['address'], musician_data['profile_pic'], musician_data['DOB'], musician_data['latest_update'], musician_data['account_created']
+		musician_data['musician_key'] = musician.key.urlsafe()
+		
+		video_data =[]
+		for x in videos:
+			data = x.to_dict()
+			del data['acc_key'], data['musician_key'],data['embed_link'],data['video_added']
+			data['video_key'] = x.key.urlsafe()
+			video_data.append(data)
+
+		
+		data = {'venue':venue, 'gig':gig_data, 'musician':musician_data, 'videos':video_data}
+		self.response.headers.add_header('content-type', 'application/json', charset='utf-8')
+		self.response.out.write(json.dumps(data))
+	
+
+
+class Apply_to_Gig_Handler(views.Template):
+	def post(self):
+		user = self.user_check()
+		musician = models.musician.Musician.query_by_account(user.key)
+		gig_id = ndb.Key(urlsafe = self.request.get('id'))
+		gig = gig_id.get()
+		if musician.key  not in gig.applicants:
+			gig.applicants.append(musician.key)
+			gig.put()
+			
+
+	
 app = webapp2.WSGIApplication([
    
     ('/venue_add_edit_gig.*', VenueAddEditGigHandler),
 	('/delete_gig.*', DeleteGigHandler),
-	('/available_gig.*', AvailableGigsHandler)
+	('/available_gig.*', AvailableGigsHandler),
+	('/apply_window_gig.*', ApplyWindowHandler),
+	('/apply_to_gig.*', Apply_to_Gig_Handler)
 
 
 ], debug=True)
