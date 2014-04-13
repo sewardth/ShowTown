@@ -50,7 +50,7 @@ class VenueProfileHandler(views.Template):
 
 class VenueProfileApplicantsHandler(views.Template):
 	def get(self):
-		user = self.user_check()
+		"""user = self.user_check()
 		applicants_data = [{'musician_id':0, 'image_src':'images/_test_profile.jpg', 
 		'musician_name':'Mac Miller', 'likes_count':'1,342', 'followers_count':'132', 'genre':'Hip-Hop/Rap',
 		'musician_city':'Ann Arbor', 'musician_state':'Michigan', 'like_percent':'73'},
@@ -58,11 +58,29 @@ class VenueProfileApplicantsHandler(views.Template):
 		'musician_name':'Hoodie Allen', 'likes_count':'1,242', 'followers_count':'122', 'genre':'Hip-Hop/Rap',
 		'musician_city':'Ann Arbor', 'musician_state':'Michigan', 'like_percent':'70'}]
 		template_values = {'applicants_data':applicants_data}
-		self.render('venue_profile_applicants.html', template_values)
+		self.render('venue_profile_applicants.html', template_values)"""
 		
-	def post(self):
-		self.response.headers['Content-Type'] = "text/plain"
-		self.response.out.write(self.request.body)
+		gig_id = ndb.Key(urlsafe = self.request.get('id'))
+		gig = gig_id.get()
+		applicants = models.applicants.Applicant.query_by_gig(gig.key)
+		musicians = models.musician.Musician.fetch_artists([x.musician_key for x in applicants])
+		app_data =[]
+		for x in applicants:
+			musician = [y for y in musicians if x.musician_key == musician.key]
+			data = x.to_dict()
+			del data['gig_key'], data['event_date'], data['applied_date'], data['modified_date']
+			data['gig_key'] = gig.key.urlsafe()
+			data['gig_name'] = gig.gig_name
+			data['musician_key'] = data['musician_key'].key.urlsafe()
+			data['applicant_video'] = data['applicant_video'].key.urlsafe()
+			app_data.append(data)
+			
+		data = {'applicants' : app_data}
+		self.response.headers.add_header('content-type', 'application/json', charset='utf-8')
+		self.response.out.write(json.dumps(data))
+	
+		
+			
 
 class MusicianProfileHandler(views.Template):
 	def get(self):

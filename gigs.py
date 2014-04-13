@@ -199,11 +199,18 @@ class Apply_to_Gig_Handler(views.Template):
 	def post(self):
 		user = self.user_check()
 		musician = models.musician.Musician.query_by_account(user.key)
+		video = ndb.Key(urlsafe = self.request.get('vid_key'))
+		video = video.get()
 		gig_id = ndb.Key(urlsafe = self.request.get('id'))
 		gig = gig_id.get()
-		if musician.key  not in gig.applicants:
-			gig.applicants.append(musician.key)
-			gig.put()
+		applicants = models.applicants.Applicant.query_by_gig(gig.key)
+		if applicants != None and musician.key not in [x.musician_key for x in applicants]:
+			app = models.applicants.Applicant(gig_key = gig.key,
+											  musician_key = musician.key,
+											  applicant_video = video.key,
+											  event_date =  gig.event_date,
+											  musician_name = musician.band_name,
+											  video_link = video.embed_link).put()
 			
 
 	
