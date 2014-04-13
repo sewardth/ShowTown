@@ -213,14 +213,33 @@ class Apply_to_Gig_Handler(views.Template):
 											  video_link = video.embed_link).put()
 			
 
+
+class ApplicantsHandler(views.Template):
+	def post(self):
+		gig_key = ndb.Key(urlsafe=self.request.get('gig_id'))
+		musician_key = ndb.Key(urlsafe = self.request.get('mus_id'))
+		status = self.request.get('status')
 	
+		data = models.applicants.Applicant.query_for_update(gig_key, musician_key)
+	
+		if status == 'accept':
+			data.performing = True
+			data.put()
+		else:
+			data.applicant_status = False
+			data.put()
+	
+	
+	
+
 app = webapp2.WSGIApplication([
    
     ('/venue_add_edit_gig.*', VenueAddEditGigHandler),
 	('/delete_gig.*', DeleteGigHandler),
 	('/available_gig.*', AvailableGigsHandler),
 	('/apply_window_gig.*', ApplyWindowHandler),
-	('/apply_to_gig.*', Apply_to_Gig_Handler)
+	('/apply_to_gig.*', Apply_to_Gig_Handler),
+	('/performers_gig.*', ApplicantsHandler)
 
 
 ], debug=True)

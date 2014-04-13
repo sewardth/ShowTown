@@ -27,3 +27,7 @@ class Applicant(ndb.Model):
 	@classmethod	#need to add date filter 	>>> "2011-06-24" > "2010-06-23" True
 	def query_by_performers(cls, musician_key):
 		return cls.query(cls.musician_key == musician_key, performing == True ).fetch()
+		
+	@classmethod
+	def query_for_update(cls, gig_key, musician_key):
+		return cls.query(cls.gig_key == gig_key, cls.musician_key == musician_key).get()
