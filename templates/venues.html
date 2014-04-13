@@ -8,6 +8,7 @@
 	<!--[if lt IE 9]>
 	<script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script>
 	<![endif]-->
+	<script>var user_type = '{{user.account_type}}';</script>
 </head>
 <body>
   <div id="page">
@@ -45,7 +46,7 @@
 							<th>Name <b class="caret"></b></th>
 							<th>City</th>
 							<th>Type</th>
-							<th>Gigs</th>
+							{% if user.account_type == 'musician' %}<th>Gigs</th>{% endif %}
 						</tr>
           </thead>
           <tbody id='venue_data'>

@@ -27,8 +27,8 @@ label {font-weight: normal;}
 .help-block {font-size: 14px}
 .control-group {margin: 20px 0 0 0;}
 .control-group input[type="text"], .control-group textarea {max-width: 720px; width: 100%;}
-.btn-primary {background-color: #3299bb; border-color: #3299bb;}
-.btn-primary:hover {background-color: #eee; color:#333}
+.btn-primary {background-color: #3299bb; border-color: #3299bb; color: #FFFFFF !important;}
+.btn-primary:hover {background-color: #eee; color:#333 !important;}
   
 /* Header */
 .top_btn{background-color: #3299bb; color: white}
@@ -155,6 +155,20 @@ fieldset legend {margin: 0}
 .venue-table img {display: block; height: auto; max-width: 100%; width: 100%;}
 .venue-table td {vertical-align: middle !important;}
 
+.gigs ul {
+    list-style: none outside none;
+    margin: 0;
+    padding: 0 0 20px;
+}
+
+.notice{
+  background: none repeat scroll 0 0 #EEEEFF;
+  border: 1px solid #FAFAFF;
+  margin: 30px 0;
+  padding: 5px 10px;
+  text-align: center;
+}
+  
 /* Footer */
 .footer {border-top: 1px solid #EFEFEF; margin: 60px 0 0;}
 .footer ul {float: right; list-style: none outside none; margin: 0; padding: 0;}

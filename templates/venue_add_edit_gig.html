@@ -112,25 +112,65 @@
     				<div class="control-group">
     				  <label for="checkboxes" class="control-label">Equipment Required</label>
     				  <div class="controls">
-    				    <label for="checkboxes-0" class="checkbox inline">
-    				      <input type="checkbox" value="Yes" id="checkboxes-0" name="equipment">
+    				    <label for="equipment-0" class="checkbox inline">
+    				      <input type="checkbox" value="Yes" id="equipment-0" name="equipment">
     				      Yes
     				    </label>
     				  </div>
     				</div>
     				<div class="control-group">
-    				  <label for="checkboxes" class="control-label">Genre(s)</label>
+    				  <label for="checkboxes" class="control-label">Favorite Genre(s)</label>
     				  <div class="controls">
-    				    <label for="checkboxes-0" class="checkbox">
-    				      <input type="checkbox" value="Option one" id="checkboxes-0" name="genre">
-    				      Option one
-    				    </label>
-    				    <label for="checkboxes-1" class="checkbox">
-    				      <input type="checkbox" value="Option two" id="checkboxes-1" name="checkboxes">
-    				      Option two
-    				    </label>
+    				    <ul id="favorite_genres">
+      				    <li><label for="checkboxes" class="checkbox">
+      				      <input type="checkbox" value="Alternative" name="checkboxes" {% for genre in checkboxes %} {%if genre == 'Alternative'%} checked="true" {% endif %} {% endfor %}>
+      				        Alternative </label></li>
+      		        <li><label for="checkboxes" class="checkbox">
+      				      <input type="checkbox" value="Blues" name="checkboxes" {% for genre in checkboxes %} {%if genre == 'Blues'%} checked="true" {% endif %} {% endfor %}>
+      				        Blues </label></li>
+      		        <li><label for="checkboxes" class="checkbox">
+      				      <input type="checkbox" value="Classical" name="checkboxes" {% for genre in checkboxes %} {%if genre == 'Classical'%} checked="true" {% endif %} {% endfor %}>
+      				        Classical </label></li>
+      		        <li><label for="checkboxes" class="checkbox">
+      				      <input type="checkbox" value="Country" name="checkboxes" {% for genre in checkboxes %} {%if genre == 'Country'%} checked="true" {% endif %} {% endfor %}>
+      				        Country </label></li>
+      		        <li><label for="checkboxes" class="checkbox">
+      				      <input type="checkbox" value="Dance" name="checkboxes" {% for genre in checkboxes %} {%if genre == 'Dance'%} checked="true" {% endif %} {% endfor %}>
+      				        Dance </label></li>
+      		        <li><label for="checkboxes" class="checkbox">
+      				      <input type="checkbox" value="Easy Listening" name="checkboxes" {% for genre in checkboxes %} {%if genre == 'Easy Listening'%} checked="true" {% endif %} {% endfor %}>
+      				        Easy Listening</label></li>
+      		        <li><label for="checkboxes" class="checkbox">
+      				      <input type="checkbox" value="Electronic" name="checkboxes" {% for genre in checkboxes %} {%if genre == 'Electronic'%} checked="true" {% endif %} {% endfor %}>
+      				        Electronic</label></li>
+      		        <li><label for="checkboxes" class="checkbox">
+      				      <input type="checkbox" value="Hip Hop / Rap" name="checkboxes" {% for genre in checkboxes %} {%if genre == 'Hip Hop / Rap'%} checked="true" {% endif %} {% endfor %}>
+      				        Hip-Hop/Rap</label></li>
+      		        <li><label for="checkboxes" class="checkbox">
+      				      <input type="checkbox" value="Industrial" name="checkboxes" {% for genre in checkboxes %} {%if genre == 'Industrial'%} checked="true" {% endif %} {% endfor %}>
+      				        Industrial</label></li>
+      		        <li><label for="checkboxes" class="checkbox">
+      				      <input type="checkbox" value="Instrumental" name="checkboxes" {% for genre in checkboxes %} {%if genre == 'Instrumental'%} checked="true" {% endif %} {% endfor %}>
+      				        Instrumental</label></li>
+      		        <li><label for="checkboxes" class="checkbox">
+      				      <input type="checkbox" value="Jazz" name="checkboxes" {% for genre in checkboxes %} {%if genre == 'Jazz'%} checked="true" {% endif %} {% endfor %}>
+      				        Jazz</label></li>
+      		        <li><label for="checkboxes" class="checkbox">
+      				      <input type="checkbox" value="Pop" name="checkboxes" {% for genre in checkboxes %} {%if genre == 'Pop'%} checked="true" {% endif %} {% endfor %}>
+      				        Pop</label></li>
+      		        <li><label for="checkboxes" class="checkbox">
+      				      <input type="checkbox" value="Rock" name="checkboxes" {% for genre in checkboxes %} {%if genre == 'Rock'%} checked="true" {% endif %} {% endfor %}>
+      				        Rock</label></li>
+      		        <li><label for="checkboxes" class="checkbox">
+      				      <input type="checkbox" value="Singer/Songwriter" name="checkboxes" {% for genre in checkboxes %} {%if genre == 'Singer/Songwriter'%} checked="true" {% endif %} {% endfor %}>
+      				        Singer/Songwriter</label>
+      		        <li><label for="checkboxes" class="checkbox">
+      				      <input type="checkbox" value="Vocal" name="checkboxes" {% for genre in checkboxes %} {%if genre == 'Vocal'%} checked="true" {% endif %} {% endfor %}>
+      				        Vocal</label></li>
+      				  </ul>
     				  </div>
-    				</div>
+  				  </div>
+  				  <div class="clearfix"></div>
     				<div class="control-group">
     				  <label for="selectbasic" class="control-label">Locality</label>
     				  <div class="controls">
