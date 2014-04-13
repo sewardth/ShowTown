@@ -6,9 +6,9 @@ class Applicant(ndb.Model):
 	musician_name = ndb.StringProperty()
 	applicant_video = ndb.KeyProperty()
 	video_link = ndb.StringProperty()
-	applicant_status = ndb.BoolenProperty(default = True)
+	applicant_status = ndb.BooleanProperty(default = True)
 	performing = ndb.BooleanProperty(default = False)
-	event_date = ndb.DateTimeProperty()
+	event_date = ndb.DateProperty()
 	applied_date = ndb.DateTimeProperty(auto_now_add = True)
 	modifed_date = ndb.DateTimeProperty(auto_now = True) 
 	

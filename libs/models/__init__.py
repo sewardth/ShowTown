@@ -1,1 +1,1 @@
-import account, fan, musician, venue, events, voting, videos, following
+import account, fan, musician, venue, events, voting, videos, following, applicants

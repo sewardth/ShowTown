@@ -49,7 +49,7 @@ class VenueProfileHandler(views.Template):
 
 
 class VenueProfileApplicantsHandler(views.Template):
-	def get(self):
+	def post(self):
 		"""user = self.user_check()
 		applicants_data = [{'musician_id':0, 'image_src':'images/_test_profile.jpg', 
 		'musician_name':'Mac Miller', 'likes_count':'1,342', 'followers_count':'132', 'genre':'Hip-Hop/Rap',
@@ -66,13 +66,13 @@ class VenueProfileApplicantsHandler(views.Template):
 		musicians = models.musician.Musician.fetch_artists([x.musician_key for x in applicants])
 		app_data =[]
 		for x in applicants:
-			musician = [y for y in musicians if x.musician_key == musician.key]
+			musician = [y for y in musicians if x.musician_key == y.key] #searches query list for selected musician.  Prevents multiple queries.
 			data = x.to_dict()
-			del data['gig_key'], data['event_date'], data['applied_date'], data['modified_date']
+			del data['gig_key'], data['event_date'], data['applied_date'], data['modifed_date']
 			data['gig_key'] = gig.key.urlsafe()
 			data['gig_name'] = gig.gig_name
-			data['musician_key'] = data['musician_key'].key.urlsafe()
-			data['applicant_video'] = data['applicant_video'].key.urlsafe()
+			data['musician_key'] = data['musician_key'].urlsafe()
+			data['applicant_video'] = data['applicant_video'].urlsafe()
 			app_data.append(data)
 			
 		data = {'applicants' : app_data}
@@ -115,7 +115,7 @@ class MusicianProfileHandler(views.Template):
 app = webapp2.WSGIApplication([
     ('/fan_profile', FanProfileHandler),
     ('/venue_profile', VenueProfileHandler),
-    ('/venue_profile_applicants', VenueProfileApplicantsHandler),
+    ('/applicants_profile.*', VenueProfileApplicantsHandler),
     ('/musician_profile', MusicianProfileHandler),
 
 
