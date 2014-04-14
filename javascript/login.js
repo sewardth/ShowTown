@@ -24,8 +24,8 @@ function show_login_popup(){
                     '<fieldset><legend>Login to ShowTown</legend>' +
   					          '<p class="fl"><label>E-mail</label> <input type="text" name="email"></p>' +
   					          '<p class="fl"><label>Password</label> <input type="password" name="password"></p>' +
-  					          '<p><input class="btn btn-primary" value="Login"type="submit"/ ></p>' +
-  				          '</fieldset></form></div>';
+  					          '<p><input class="btn btn-primary" value="Login"type="submit"/ > <a style="color:blue;" href="/login_handler_reset">I forgot my password</a></p>' +
+  				          	  '</fieldset></form></div>';
 	$('#login_popup_dialog')
 	  .append(login_html)  
 	  .parent().append('<div class="dialog_close" onclick="global.login_popup_dialog.dialog(\'close\')" title="Close"></div>') 				

@@ -38,7 +38,14 @@ class VenueProfileHandler(views.Template):
 		user = self.user_check()
 		venue = models.venue.Venue.query_by_account(user.key)
 		gigs = models.events.Event.query_by_venue_key(venue.key) #retuns an array of gig objects - can parse in template using for loop.
-		
+	
+		applicant_query = models.applicants.Applicant.group_by_applicant_counts([x.key for x in gigs])
+		applicant_list = [x.gig_key for x in applicant_query]
+		for x in gigs:
+			x.applicant_count =   applicant_list.count(x.key)
+			
+
+
 		template_values = {'venue_name':venue.venue_name, 'venue_type':venue.venue_type,
 		'venue_address':venue.address[0].address_1  + ', ' + venue.address[0].address_2  + ' ' + venue.address[0].city  + ', ' + venue.address[0].state  + ' ' + str(venue.address[0].zip), 
 		'venue_phone':venue.phone, 'venue_url':'Need field in DB',

@@ -31,3 +31,7 @@ class Applicant(ndb.Model):
 	@classmethod
 	def query_for_update(cls, gig_key, musician_key):
 		return cls.query(cls.gig_key == gig_key, cls.musician_key == musician_key).get()
+		
+	@classmethod
+	def group_by_applicant_counts(cls, gigs):
+		return cls.query(cls.gig_key.IN(gigs)).fetch()

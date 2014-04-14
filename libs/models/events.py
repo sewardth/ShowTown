@@ -13,6 +13,7 @@ class Event(ndb.Model):
 	genres = ndb.StringProperty(repeated=True)
 	locality = ndb.StringProperty()
 	description = ndb.TextProperty()
+	applicant_count = ndb.IntegerProperty()
 	active = ndb.BooleanProperty(default = True)
 	created = ndb.DateTimeProperty(auto_now_add = True)
 	
@@ -24,4 +25,6 @@ class Event(ndb.Model):
 	@classmethod
 	def query_by_key(cls, key):
 		return cls.query(cls._key == key).get()
-		
+	
+
+			
