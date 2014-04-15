@@ -10,6 +10,7 @@ function show_gig_applicants(gig_key){
     data: {id:gig_key}
   })
   .done(function(data, textStatus, xhr){
+    global.applicants_data = data.applicants;
     show_gig_applicants_popup(data);
   })
   .fail(function(xhr){ 
@@ -32,14 +33,27 @@ function show_gig_applicants_popup(data){
       },
     });
   }
-  gig_applicants_html = '<div class="microcopy"><h2>' + data.applicants[0].gig_name + ' <small>Current Applicants</small></h2><br>' +
+  var gig_applicants_html = '<div class="microcopy"><h2>' + data.applicants[0].gig_name + ' <small>Current Applicants</small></h2><br>' +
  			'<table class="table"><thead><tr>' +
  				'<th>Artist</th><th>Genre</th><th>Total Likes</th><th>Total Followers</th><th>Video</th><th>&nbsp;</th>' +
  				'</tr></thead><tbody>';
   for(idx in data.applicants){
-    gig_applicants_html += '<tr><td><a href="/musician?id=' + encodeURIComponent(data.applicants[idx].musician_key) + '">' +
+    if(data.applicants[idx].applicant_status && !data.applicants[idx].performing){
+      var html_status = '';
+      var accept_disabled = '';
+      var decline_disabled = '';
+    }else if(data.applicants[idx].applicant_status && data.applicants[idx].performing){
+      html_status = '<i class="fa fa-check green"></i>';
+      var accept_disabled = 'disabled';
+      var decline_disabled = '';
+    }else{
+      var html_status = '<i class="fa fa-times red"></i>';
+      var accept_disabled = '';
+      var decline_disabled = 'disabled';
+    }
+    gig_applicants_html += '<tr id="applicant' + idx + '"><td><a href="/musician?id=' + encodeURIComponent(data.applicants[idx].musician_key) + '">' +
       '<img class="pull-left artist_image" src="/imgs?id=' + encodeURIComponent(data.applicants[idx].musician_key) + '&amp;width=100&amp;height=100"></a>' +
-      '<h4><a href="/musician?id=' + encodeURIComponent(data.applicants[idx].musician_key) + '">' + data.applicants[idx].musician_name + '</a>' +
+      '<h4>' + html_status + '<a href="/musician?id=' + encodeURIComponent(data.applicants[idx].musician_key) + '">' + data.applicants[idx].musician_name + '</a>' +
       '</td><td>' +
       '&nbsp;' +
       '</td><td>' +
@@ -49,12 +63,8 @@ function show_gig_applicants_popup(data){
       '</td><td>' +
       '<a class="btn btn-default signup" href="#video_link">Watch Video</a>' +
       '</td><td>' +
-      '<a class="btn btn-primary" href="javascript:void(0)" onclick="show_gig_applicants_popup_performers_gig(\'' + 
-        encodeURIComponent(data.applicants[idx].gig_key) + '\', \'' +  
-        encodeURIComponent(data.applicants[idx].musician_key) + '\', \'accept\')">Accept</a> ' +
-      '<a class="btn btn-primary" href="javascript:void(0)" onclick="show_gig_applicants_popup_performers_gig(\'' + 
-        encodeURIComponent(data.applicants[idx].gig_key) + '\', \'' + 
-        encodeURIComponent(data.applicants[idx].musician_key) + '\', \'decline\')">Decline</a>' +
+      '<a class="btn btn-primary ' + accept_disabled + ' accept" href="javascript:void(0)" onclick="show_gig_applicants_popup_performers_gig(' + idx + ', \'accept\')">Accept</a> ' +
+      '<a class="btn btn-primary ' + decline_disabled + ' decline" href="javascript:void(0)" onclick="show_gig_applicants_popup_performers_gig(' + idx + ', \'decline\')">Decline</a> ' +
       '</td></tr>'
   }
  	gig_applicants_html += '</tbody></table>'			
@@ -69,18 +79,38 @@ function show_gig_applicants_popup(data){
   $('#generic_popup_dialog').attr("style","width:900px;");
 }
 
-function show_gig_applicants_popup_performers_gig(gig_id, mus_id, status){
+function show_gig_applicants_popup_performers_gig(idx, status){
   // global.show_gig_applicants_popup_dialog.dialog('close');
   $.ajax({
     type: "POST",
     url: '/performers_gig',
     dataType: 'json',
-    data: {gig_id:gig_id, mus_id:mus_id, status:status}})
+    data: {gig_id:global.applicants_data[idx].gig_key, mus_id:global.applicants_data[idx].musician_key, status:status}})
     .done(function(data, textStatus, xhr){
-
+console.log(xhr)
+      if(xhr.status == 200){
+        // Set checkmark
+        var status_html = status == 'accept' ? '<i class="fa fa-check green"></i>' : '<i class="fa fa-times red"></i>';
+        $('#applicant' + idx).children('td:first-child').children('h4').prepend(status_html);
+        // Disable button
+        if(status == 'accept'){
+          $('#applicant' + idx).children('td').children('a.accept').addClass('disabled');
+        }else{
+          $('#applicant' + idx).children('td').children('a.decline').addClass('disabled');
+        }
+      }
     })
     .fail(function(xhr){ 
 console.log(xhr)
+      if(xhr.status == 200){
+        var status_html = status == 'accept' ? '<i class="fa fa-check green"></i>' : '<i class="fa fa-times red"></i>';
+        $('#applicant' + idx).children('td:first-child').children('h4').prepend(status_html);
+        if(status == 'accept'){
+          $('#applicant' + idx).children('td').children('a.accept').addClass('disabled');
+        }else{
+          $('#applicant' + idx).children('td').children('a.decline').addClass('disabled');
+        }
+      }
     });
 }
 

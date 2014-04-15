@@ -112,6 +112,8 @@ fieldset legend {margin: 0}
 .ui-dialog {overflow: visible !important; background: none repeat scroll 0 0 #F9F9F9 !important;}
 
 /* Misc */
+.red {color: red;}
+.green {color: green;}
 .btn-deemphasize {background-color: #929292; border-color: #929292; color: #FFFFFF;}
 .btn-deemphasize:hover {background-color: #eee;}
 .btn-notice {background-color: #e7f259; border-color: #d5df4c; color: #5c5222; font-weight: bold;}
