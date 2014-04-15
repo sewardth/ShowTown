@@ -13,6 +13,11 @@ class VoteHandler(views.Template):
 			voter_choice = None
 		else:
 			voter_choice =  ndb.Key(urlsafe = self.request.get('win'))
+			if voter_choice == video_one:
+				mus_choice = video_one_artist_key
+			else:
+				mus_choice = video_two_artist_key
+				
 		
 		vote = models.voting.Voting(voter_acc_key = user.key,
 									voter_type = user.account_type,
@@ -23,6 +28,7 @@ class VoteHandler(views.Template):
 									video_two_artist_key = video_two_artist_key,
 									video_two_name = self.request.get('right_mus_name'),
 									voter_choice = voter_choice,
+									voter_choice_musician_key = mus_choice,
 									video_set_check = [video_one, video_two],
 									voter_ip = self.request.remote_addr).put()
 	

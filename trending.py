@@ -23,8 +23,8 @@ class TrendingHandler(views.Template):
 		followers = models.following.Following.fetch_followers_count([x.key for x in musicians])
 		followers_list = [x.followed_entity_key for x in followers]
 		likes = models.voting.Voting.fetch_votes_musicians([x.key for x in musicians])
-		likes_list = [x.artist_one_key for x in likes]+[x.artist_two_key for x in likes]
-		wins_list = [x.voter_choice for x in likes]
+		likes_list = [x.video_one_artist_key for x in likes]+[x.video_two_artist_key for x in likes]
+		wins_list = [x.voter_choice_musician_key for x in likes]
 		
 		trending_data =[]
 		for x in musicians:
@@ -33,7 +33,10 @@ class TrendingHandler(views.Template):
 			data['mus_key'] = x.key.urlsafe()
 			data['followers_count'] = followers_list.count(x.key)
 			data['likes_count'] = likes_list.count(x.key)
-			data['like_percent'] = (float(wins_list.count(x.key)) /  data['likes_count'])*100
+			if data['likes_count'] != 0:
+				data['like_percent'] =  int((float(wins_list.count(x.key)) /  data['likes_count'])*100 )
+			else:
+				data['like_percent'] = 0
 			trending_data.append(data)
 		if more and next_curs:
 		      next = next_curs.urlsafe()

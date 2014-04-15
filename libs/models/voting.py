@@ -10,6 +10,7 @@ class Voting(ndb.Model):
 	video_two_artist_key = ndb.KeyProperty()
 	video_two_name = ndb.StringProperty()
 	voter_choice = ndb.KeyProperty()
+	voter_choice_musician_key = ndb.KeyProperty()
 	video_set_check = ndb.KeyProperty(repeated = True)
 	voter_ip = ndb.StringProperty()
 	vote_time = ndb.DateTimeProperty(auto_now_add = True)

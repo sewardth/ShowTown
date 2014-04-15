@@ -37,13 +37,14 @@
             </p>
       		</div>
         </div>
-        
+        {% if user %}
         {% if is_following %}
     		<a href="/follow?id={{musician.key.urlsafe()}}&call_b=musician&result=u" class="btn btn-notice"><i class="fa fa-times-circle"></i> Unfollow</a>
     	  {% else %}
     		<a href="/follow?id={{musician.key.urlsafe()}}&call_b=musician&result=f" class="btn btn-notice"><i class="fa fa-arrow-circle-right"></i> Follow</a>
     	  {% endif %}
-        
+        {% else %}
+		{% endif %}
         
         <div class="row">
      			<h4>Biography</h4>

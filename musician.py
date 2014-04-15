@@ -12,10 +12,13 @@ class MusicianHandler(views.Template):
 		videos = models.videos.Videos.fetch_by_musician(musician_key)
 		followers = models.following.Following.fetch_by_followed_key(musician.key)
 		likes = models.voting.Voting.fetch_winning_count([x.key for x in videos])
-		user_following = models.following.Following.get_by_keys(self.user_check().key, musician.key)
+		if self.user_check(): 
+			user_following = models.following.Following.get_by_keys(self.user_check().key, musician.key)
+		else:
+			user_following = False
 	
 		
-		template_values = {'musician':musician, 'videos':videos, 'call_b':str(self.request.path), 'followers':len(followers), 'likes':len(likes), 'is_following':user_following}
+		template_values = {'user':self.user_check(),'musician':musician, 'videos':videos, 'call_b':str(self.request.path), 'followers':len(followers), 'likes':len(likes), 'is_following':user_following}
 		self.render('musician.html', template_values)
     		    		                                         		
 app = webapp2.WSGIApplication([
