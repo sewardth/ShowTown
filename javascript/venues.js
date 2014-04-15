@@ -1,5 +1,5 @@
 /**
- * @file Functions to handle the trending page content
+ * @file Functions to handle the venues page content
  */
 
 function init_page(){

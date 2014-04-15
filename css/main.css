@@ -28,7 +28,12 @@ label {font-weight: normal;}
 .control-group {margin: 20px 0 0 0;}
 .control-group input[type="text"], .control-group textarea {max-width: 720px; width: 100%;}
 .btn-primary {background-color: #3299bb; border-color: #3299bb; color: #FFFFFF !important;}
-.btn-primary:hover {background-color: #eee; color:#333 !important;}
+.btn-primary:hover, .btn-primary:focus, .btn-primary:active {background-color: #eee; color:#333 !important;}
+a, {color: #3299bb;} 
+.ui-widget-content a {color: #3299bb !important;} 
+.ui-widget-content a.btn-default {color: #333 !important;} 
+.ui-widget-content a.btn-primary {color: #fff !important;} 
+.ui-widget-content a.btn:hover {color: #333 !important;} 
   
 /* Header */
 .top_btn{background-color: #3299bb; color: white}

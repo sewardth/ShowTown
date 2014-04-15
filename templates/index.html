@@ -31,11 +31,9 @@
 				</li>
 			</ul>
 		</div>
-		<br/>
 		<hr/>
 		{% if vids %}
 		<h1 class="text-center" id="matchup_title">New Video Match Up</h1>
-
 		<br/>
 		<p class ="text-center" id="error"></p>
     <div class ="row" id="video-matchup">
@@ -47,6 +45,8 @@
     		</div>
     		  {% if user %}
   			<p class="text-center"><a id="left_url" href="" class="btn btn-primary signup"><i class="fa fa-thumbs-o-up"></i> I Like This</a></p>
+  			  {% else %}
+  			<p class="text-center"><a class="btn btn-primary signup" href="javascript:void(0)" onclick="show_login_popup()">Login to Like This</a></p>
   			  {% endif %}
   		</div>
       <div class="video">
@@ -57,6 +57,8 @@
   			</div>
   			  {% if user %}
   			<p class="text-center"><a id="right_url" href="" class="btn btn-primary signup"><i class="fa fa-thumbs-o-up"></i> I Like This</a></p>
+  			  {% else %}
+  			<p class="text-center"><a class="btn btn-primary signup" href="javascript:void(0)" onclick="show_login_popup()">Login to Like This</a></p>
   			  {% endif %}
   		</div>
   		<img src="/images/matchup_vs.png" id="matchup_vs">
@@ -68,7 +70,7 @@
 			    {% if user %}
 				<p class="text-center"><a id="draw_url" href="" class="btn btn-deemphasize text-center signup">I can't decide, it's a draw</a></p>
 				  {% else %}
-  			<p class="text-center">Login to vote</p>  
+			  <p class="text-center"><a class="btn btn-deemphasize signup" href="javascript:void(0)" onclick="show_login_popup()">Login to make it a draw</a></p> 
   			  {% endif %}
 		{% else %}
 		<p>No new match-ups for you to view</p>
