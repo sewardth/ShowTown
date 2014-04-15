@@ -13,7 +13,7 @@ class Event(ndb.Model):
 	genres = ndb.StringProperty(repeated=True)
 	locality = ndb.StringProperty()
 	description = ndb.TextProperty()
-	applicant_count = ndb.IntegerProperty()
+	applicant_count = ndb.IntegerProperty(default = 0)
 	active = ndb.BooleanProperty(default = True)
 	created = ndb.DateTimeProperty(auto_now_add = True)
 	

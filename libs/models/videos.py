@@ -24,3 +24,4 @@ class Videos(ndb.Model):
 	@classmethod
 	def fetch_by_musician(cls, musician_key):
 		return cls.query(cls.musician_key == musician_key).fetch()
+		

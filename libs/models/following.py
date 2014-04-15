@@ -17,3 +17,7 @@ class Following(ndb.Model):
 	@classmethod
 	def fetch_by_followed_key(cls, followed_key):
 		return cls.query(cls.followed_entity_key == followed_key).fetch(10000)
+		
+	@classmethod
+	def fetch_followers_count(cls, followed_keys):
+		return cls.query(cls.followed_entity_key.IN(followed_keys)).fetch()

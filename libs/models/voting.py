@@ -19,6 +19,12 @@ class Voting(ndb.Model):
 	def query_by_user(cls, acc_key):
 		return cls.query(cls.voter_acc_key == acc_key).fetch(2000)
 		
+		
 	@classmethod
 	def fetch_winning_count(cls, video_list):
 		return cls.query(cls.voter_choice.IN(video_list)).fetch(10000)
+		
+	@classmethod
+	def fetch_votes_musicians(cls, artist_keys):
+		return cls.query(ndb.OR(cls.video_one_artist_key.IN(artist_keys), cls.video_two_artist_key.IN(artist_keys))).fetch()
+		
