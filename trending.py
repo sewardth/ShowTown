@@ -22,9 +22,9 @@ class TrendingHandler(views.Template):
 		musicians, next_curs, more = models.musician.Musician.query().fetch_page(10, start_cursor=curs)
 		followers = models.following.Following.fetch_followers_count([x.key for x in musicians])
 		followers_list = [x.followed_entity_key for x in followers]
-		likes = models.voting.Voting.fetch_votes_musicians([x.key for x in musicians])
-		likes_list = [x.video_one_artist_key for x in likes]+[x.video_two_artist_key for x in likes]
-		wins_list = [x.voter_choice_musician_key for x in likes]
+		total_matchups = models.voting.Voting.fetch_votes_musicians([x.key for x in musicians])
+		match_list = [x.video_one_artist_key for x in total_matchups]+[x.video_two_artist_key for x in total_matchups]
+		wins_list = [x.voter_choice_musician_key for x in total_matchups]
 		
 		trending_data =[]
 		for x in musicians:
@@ -32,9 +32,9 @@ class TrendingHandler(views.Template):
 			del data['profile_pic'], data['latest_update'], data['user_key'], data['account_created'], data['DOB']
 			data['mus_key'] = x.key.urlsafe()
 			data['followers_count'] = followers_list.count(x.key)
-			data['likes_count'] = likes_list.count(x.key)
-			if data['likes_count'] != 0:
-				data['like_percent'] =  int((float(wins_list.count(x.key)) /  data['likes_count'])*100 )
+			data['likes_count'] = wins_list.count(x.key)
+			if data['likes_count'] != 0 and match_list.count(x.key) != 0:
+				data['like_percent'] =  format((float(data['likes_count']) / match_list.count(x.key))*100, '.0f')
 			else:
 				data['like_percent'] = 0
 			trending_data.append(data)
