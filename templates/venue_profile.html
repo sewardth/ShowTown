@@ -3,7 +3,7 @@
 <head>
 	<meta charset="utf-8">
   {% include 'common_links.inc' %}
-  <script src="javascript/venues.js"></script>
+  <script src="javascript/venue_profile.js" charset="utf-8"></script>
 	<title>{{venue_name}}</title>
 	<!--[if lt IE 9]>
 	<script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script>
@@ -67,7 +67,7 @@
 						</td>
 						<td>${{ag.compensation}}</td>
 						<td>
-							<a class="btn btn-default signup" href="/venue_profile_applicants?id={{ag.key.urlsafe()}}">{{ag.applicants | count}} Applicants</a></td>
+							<a class="btn btn-default signup {% if ag.applicant_count == 0 %}disabled{% endif %}" href="javascript:void(0)" onclick="show_gig_applicants('{{ag.key.urlsafe()}}')">{{ag.applicant_count}} Applicants</a></td>
 					</tr>
 					{% endfor %}
 				</tbody>
