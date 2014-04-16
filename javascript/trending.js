@@ -75,6 +75,7 @@ function load_page_content(genre_code, state_code){
                   .text(entries[i].band_name)
                 )
                 .append($(document.createElement('small'))
+                  .attr({'class':'left_spaced'})
                   .text(entries[i].likes_count + ' Likes and ' + entries[i].followers_count + ' Followers')
                 )
               )

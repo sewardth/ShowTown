@@ -25,7 +25,7 @@ function show_gig_applicants_popup(data){
       modal: true, 
       width: 'auto',
       height: 'auto',
-      position: Array(150,100),
+      position: Array(100,100),
       resizable: false,
       overlay: { 
        opacity: 0.8, 
@@ -35,7 +35,7 @@ function show_gig_applicants_popup(data){
   }
   var gig_applicants_html = '<div class="microcopy"><h2>' + data.applicants[0].gig_name + ' <small>Current Applicants</small></h2><br>' +
  			'<table class="table"><thead><tr>' +
- 				'<th>Artist</th><th>Genre</th><th>Total Likes</th><th>Total Followers</th><th>Video</th><th>&nbsp;</th>' +
+ 				'<th>Artist</th><th>&nbsp;</th><th>&nbsp;</th><th>Genre</th><th>Total Likes</th><th>Total Followers</th><th>Video</th><th>&nbsp;</th>' +
  				'</tr></thead><tbody>';
   for(idx in data.applicants){
     if(data.applicants[idx].applicant_status && !data.applicants[idx].performing){
@@ -51,9 +51,13 @@ function show_gig_applicants_popup(data){
       var accept_disabled = '';
       var decline_disabled = 'disabled';
     }
-    gig_applicants_html += '<tr id="applicant' + idx + '"><td><a href="/musician?id=' + encodeURIComponent(data.applicants[idx].musician_key) + '">' +
+    gig_applicants_html += '<tr id="applicant' + idx + '">' +
+      '<td><a href="/musician?id=' + encodeURIComponent(data.applicants[idx].musician_key) + '">' +
       '<img class="pull-left artist_image" src="/imgs?id=' + encodeURIComponent(data.applicants[idx].musician_key) + '&amp;width=100&amp;height=100"></a>' +
-      '<h4>' + html_status + '<a href="/musician?id=' + encodeURIComponent(data.applicants[idx].musician_key) + '">' + data.applicants[idx].musician_name + '</a>' +
+      '</td><td>' +
+      '<h4 id="applicant_status' + idx + '">' + html_status + '</h4>' +
+      '</td><td>' +
+      '<h4><a href="/musician?id=' + encodeURIComponent(data.applicants[idx].musician_key) + '">' + data.applicants[idx].musician_name + '</a>' +
       '</td><td>' +
       '&nbsp;' +
       '</td><td>' +
@@ -62,7 +66,7 @@ function show_gig_applicants_popup(data){
       '&nbsp;' +
       '</td><td>' +
       '<a class="btn btn-default signup" href="javascript:void(0)" onclick="show_gig_applicants_watch_video_popup(' + idx + ')">Watch Video</a>' +
-      '</td><td>' +
+      '</td><td style="width:180px">' +
       '<a class="btn btn-primary ' + accept_disabled + ' accept" href="javascript:void(0)" onclick="show_gig_applicants_popup_performers_gig(' + idx + ', \'accept\')">Accept</a> ' +
       '<a class="btn btn-primary ' + decline_disabled + ' decline" href="javascript:void(0)" onclick="show_gig_applicants_popup_performers_gig(' + idx + ', \'decline\')">Decline</a> ' +
       '</td></tr>'
@@ -76,7 +80,7 @@ function show_gig_applicants_popup(data){
 
   global.show_gig_applicants_popup_dialog.dialog('open');
   // Reset the width so it doesn't go over.
-  $('#generic_popup_dialog').attr("style","width:900px;");
+  $('#generic_popup_dialog').attr("style","width:1050px;");
 }
 
 function show_gig_applicants_popup_performers_gig(idx, status){
@@ -91,7 +95,7 @@ console.log(xhr)
       if(xhr.status == 200){
         // Set checkmark
         var status_html = status == 'accept' ? '<i class="fa fa-check green"></i>' : '<i class="fa fa-times red"></i>';
-        $('#applicant' + idx).children('td:first-child').children('h4').prepend(status_html);
+        $('#applicant_status' + idx).html(status_html);
         // Disable button
         if(status == 'accept'){
           $('#applicant' + idx).children('td').children('a.accept').addClass('disabled');
@@ -104,7 +108,7 @@ console.log(xhr)
 console.log(xhr)
       if(xhr.status == 200){
         var status_html = status == 'accept' ? '<i class="fa fa-check green"></i>' : '<i class="fa fa-times red"></i>';
-        $('#applicant' + idx).children('td:first-child').children('h4').prepend(status_html);
+        $('#applicant_status' + idx).html(status_html);
         if(status == 'accept'){
           $('#applicant' + idx).children('td').children('a.accept').addClass('disabled');
         }else{
