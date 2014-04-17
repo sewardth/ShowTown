@@ -6,10 +6,6 @@ import models
 
 class FanProfileHandler(views.Template):
 	def get(self):
-		upcoming_shows = [{'artist':'Hoodie Allen', 'artist_href':'#', 'venue':'Andiamo', 'venue_href':'#', 'show':'Friday Night Lights', 'date':'12/13/2013', 'time':'5:30pm - 7:30pm', 'details':'Friday Night Lights is a weekly gathering where diners can enjoy soft and comfortable music with their meals.'}, 
-		{'artist':'Mac Miller', 'artist_href':'#', 'venue':'Andiamo', 'venue_href':'#', 'show':'Saturday Night Jams', 'date':'12/14/2013', 'time':'10:00pm - 2:00am', 'details':'Every saturday the venue becomes a club and we like high energy music.'}]
-
-		
 		user = self.user_check() #returns user account info
 		fan = models.fan.Fan.query_by_account(user.key) #returns fan profile info
 		participation = models.voting.Voting.query_by_user(user.key)
@@ -26,14 +22,6 @@ class FanProfileHandler(views.Template):
 
 class VenueProfileHandler(views.Template):
 	def get(self):
-		available_gigs = [{'gig_name':'Friday Night Lights', "gig_id":'0', 'date':'12/13/2013', 'time':'5:30pm - 7:30pm', 
-		'detail_list':['Equipment Required','Local Musicians Only'], 'genres':'Country, Folk, Classical', 
-		'detail_description':'Friday Night Lights is a weekly gathering where diners can enjoy soft and comfortable music with their meals.', 
-		'compemsation':'150', 'applicant_count':4},
-		{'gig_name':'Sunday Interlude', "gig_id":'0', 'date':'12/15/2013', 'time':'12:00pm - 2:00pm', 
-		'detail_list':['Local or Touring Musicians'], 'genres':'Classical', 
-		'detail_description':'Looking for a talented piano player to help set the mood for our lunch crowd..', 
-		'compemsation':'125', 'applicant_count':2}]
 		
 		user = self.user_check()
 		venue = models.venue.Venue.query_by_account(user.key)
@@ -60,16 +48,6 @@ class VenueProfileHandler(views.Template):
 
 class VenueProfileApplicantsHandler(views.Template):
 	def post(self):
-		"""user = self.user_check()
-		applicants_data = [{'musician_id':0, 'image_src':'images/_test_profile.jpg', 
-		'musician_name':'Mac Miller', 'likes_count':'1,342', 'followers_count':'132', 'genre':'Hip-Hop/Rap',
-		'musician_city':'Ann Arbor', 'musician_state':'Michigan', 'like_percent':'73'},
-		{'musician_id':0, 'image_src':'images/_test_profile.jpg', 
-		'musician_name':'Hoodie Allen', 'likes_count':'1,242', 'followers_count':'122', 'genre':'Hip-Hop/Rap',
-		'musician_city':'Ann Arbor', 'musician_state':'Michigan', 'like_percent':'70'}]
-		template_values = {'applicants_data':applicants_data}
-		self.render('venue_profile_applicants.html', template_values)"""
-		
 		gig_id = ndb.Key(urlsafe = self.request.get('id'))
 		gig = gig_id.get()
 		applicants = models.applicants.Applicant.query_by_gig(gig.key)
@@ -109,8 +87,17 @@ class MusicianProfileHandler(views.Template):
 		videos = models.videos.Videos.query_by_account(user.key)
 		followers = models.following.Following.fetch_by_followed_key(musician.key)
 		likes = models.voting.Voting.fetch_winning_count([x.key for x in videos])
-
-		
+		if likes != None:
+			matches = models.voting.Voting.fetch_votes_musicians([musician.key])
+			total_matches = [x.video_one for x in matches] + [x.video_two for x in matches]
+			wins = [x.voter_choice for x in likes]
+			for x in videos:
+				x.total_matchups = total_matches.count(x.key)
+				x.likes =  wins.count(x.key)
+				if x.total_matchups and x.likes != 0:
+					x.win_percent = format((float(x.likes) / x.total_matchups)*100, '.0f')
+				else:
+					x.win_percent = '0'
 		
 		template_values = {'musician':musician, 'likes':likes, 'followers':followers,
 		'trending_rank':'3','trending_category':'All Musicians', 'trending_state':'Michigan', 

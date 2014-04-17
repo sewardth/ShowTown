@@ -20,7 +20,7 @@
     <div class="clearfix"></div>
     <div class="microcopy">
       <p>
-        <strong>Genre: </strong>{{musician.genre}} / Located in {{musician.address[0].city}}, {{musician.address[0].state}} / Born: {{musician.DOB.strftime('%B %d, %Y')}}
+        <strong>Genre: </strong>{{musician.band_genre}} / Located in {{musician.address[0].city}}, {{musician.address[0].state}} / Born: {% if musician.DOB %}{{musician.DOB.strftime('%B %d, %Y')}} {% else %}{% endif %}
       </p>
       <p>
         <a class="trending" href="/trending">
@@ -125,9 +125,9 @@
 			<div class="col-lg-6 video {% if v.featured %} featured {% endif %}">
 				<iframe width="490" height="300" frameborder="0" allowfullscreen="" src="{{v.embed_link}}"></iframe>
           {% if v.featured %}
-				  <h2 class="text-center featured"><span>Featured:</span> {{v.video_title}} <br><small>{{v.likes_count}} Likes. Wins {{v.matchup_wins_percent}}% of Match Ups</small></h2>
+				  <h2 class="text-center featured"><span>Featured:</span> {{v.video_title}} <br><small>{{v.likes}} Likes. Wins {{v.win_percent}}% of Match Ups</small></h2>
 					{% else %}
-				  <h2 class="text-center">{{v.video_title}} <br><small>{{v.likes_count}} Likes. Wins {{v.matchup_wins_percent}}% of Match Ups</small></h2>
+				  <h2 class="text-center">{{v.video_title}} <br><small>{{v.likes}} Likes. Wins {{v.win_percent}}% of Match Ups</small></h2>
 					{% endif %}
 					<br>
 					{% if v.featured %}

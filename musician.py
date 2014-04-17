@@ -15,6 +15,18 @@ class MusicianHandler(views.Template):
 		videos = models.videos.Videos.fetch_by_musician(musician_key)
 		followers = models.following.Following.fetch_by_followed_key(musician.key)
 		likes = models.voting.Voting.fetch_winning_count([x.key for x in videos])
+		if likes != None:
+			matches = models.voting.Voting.fetch_votes_musicians([musician.key])
+			total_matches = [x.video_one for x in matches] + [x.video_two for x in matches]
+			wins = [x.voter_choice for x in likes]
+			for x in videos:
+				x.total_matchups = total_matches.count(x.key)
+				x.likes =  wins.count(x.key)
+				if x.total_matchups and x.likes != 0:
+					x.win_percent = format((float(x.likes) / x.total_matchups)*100, '.0f')
+				else:
+					x.win_percent = '0'
+				
 		if user: 
 			user_following = models.following.Following.get_by_keys(self.user_check().key, musician.key)
 		else:
