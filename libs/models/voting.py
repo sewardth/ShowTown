@@ -13,6 +13,10 @@ class Voting(ndb.Model):
 	voter_choice_musician_key = ndb.KeyProperty()
 	video_set_check = ndb.KeyProperty(repeated = True)
 	voter_ip = ndb.StringProperty()
+	one_win_percent = ndb.StringProperty(default ='0')
+	two_win_percent = ndb.StringProperty(default ='0')
+	one_followed = ndb.BooleanProperty(default = False)
+	two_followed = ndb.BooleanProperty(default = False)
 	vote_time = ndb.DateTimeProperty(auto_now_add = True)
 	
 	
@@ -29,3 +33,7 @@ class Voting(ndb.Model):
 	def fetch_votes_musicians(cls, artist_keys):
 		return cls.query(ndb.OR(cls.video_one_artist_key.IN(artist_keys), cls.video_two_artist_key.IN(artist_keys))).fetch()
 		
+
+	@classmethod
+	def recent_by_user(cls, acc_key):
+		return cls.query(cls.voter_acc_key == acc_key).fetch(5)

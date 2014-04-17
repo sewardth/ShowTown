@@ -30,10 +30,32 @@ class MainHandler(views.Template):
 		
 		user = self.user_check()
 		if user:
-			participation = models.voting.Voting.query_by_user(user.key)
+			participation = models.voting.Voting.recent_by_user(user.key)
+			if participation != None:
+				total_matches = [x.video_one_artist_key for x in participation] + [x.video_two_artist_key for x in participation]
+				likes = [x.voter_choice_musician_key for x in participation]
+				user_followed = models.following.Following.fetch_by_user(user.key)
+				followed = [x.followed_entity_key for x in user_followed]
+				for x in participation:
+					one_total = total_matches.count(x.video_one_artist_key)
+					two_total = total_matches.count(x.video_two_artist_key)
+					one_likes = likes.count(x.video_one_artist_key)
+					two_likes = likes.count(x.video_two_artist_key)
+					if one_likes !=0 or one_total !=0:
+						x.one_win_percent = format((float(one_likes)/one_total)*100, '.0f')
+					else: 
+						x.one_win_percent = '0'
+					if two_likes !=0 or two_total !=0:
+						x.two_win_percent = format((float(two_likes)/two_total)*100, '.0f')
+					else:
+						x.two_win_percent ='0'
+					if x.video_one_artist_key in followed: x.one_followed = True
+					if x.video_two_artist_key in followed: x.two_followed = True
+				
+				
 		else:
 			participation = None
-
+			
 		musicians_states = [{'name':'Michigan', 'abbr':'MI'}, {'name':'California', 'abbr':'CA'}, {'name':'Florida', 'abbr':'FL'}]
 		template_values = {'musicians_states':musicians_states, 'vids': vids, 'matchups':participation}			
 		self.render('index.html', template_values)

@@ -12,7 +12,7 @@ class Following(ndb.Model):
 		
 	@classmethod
 	def fetch_by_user(cls, user_key):
-		return cls.query(cls.follower_key == user_key).fetch(100)
+		return cls.query(cls.follower_key == user_key).fetch(500)
 		
 	@classmethod
 	def fetch_by_followed_key(cls, followed_key):
