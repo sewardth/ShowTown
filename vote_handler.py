@@ -18,22 +18,25 @@ class VoteHandler(views.Template):
 			else:
 				mus_choice = video_two_artist_key
 				
-		
-		vote = models.voting.Voting(voter_acc_key = user.key,
-									voter_type = user.account_type,
-									video_one = video_one,
-									video_one_artist_key = video_one_artist_key,
-									video_one_name = self.request.get('left_mus_name'),
-									video_two = video_two,
-									video_two_artist_key = video_two_artist_key,
-									video_two_name = self.request.get('right_mus_name'),
-									voter_choice = voter_choice,
-									voter_choice_musician_key = mus_choice,
-									video_set_check = [video_one, video_two],
-									voter_ip = self.request.remote_addr).put()
+		vote = models.voting.Voting.get_by_vote(user.key, [video_one, video_two])
+		if vote == None:
+			vote = models.voting.Voting(voter_acc_key = user.key,
+										voter_type = user.account_type,
+										video_one = video_one,
+										video_one_artist_key = video_one_artist_key,
+										video_one_name = self.request.get('left_mus_name'),
+										video_two = video_two,
+										video_two_artist_key = video_two_artist_key,
+										video_two_name = self.request.get('right_mus_name'),
+										voter_choice = voter_choice,
+										voter_choice_musician_key = mus_choice,
+										video_set_check = [video_one, video_two],
+										voter_ip = self.request.remote_addr).put()
 	
-		time.sleep(.5)
-		self.redirect('/')
+			time.sleep(.5)
+			self.redirect('/')
+		else:
+			self.response.out.write('Record Already Exists')
 	
 app = webapp2.WSGIApplication([
    

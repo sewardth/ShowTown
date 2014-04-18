@@ -37,3 +37,7 @@ class Voting(ndb.Model):
 	@classmethod
 	def recent_by_user(cls, acc_key):
 		return cls.query(cls.voter_acc_key == acc_key).fetch(5)
+		
+	@classmethod
+	def get_by_vote(cls, user_key, video_keys):
+		return cls.query(cls.voter_acc_key == user_key, cls.video_one.IN(video_keys), cls.video_two.IN(video_keys)).get()

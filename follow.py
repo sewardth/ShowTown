@@ -14,7 +14,8 @@ class FollowHandler(views.Template):
 		
 		
 		if result == 'f':
-			follow = models.following.Following(followed_entity_key = to_follow,
+			check = models.following.Following.get_by_keys(user.key, to_follow)
+			if check == None:follow = models.following.Following(followed_entity_key = to_follow,
 												follower_key = user.key).put()
 		else:
 			record = models.following.Following.get_by_keys(user.key, to_follow)

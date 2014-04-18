@@ -100,8 +100,8 @@
         			  </span>
       			  </div>
       			  <div class="previous_matchup_info_links">
-      			    <a href="/musician?id={{m.video_two_artist_key.urlsafe()}}"><i class="fa fa-user"></i> Profile</a>
-      			    <a href="/follow?id={{m.video_two_artist_key.urlsafe()}}&call_b=musician&result=f"><i class="fa fa-arrow-circle-right"></i> Follow</a>
+      			    <a href="/musician?id={{m.video_one_artist_key.urlsafe()}}"><i class="fa fa-user"></i> Profile</a>
+      			    {% if m.one_followed %} {% else %}<a href="/follow?id={{m.video_one_artist_key.urlsafe()}}&call_b=musician&result=f"><i class="fa fa-arrow-circle-right"></i> Follow</a> {% endif %}
       			  </div>
         		</div>
   				</div>
@@ -117,7 +117,7 @@
       			  </div>
       			  <div class="previous_matchup_info_links">
       			    <a href="/musician?id={{m.video_two_artist_key.urlsafe()}}"><i class="fa fa-user"></i> Profile</a>
-      			    <a href="/follow?id={{m.video_two_artist_key.urlsafe()}}&call_b=musician&result=f"><i class="fa fa-arrow-circle-right"></i> Follow</a>
+      			    {% if m.two_followed %} {% else %}<a href="/follow?id={{m.video_two_artist_key.urlsafe()}}&call_b=musician&result=f"><i class="fa fa-arrow-circle-right"></i> Follow</a> {% endif %}
       			  </div>
         		</div>
   				</div>

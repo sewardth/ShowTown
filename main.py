@@ -30,10 +30,15 @@ class MainHandler(views.Template):
 		
 		user = self.user_check()
 		if user:
+			if user.account_type == 'musician': 
+				pro = models.musician.Musician.query_by_account(user.key)
+			else:
+				pro = user
 			participation = models.voting.Voting.recent_by_user(user.key)
-			if participation != None:
-				total_matches = [x.video_one_artist_key for x in participation] + [x.video_two_artist_key for x in participation]
-				likes = [x.voter_choice_musician_key for x in participation]
+			if participation != None and len(participation)>0:
+				total_votes = models.voting.Voting.fetch_votes_musicians([x.video_one_artist_key for x in participation]+[x.video_two_artist_key for x in participation])
+				total_matches = [x.video_one_artist_key for x in total_votes] + [x.video_two_artist_key for x in total_votes]
+				likes = [x.voter_choice_musician_key for x in total_votes]
 				user_followed = models.following.Following.fetch_by_user(user.key)
 				followed = [x.followed_entity_key for x in user_followed]
 				for x in participation:
@@ -49,13 +54,16 @@ class MainHandler(views.Template):
 						x.two_win_percent = format((float(two_likes)/two_total)*100, '.0f')
 					else:
 						x.two_win_percent ='0'
-					if x.video_one_artist_key in followed: x.one_followed = True
-					if x.video_two_artist_key in followed: x.two_followed = True
-				
+					if x.video_one_artist_key in followed or pro.key == x.video_one_artist_key: x.one_followed = True
+					if x.video_two_artist_key in followed or pro.key == x.video_two_artist_key: x.two_followed = True
+					
+			else:
+				participation = None
+			
 				
 		else:
 			participation = None
-			
+
 		musicians_states = [{'name':'Michigan', 'abbr':'MI'}, {'name':'California', 'abbr':'CA'}, {'name':'Florida', 'abbr':'FL'}]
 		template_values = {'musicians_states':musicians_states, 'vids': vids, 'matchups':participation}			
 		self.render('index.html', template_values)
