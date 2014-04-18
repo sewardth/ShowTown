@@ -30,20 +30,33 @@ class FanProfileHandler(views.Template):
 					x.two_win_percent = format((float(two_likes)/two_total)*100, '.0f')
 				else:
 					x.two_win_percent ='0'
-				if x.video_one_artist_key in followed  == x.video_one_artist_key: x.one_followed = True
-				if x.video_two_artist_key in followed  == x.video_two_artist_key: x.two_followed = True
+				if x.video_one_artist_key in followed: x.one_followed = True
+				if x.video_two_artist_key in followed: x.two_followed = True
 		else:
 			participation = None
-		
-		
-		
+
+			
+		if followed_artists != None:	
+			for x in followed_artists:
+				total_matchups = models.voting.Voting.fetch_votes_musicians([x.key for x in followed_artists])
+				match_list = [x.video_one_artist_key for x in total_matchups]+[x.video_two_artist_key for x in total_matchups]
+				wins_list = [x.voter_choice_musician_key for x in total_matchups]
+				wins = wins_list.count(x.key)
+				matches = match_list.count(x.key)
+				if wins != 0 and matches != 0:
+					x.win_percent = format((float(wins)/matches)*100, '.0f')
+				else:
+					x.win_percent = '0'
+			
+				
+			
+				
 		
 		
 		
 		template_values = {'matchups':participation, 'fav_genres':'Hip-Hop/Rap, Alternative','upcoming_shows':None, 
 		'followed_musicians':followed_artists, 'fan_profile':fan}
 		self.render('fan_profile.html', template_values)
-
 
 
 

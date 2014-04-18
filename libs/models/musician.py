@@ -19,6 +19,7 @@ class Musician(ndb.Model):
 	video_hosting_page = ndb.StringProperty()
 	latest_update = ndb.DateTimeProperty(auto_now = True)
 	account_created = ndb.DateTimeProperty(auto_now_add = True)
+	win_percent = ndb.StringProperty(default ='0')
 	
 	@classmethod
 	def query_by_account(cls, user_key):
