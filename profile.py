@@ -35,21 +35,22 @@ class FanProfileHandler(views.Template):
 		else:
 			participation = None
 
-			
+		#self.response.out.write(followed_artists)
 		if followed_artists != None:	
 			for x in followed_artists:
-				total_matchups = models.voting.Voting.fetch_votes_musicians([x.key for x in followed_artists])
-				match_list = [x.video_one_artist_key for x in total_matchups]+[x.video_two_artist_key for x in total_matchups]
-				wins_list = [x.voter_choice_musician_key for x in total_matchups]
+				total_matchups = models.voting.Voting.fetch_votes_musicians([a.key for a in followed_artists])
+				match_list = [y.video_one_artist_key for y in total_matchups]+[q.video_two_artist_key for q in total_matchups]
+				wins_list = [z.voter_choice_musician_key for z in total_matchups]
 				wins = wins_list.count(x.key)
 				matches = match_list.count(x.key)
+				wins = matches
+				wins = wins
 				if wins != 0 and matches != 0:
 					x.win_percent = format((float(wins)/matches)*100, '.0f')
 				else:
-					x.win_percent = '0'
-			
+					x.win_percent = '5'
 				
-			
+
 				
 		
 		
