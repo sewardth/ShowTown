@@ -29,7 +29,7 @@ label {font-weight: normal;}
 .control-group input[type="text"], .control-group textarea {max-width: 720px; width: 100%;}
 .btn-primary {background-color: #3299bb; border-color: #3299bb; color: #FFFFFF !important;}
 .btn-primary:hover, .btn-primary:focus, .btn-primary:active, .btn-primary .active {background-color: #eee; color:#333 !important;}
-a, {color: #3299bb;} 
+a {color: #3299bb;} 
 .ui-widget-content a {color: #3299bb !important;} 
 .ui-widget-content a.btn-default {color: #333 !important;} 
 .ui-widget-content a.btn-primary {color: #fff !important;} 
@@ -40,7 +40,7 @@ a, {color: #3299bb;}
 .utility {float: right; padding: 10px 0;}
 .utility li {float: left; margin: 0 0 0 10px;}
 
-#top_bar{height: 80px;}
+#top_bar{height: 80px; margin: 0 0 10px 0;}
 #top_bar .top_menu_bar{margin: 21px 0 6px 0; background-color: #222222; height: 48px;}
 #top_bar .navbar-nav > li {float: left; margin: 0 25px; width: 80px;}
 #top_bar ul {padding: 15px 0 0 0 !important;}
@@ -73,6 +73,9 @@ a, {color: #3299bb;}
 /* Home */
 .selection-nav > li {float: left; margin: 0;}
 .selection-nav li > a {padding: 0 8px;}
+
+/* Musician */
+.col-lg-2.profile-pic {margin: 15px 0 0 0;}
 
 /* Forms */
 fieldset legend {margin: 0}

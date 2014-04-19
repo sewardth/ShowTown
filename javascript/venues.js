@@ -59,7 +59,7 @@ console.log('Load venue_type=' + venue_type + ' - state=' + state_code + ' - gig
           .append($(document.createElement('tr'))
             .append($(document.createElement('td'))
               .append($(document.createElement('img'))
-                .attr({src:'/imgs?id='+entries[i].venue_key+'&width=210&height=119'})
+                .attr({'class':"artist_image", src:'/imgs?id='+entries[i].venue_key+'&width=100&height=100'})
               )	
             )
             .append($(document.createElement('td'))
@@ -78,7 +78,7 @@ console.log('Load venue_type=' + venue_type + ' - state=' + state_code + ' - gig
             )
             .append(user_type == 'musician' ? $(document.createElement('td'))
               .append($(document.createElement('a'))
-                .attr({href:'javascript:void(0)',  'class':"btn btn-primary signup"})
+                .attr({href:'javascript:void(0)',  'class':"btn btn-notice signup"})
                 .bind('click',{venue_id:entries[i].venue_key}, function(e){
                   $.ajax({
                     type: "POST",
@@ -92,7 +92,7 @@ console.log('Load venue_type=' + venue_type + ' - state=' + state_code + ' - gig
 console.log(xhr)
                     });
                 })
-                .text('Available Gigs')
+                .text('See Available Gigs')
               ) : null
             )
           );
