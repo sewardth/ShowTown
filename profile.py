@@ -1,4 +1,4 @@
-import webapp2, json, sys, views
+import webapp2, json, sys, views, calculations as calc
 from google.appengine.ext import ndb
 sys.path.insert(0,'libs')
 import models
@@ -8,57 +8,64 @@ class FanProfileHandler(views.Template):
 	def get(self):
 		user = self.user_check() #returns user account info
 		fan = models.fan.Fan.query_by_account(user.key) #returns fan profile info
-		followed = models.following.Following.fetch_by_user(user.key)
-		followed_artists = models.musician.Musician.fetch_artists([x.followed_entity_key for x in followed])  #returns an array of Musician objects - can parse in template using for loop.*
 		participation = models.voting.Voting.recent_by_user(user.key)
-		if participation != None and len(participation)>0:
-			total_votes = models.voting.Voting.fetch_votes_musicians([x.video_one_artist_key for x in participation]+[x.video_two_artist_key for x in participation])
-			total_matches = [x.video_one_artist_key for x in total_votes] + [x.video_two_artist_key for x in total_votes]
-			likes = [x.voter_choice_musician_key for x in total_votes]
-			user_followed = models.following.Following.fetch_by_user(user.key)
-			followed = [x.followed_entity_key for x in user_followed]
-			for x in participation:
-				one_total = total_matches.count(x.video_one_artist_key)
-				two_total = total_matches.count(x.video_two_artist_key)
-				one_likes = likes.count(x.video_one_artist_key)
-				two_likes = likes.count(x.video_two_artist_key)
-				if one_likes !=0 or one_total !=0:
-					x.one_win_percent = format((float(one_likes)/one_total)*100, '.0f')
-				else: 
-					x.one_win_percent = '0'
-				if two_likes !=0 or two_total !=0:
-					x.two_win_percent = format((float(two_likes)/two_total)*100, '.0f')
-				else:
-					x.two_win_percent ='0'
-				if x.video_one_artist_key in followed: x.one_followed = True
-				if x.video_two_artist_key in followed: x.two_followed = True
+		following = models.following.Following.fetch_by_user(user.key)
+		
+		if participation != None:
+			matches = self.count_likes_participation(participation, following)
 		else:
-			participation = None
+			matches = None
+		
+		if following != None:
+			following = self.count_likes_followers(following)
+		else:
+			following = None
 
-		if followed_artists != None:	
-			for x in followed_artists:
-				total_matchups = models.voting.Voting.fetch_votes_musicians([a.key for a in followed_artists])
-				match_list = [y.video_one_artist_key for y in total_matchups]+[q.video_two_artist_key for q in total_matchups]
-				wins_list = [z.voter_choice_musician_key for z in total_matchups]
-				wins = wins_list.count(x.key)
-				matches = match_list.count(x.key)
-				wins = matches
-				wins = wins
-				if wins != 0 and matches != 0:
-					x.win_percent = format((float(wins)/matches)*100, '.0f')
-				else:
-					x.win_percent = '0'
-				
-
-				
 		
-		
-		
-		template_values = {'matchups':participation, 'fav_genres':'Hip-Hop/Rap, Alternative','upcoming_shows':None, 
-		'followed_musicians':followed_artists, 'fan_profile':fan}
+		template_values = {'followed_musicians':following, 'matchups':matches, 'fav_genres':'Hip-Hop/Rap, Alternative','upcoming_shows':None, 
+		#'followed_musicians':followed_artists, '
+		'fan_profile':fan}
 		self.render('fan_profile.html', template_values)
 
-
+	def count_likes_participation(self, participation, followers = False):
+		musician_keys = [x.video_one_artist_key for x in participation] + [x.video_two_artist_key for x in participation]
+		counts = calc.LikesCount.counts_by_musicians(musician_keys)
+		
+		template_data = []
+		for x in participation:
+			data = x.to_dict()
+			data['one_win_percent'] = counts[x.video_one_artist_key]
+			data['two_win_percent'] = counts[x.video_two_artist_key]
+			
+			if followers:
+				followers_list = [y.followed_entity_key for y in followers]
+				if x.video_one_artist_key in followers_list: data['one_followed'] = True
+				if x.video_two_artist_key in followers_list: data['two_followed'] = True
+			template_data.append(data)
+		return template_data
+		
+		
+	
+	def count_likes_followers(self, followed):
+		musicians = models.musician.Musician.fetch_artists([x.followed_entity_key for x in followed])
+		counts = calc.LikesCount.counts_by_musicians([x.key for x in musicians])
+		print counts
+		
+		template_data = []
+		for x in musicians:
+			data = x.to_dict()
+			data['win_percent'] = counts[x.key]
+			data['key'] = x.key
+			template_data.append(data)
+		return template_data
+			
+			
+		
+		
+	
+	
+	
+	
 
 
 class VenueProfileHandler(views.Template):
