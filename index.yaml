@@ -14,3 +14,9 @@ indexes:
   properties:
   - name: gig_key
   - name: musician_key
+
+- kind: Voting
+  properties:
+  - name: voter_acc_key
+  - name: vote_time
+    direction: desc

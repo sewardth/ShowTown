@@ -11,10 +11,10 @@ class MusicianHandler(views.Template):
 		hide_follow = False
 		musician_key = ndb.Key(urlsafe = self.request.get('id'))
 		musician = musician_key.get()
-		if user.account_type == 'musician':
-			profile = models.musician.Musician.query_by_account(user.key)
-			if musician_key == profile.key: 
-				hide_follow = True
+		if user:
+			if user.account_type == 'musician':
+				profile = models.musician.Musician.query_by_account(user.key)
+				if musician_key == profile.key: hide_follow = True
 
 		videos = models.videos.Videos.fetch_by_musician(musician_key)
 		followers = models.following.Following.fetch_by_followed_key(musician.key)
@@ -36,7 +36,7 @@ class MusicianHandler(views.Template):
 		else:
 			user_following = False
 		
-		template_values = {'hide':hide_follow, 'user':self.user_check(),'musician':musician, 'videos':videos, 'call_b':str(self.request.path), 'followers':len(followers), 'likes':len(likes), 'is_following':user_following}
+		template_values = {'hide':hide_follow,'musician':musician, 'videos':videos, 'call_b':str(self.request.path), 'followers':len(followers), 'likes':len(likes), 'is_following':user_following}
 		self.render('musician.html', template_values)
     		    		                                         		
 app = webapp2.WSGIApplication([
