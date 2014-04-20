@@ -85,9 +85,11 @@
 	{% else %}
 	  <p>You do not currently follow any musicians</p>
 	{% endif %}
+	{% if matchups %}
     <h2>Recent Match ups</h2>
+
+
 	  <hr>
-    {% if matchups %}
       {% for m in matchups %}
       <div class="row prev-vid-row">
   			<div class="col-lg-6 prev-vid {% if m.voter_choice == m.video_one %}voted{% endif %}">
@@ -99,6 +101,7 @@
         			   {% if m.voter_choice == m.video_one %}<img src="/images/voted.png"/>{% endif %}
         			  </span>
       			  </div>
+      			  <div>Liked {{m.one_win_percent}}% of the time</div>
       			  <div class="previous_matchup_info_links">
       			    <a href="/musician?id={{m.video_one_artist_key.urlsafe()}}"><i class="fa fa-user"></i> Profile</a>
       			    {% if m.one_followed %} {% else %}<a href="/follow?id={{m.video_one_artist_key.urlsafe()}}&call_b=musician&result=f"><i class="fa fa-arrow-circle-right"></i> Follow</a> {% endif %}
@@ -115,9 +118,10 @@
         			   {% if m.voter_choice == m.video_two %}<img src="/images/voted.png"/>{% endif %}
         			  </span>
       			  </div>
+      			  <div>Liked {{m.two_win_percent}}% of the time</div>
       			  <div class="previous_matchup_info_links">
       			    <a href="/musician?id={{m.video_two_artist_key.urlsafe()}}"><i class="fa fa-user"></i> Profile</a>
-      			    {% if m.two_followed %} {% else %}<a href="/follow?id={{m.video_two_artist_key.urlsafe()}}&call_b=musician&result=f"><i class="fa fa-arrow-circle-right"></i> Follow</a> {% endif %}
+      			    {% if m.two_followed %} {% else %}<a href="/follow?id={{m.video_two_artist_key.urlsafe()}}&call_b=musician&result=f"><i class="fa fa-arrow-circle-right"></i> Follow</a>{% endif %}
       			  </div>
         		</div>
   				</div>
@@ -125,7 +129,7 @@
   		</div>
       {% endfor %}
   	{% else %}
-  	<p>No matchups</p>
+
   	{% endif %}
     {% include 'footer.html' %}
   </div>
