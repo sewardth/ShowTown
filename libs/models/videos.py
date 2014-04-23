@@ -8,7 +8,7 @@ class Videos(ndb.Model):
 	genre_tag = ndb.StringProperty()
 	video_title = ndb.StringProperty()
 	featured = ndb.BooleanProperty(default = False)
-	win_percent = ndb.StringProperty(default=0.0)
+	win_percent = ndb.StringProperty(default='0')
 	total_matchups = ndb.IntegerProperty(default=0)
 	likes = ndb.IntegerProperty(default = 0)
 	video_added = ndb.DateTimeProperty(auto_now_add = True)

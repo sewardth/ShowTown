@@ -17,7 +17,7 @@
     <div class="clearfix"></div>
     <div class="microcopy">
       <div>
-        <strong>You're following</strong> {% if followed_musicians %}{{followed_musicians | count}} {% else %} 0 {% endif %} Musicians. <strong>You've Participated in</strong> {% if matchups %}{{matchups | count}} {% else %}0 {% endif %} Matchups
+        <strong>You're following</strong> {% if followed_musicians %}{{followed_musicians | count}} {% else %} 0 {% endif %} Musicians. <strong>You've Participated in</strong> {% if matchups %}{{match_count}} {% else %}0 {% endif %} Matchups
         <span class="left_spaced bold">Favorite Genres: </span>{% for x in fan_profile.genres %} {{x}}  {% endfor %}
       </div>
 		</div>

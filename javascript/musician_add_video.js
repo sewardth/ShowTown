@@ -27,6 +27,29 @@ function show_add_video_popup(){
                 			    '<input type="text" class="input-xlarge" placeholder="http://" name="video_url" id="video_url">' +
                 			    '<p class="help-block">Youtube or Vimeo Supported</p>' +
                 			  '</div>' +
+								'<div class="control-group">'+
+				      			  '<label for="video_genre" class="control-label">Video Genre</label>'+
+				      			  '<div class="controls">'+
+				      			    '<select class="input-xlarge" name="band_genre" id="video_genre">'+
+				      			      '<option>Alternative</option>'+
+				    		          '<option>Blues</option>'+
+				    		          '<option>Classical</option>'+
+				    		          '<option>Country</option>'+
+				    		          '<option>Dance</option>'+
+				    		          '<option>Easy Listening</option>'+
+				    		          '<option>Electronic</option>'+
+				    		          '<option>Hip-Hop/Rap</option>'+
+				    		          '<option>Industrial</option>'+
+				    		          '<option>Instrumental</option>'+
+				    		          '<option>Jazz</option>'+
+				    		          '<option>Pop</option>'+
+				    		          '<option>Rock</option>'+
+				    		          '<option>Singer/Songwriter</option>'+
+				    		          '<option>Vocal</option>'+
+				      			    '</select>'+
+				      			  '</div>'+
+				      			'</div>'+
+								'<br>'+
                 			'</div>' +
   					          '<p><input class="btn btn-primary" value="Submit"type="submit"/ ></p>' +
   				          '</fieldset></form></div>';

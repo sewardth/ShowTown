@@ -272,7 +272,7 @@ class SignupHandler(views.Template):
 				profile.twitter = params['twitter'][0]
 				profile.sound_cloud = params['sound_cloud'][0]
 				profile.video_hosting_page = params['video_hosting_page'][0]
-				profile.band_genre = params['band_genre'][0]
+				#profile.band_genre = params['band_genre'][0]
 				if profile_pic: profile.profile_pic = profile_pic
 				
 				profile.put()
@@ -289,7 +289,7 @@ class SignupHandler(views.Template):
 									address= [models.address.Address(city=params['city'][0],
 																	 state = params['state'][0], 
 																	 zip = int(params['zip'][0]))], 
-						
+					
 									profile_pic = profile_pic,
 									num_of_members = int(params['num_of_members'][0]),
 									bio = params['bio'][0],
@@ -298,8 +298,8 @@ class SignupHandler(views.Template):
 									video_hosting_page = video_hosting_page,
 									twitter = twitter,
 									sound_cloud = sound_cloud,
-									band_genre = params['band_genre'][0]).put()
-						
+									band_genre = [params['band_genre'][0]]).put()
+					
 					video = models.videos.Videos(embed_link = submission_video['embed_link'],
 																acc_key = acc_key,
 																musician_key = user,

@@ -57,15 +57,21 @@ class RemoveHandler(views.Template):
 class AddHandler(views.Template):
 	def post(self):
 		submission_video = valid.get_video(self.request.get('video_url'))
+		video_genre = self.request.get('band_genre')
 		acc_key = self.user_check()
 		musician = models.musician.Musician.query_by_account(acc_key.key)
 		video = models.videos.Videos(embed_link = submission_video['embed_link'],
 									acc_key = acc_key.key,
 									musician_key = musician.key,
 									musician_name = musician.band_name,
-									genre_tag = None,
+									genre_tag = video_genre,
 									video_title = submission_video['title'],
 									featured = False).put()
+									
+		if video and video_genre not in musician.band_genre:
+			musician.band_genre.append(video_genre)
+			musician.put()
+			
 		time.sleep(.5)
 		self.redirect('/musician_profile')
 

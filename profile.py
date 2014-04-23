@@ -10,6 +10,7 @@ class FanProfileHandler(views.Template):
 		fan = models.fan.Fan.query_by_account(user.key) #returns fan profile info
 		participation = models.voting.Voting.recent_by_user(user.key)
 		following = models.following.Following.fetch_by_user(user.key)
+		match_count = len(models.voting.Voting.query_by_user(user.key))
 		
 		if participation != None:
 			matches = self.count_likes_participation(participation, following)
@@ -23,8 +24,7 @@ class FanProfileHandler(views.Template):
 
 		
 		template_values = {'followed_musicians':following, 'matchups':matches, 'fav_genres':'Hip-Hop/Rap, Alternative','upcoming_shows':None, 
-		#'followed_musicians':followed_artists, '
-		'fan_profile':fan}
+		'fan_profile':fan, 'match_count':match_count}
 		self.render('fan_profile.html', template_values)
 
 	def count_likes_participation(self, participation, followers = False):

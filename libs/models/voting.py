@@ -18,7 +18,7 @@ class Voting(ndb.Model):
 	
 	@classmethod
 	def query_by_user(cls, acc_key):
-		return cls.query(cls.voter_acc_key == acc_key).fetch(2000)
+		return cls.query(cls.voter_acc_key == acc_key).fetch(10000)
 		
 		
 	@classmethod

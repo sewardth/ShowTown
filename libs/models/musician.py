@@ -6,7 +6,7 @@ class Musician(ndb.Model):
 	user_key = ndb.KeyProperty()
 	user_name = ndb.StringProperty()
 	band_name = ndb.StringProperty()
-	band_genre = ndb.StringProperty()
+	band_genre = ndb.StringProperty(repeated = True)
 	email = ndb.StringProperty()
 	address = ndb.StructuredProperty(Address, repeated=True)
 	profile_pic = ndb.BlobProperty()
@@ -17,7 +17,7 @@ class Musician(ndb.Model):
 	twitter = ndb.StringProperty()
 	sound_cloud = ndb.StringProperty()
 	video_hosting_page = ndb.StringProperty()
-	win_percent = ndb.StringProperty(default ='0')
+	#win_percent = ndb.StringProperty(default ='0')
 	latest_update = ndb.DateTimeProperty(auto_now = True)
 	account_created = ndb.DateTimeProperty(auto_now_add = True)
 	
