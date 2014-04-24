@@ -12,12 +12,12 @@ class FanProfileHandler(views.Template):
 		following = models.following.Following.fetch_by_user(user.key)
 		match_count = len(models.voting.Voting.query_by_user(user.key))
 		
-		if participation != None:
+		if participation != None and len(participation)>0:
 			matches = self.count_likes_participation(participation, following)
 		else:
 			matches = None
 		
-		if following != None:
+		if following != None and len(following)>0:
 			following = self.count_likes_followers(following)
 		else:
 			following = None
