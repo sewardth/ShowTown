@@ -1,1 +1,1 @@
-import form_validation, messages, encryption
+import form_validation, messages, encryption, static_lookups

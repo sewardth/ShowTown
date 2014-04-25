@@ -5,7 +5,7 @@ import lassie, requests
 from google.appengine.api import urlfetch
 from datetime import datetime
 from helpers.form_validation import Validate as valid
-from helpers import messages
+from helpers import messages, static_lookups
 import models
 
 class SignupFanHandler(views.Template):
@@ -30,12 +30,15 @@ class SignupFanHandler(views.Template):
 class SignupMusicianHandler(views.Template):
 	def get(self):
 		user = self.user_check()
+		states = sorted(static_lookups.us_state_abbrev, key=lambda key: static_lookups.us_state_abbrev[key]) #sorts states alphabetically
 		if user:
 			profile = models.musician.Musician.query_by_account(user.key) # Returns musician profile data.
 			if profile.DOB:
 				dob = profile.DOB.strftime('%m/%d/%Y')
 			else:
 				dob = ''
+		
+			
 			
 			template_values = {'email':[profile.email],
 							'dob':[dob],
@@ -46,13 +49,14 @@ class SignupMusicianHandler(views.Template):
 							'facebook':[profile.facebook],
 							'musician_name':[profile.band_name],
 							'city':[profile.address[0].city],
-							'state':[profile.address[0].state],
+							'state':[static_lookups.states[profile.address[0].state]],
 							'zip':[profile.address[0].zip],
 							'num_of_members':[profile.num_of_members],
 							'bio':[profile.bio],
 							'band_genre':[profile.band_genre],
 							'user':user,
-							'profile':profile}
+							'profile':profile,
+							'states':states}
 		else:
 			template_values = {'email':[],
 							'dob':[],
@@ -67,7 +71,10 @@ class SignupMusicianHandler(views.Template):
 							'zip':[],
 							'num_of_members':[],
 							'bio':[],
-							'band_genre':[]}
+							'band_genre':[],
+							'states':states}
+							
+		self.response.out.write(template_values['state'][0])
 		self.render('signup_musician.html', template_values)
 
 
@@ -264,7 +271,7 @@ class SignupHandler(views.Template):
 				profile.email = email
 				profile.DOB = DOB
 				profile.address[0].city = params['city'][0]
-				profile.address[0].state = params['state'][0]
+				profile.address[0].state = static_lookups.us_state_abbrev[params['state'][0]]
 				profile.address[0].zip = int(params['zip'][0])
 				profile.num_of_members = int(params['num_of_members'][0])
 				profile.bio = params['bio'][0]
@@ -287,7 +294,7 @@ class SignupHandler(views.Template):
 									band_name = params['musician_name'][0],
 									email = email, 
 									address= [models.address.Address(city=params['city'][0],
-																	 state = params['state'][0], 
+																	 state = static_lookups.us_state_abbrev[params['state'][0]], 
 																	 zip = int(params['zip'][0]))], 
 					
 									profile_pic = profile_pic,
@@ -306,7 +313,8 @@ class SignupHandler(views.Template):
 																musician_name = params['musician_name'][0],
 																genre_tag = params['band_genre'][0],
 																video_title = submission_video['title'],
-																featured = True).put()
+																featured = True,
+																musician_state = static_lookups.us_state_abbrev[params['state'][0]]).put()
 					self.redirect('/')
 		
 				except:

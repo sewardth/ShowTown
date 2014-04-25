@@ -89,9 +89,9 @@ fieldset legend {margin: 0}
 }
 #favorite_genres li label {font-size: 14px;}
 #city_wrapper, #state_wrapper, #zip_wrapper {float: left; display: inline-block;}
-#city {width: 480px;}
-#state {width: 50px;}
-#zip {width: 150px;}
+#city {width: 380px;}
+#state {width: 200px;}
+#zip {width: 100px;}
 #city, #state {margin-right: 20px;}
 #num_of_members_wrapper {width: 350px;}
 #venue_type_wrapper, #age_limit_wrapper, #capacity_wrapper {width: 240px;}

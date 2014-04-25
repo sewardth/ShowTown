@@ -67,13 +67,17 @@
       			<div class="control-group" id="state_wrapper">
       			  <label for="state" class="control-label">State</label>
       			  <div class="controls">
-      			    <input type="text" class="input-xlarge" placeholder="" name="state" id="state" value="{{state[0]}}">
+      			    <select class="input-xlarge" name="state" id="state">
+					 {% for x in states %}
+      			      <option {% if state[0] == "{{x}}" %} selected = "true" {% endif %}>{{x}}</option>
+					 {% endfor %}
+					</select>
       			  </div>
       			</div>
       			<div class="control-group" id="zip_wrapper">
       			  <label for="zip" class="control-label">Zipcode</label>
       			  <div class="controls">
-      			    <input type="text" class="input-xlarge" placeholder="" name="zip" id="zip" value="{{zip[0]}}">
+      			    <input type="text" maxlength = "5" class="input-xlarge" placeholder="" name="zip" id="zip" value="{{zip[0]}}">
       			  </div>
       			</div>
     			</fieldset>
