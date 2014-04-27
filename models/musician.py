@@ -17,7 +17,6 @@ class Musician(ndb.Model):
 	twitter = ndb.StringProperty()
 	sound_cloud = ndb.StringProperty()
 	video_hosting_page = ndb.StringProperty()
-	#win_percent = ndb.StringProperty(default ='0')
 	latest_update = ndb.DateTimeProperty(auto_now = True)
 	account_created = ndb.DateTimeProperty(auto_now_add = True)
 	

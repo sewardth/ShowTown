@@ -3,7 +3,6 @@ from google.appengine.ext import ndb
 class Event(ndb.Model):
 	venue_key = ndb.KeyProperty()
 	venue_account_key = ndb.KeyProperty()
-	venue = ndb.StringProperty()
 	gig_name = ndb.StringProperty()
 	event_date = ndb.DateProperty()
 	start_time = ndb.DateTimeProperty()

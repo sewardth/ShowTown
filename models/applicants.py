@@ -3,7 +3,6 @@ from google.appengine.ext import ndb
 class Applicant(ndb.Model):
 	gig_key = ndb.KeyProperty()
 	musician_key = ndb.KeyProperty()
-	musician_name = ndb.StringProperty()
 	applicant_video = ndb.KeyProperty()
 	video_link = ndb.StringProperty()
 	applicant_status = ndb.BooleanProperty(default = True)

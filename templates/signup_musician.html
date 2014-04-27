@@ -69,7 +69,7 @@
       			  <div class="controls">
       			    <select class="input-xlarge" name="state" id="state">
 					 {% for x in states %}
-      			      	<option {% if state[0] == "{{x}}" %} selected = "true" {% endif %}>{{x}}</option>
+      			      	<option {% if state[0] == x %} selected = "true" {% endif %}>{{x}}</option>
 					 {% endfor %}
 					</select>
       			  </div>
@@ -96,6 +96,8 @@
 				<div class ="warning">{{video_error}}</div>
       			</div>
 				{% endif %}
+				{% if user %}
+				{% else %}
       			<div class="control-group">
       			  <label for="video_genre" class="control-label">Video Genre</label>
       			  <div class="controls">
@@ -122,6 +124,7 @@
       			    </select>
       			  </div>
       			</div>
+				{% endif %}
     			</fieldset>
     			<br>
     			<fieldset>

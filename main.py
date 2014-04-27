@@ -76,10 +76,10 @@ class MainHandler(views.Template):
 		
 		try:
 			random.sample(self.videos,2)
-	
+
 			if user:
 				self.user_votes = models.voting.Voting.query_by_user(user.key)
-			
+		
 				if self.user_votes != None:
 					self.user_votes = [[x.video_one,x.video_two] for x in self.user_votes]
 					page_vids = False
@@ -89,18 +89,26 @@ class MainHandler(views.Template):
 						self.videos.remove(rand_vid)
 				else:
 					page_vids = random.sample(self.videos,2)
-					
+				
 			else:
 				page_vids = random.sample(self.videos,2)
-				
+		
+			#Match musician info to video data
+			musician_data = {x.key:x.band_name for x in models.musician.Musician.fetch_artists([x.musician_key for x in page_vids])}
+			video_data = []
+			for x in page_vids:
+				data = x.to_dict()
+				data['band_name'] = musician_data[x.musician_key]
+				data['vid_key'] = x.key
+				video_data.append(data)
+			
 		except:
-			page_vids = None
+			video_data = None
 		
 		
-		
-		lvideo = {'url':page_vids[0].embed_link, 'musician_id':page_vids[0].musician_key.urlsafe(), 'musician_name':page_vids[0].musician_name, 'song_name':page_vids[0].video_title, 'key':page_vids[0].key.urlsafe()}
-		rvideo = {'url':page_vids[1].embed_link, 'musician_id':page_vids[1].musician_key.urlsafe(), 'musician_name':page_vids[1].musician_name, 'song_name':page_vids[1].video_title, 'key':page_vids[1].key.urlsafe()}
-		data = {'lvideo':lvideo, 'rvideo':rvideo, 'genre_tag':page_vids[0].genre_tag}
+		lvideo = {'url':video_data[0]['embed_link'], 'musician_id':video_data[0]['musician_key'].urlsafe(), 'musician_name':video_data[0]['band_name'], 'song_name':video_data[0]['video_title'], 'key':video_data[0]['vid_key'].urlsafe()}
+		rvideo = {'url':video_data[1]['embed_link'], 'musician_id':video_data[1]['musician_key'].urlsafe(), 'musician_name':video_data[1]['band_name'], 'song_name':video_data[1]['video_title'], 'key':video_data[1]['vid_key'].urlsafe()}
+		data = {'lvideo':lvideo, 'rvideo':rvideo, 'genre_tag':video_data[0]['genre_tag']}
 		self.response.headers.add_header('content-type', 'application/json', charset='utf-8')
 		self.response.out.write(json.dumps(data)) 
 		

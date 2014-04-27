@@ -63,7 +63,6 @@ class AddHandler(views.Template):
 		video = models.videos.Videos(embed_link = submission_video['embed_link'],
 									acc_key = acc_key.key,
 									musician_key = musician.key,
-									musician_name = musician.band_name,
 									genre_tag = video_genre,
 									video_title = submission_video['title'],
 									featured = False).put()

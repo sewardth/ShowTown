@@ -73,8 +73,7 @@ class SignupMusicianHandler(views.Template):
 							'bio':[],
 							'band_genre':[],
 							'states':states}
-							
-		self.response.out.write(template_values['state'][0])
+
 		self.render('signup_musician.html', template_values)
 
 
@@ -310,11 +309,9 @@ class SignupHandler(views.Template):
 					video = models.videos.Videos(embed_link = submission_video['embed_link'],
 																acc_key = acc_key,
 																musician_key = user,
-																musician_name = params['musician_name'][0],
 																genre_tag = params['band_genre'][0],
 																video_title = submission_video['title'],
-																featured = True,
-																musician_state = static_lookups.us_state_abbrev[params['state'][0]]).put()
+																featured = True).put()
 					self.redirect('/')
 		
 				except:
