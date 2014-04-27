@@ -30,13 +30,16 @@ class FanProfileHandler(views.Template):
 	def count_likes_participation(self, participation, followers = False):
 		musician_keys = [x.video_one_artist_key for x in participation] + [x.video_two_artist_key for x in participation]
 		counts = calc.LikesCount.counts_by_musicians(musician_keys)
+		musician_data = {x.key:x.band_name for x in models.musician.Musician.fetch_artists([x.video_one_artist_key for x in participation]+[x.video_two_artist_key for x in participation])}
+		
 		
 		template_data = []
 		for x in participation:
 			data = x.to_dict()
 			data['one_win_percent'] = counts[x.video_one_artist_key]
 			data['two_win_percent'] = counts[x.video_two_artist_key]
-			
+			data['video_one_name'] = musician_data[x.video_one_artist_key]
+			data['video_two_name'] = musician_data[x.video_two_artist_key]
 			if followers:
 				followers_list = [y.followed_entity_key for y in followers]
 				if x.video_one_artist_key in followers_list: data['one_followed'] = True

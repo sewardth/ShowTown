@@ -17,6 +17,7 @@
 
 import webapp2, json, sys, views, random
 sys.path.insert(0,'libs')
+from helpers import static_lookups as lookup
 import models
 
 
@@ -41,11 +42,15 @@ class MainHandler(views.Template):
 				likes = [x.voter_choice_musician_key for x in total_votes]
 				user_followed = models.following.Following.fetch_by_user(user.key)
 				followed = [x.followed_entity_key for x in user_followed]
+				musician_data = {x.key:x.band_name for x in models.musician.Musician.fetch_artists([x.video_one_artist_key for x in participation]+[x.video_two_artist_key for x in participation])}
 				for x in participation:
+					data = x.to_dict()
 					one_total = total_matches.count(x.video_one_artist_key)
 					two_total = total_matches.count(x.video_two_artist_key)
 					one_likes = likes.count(x.video_one_artist_key)
 					two_likes = likes.count(x.video_two_artist_key)
+					x.video_one_name = musician_data[x.video_one_artist_key]
+					x.video_two_name = musician_data[x.video_two_artist_key]
 					if one_likes !=0 or one_total !=0:
 						x.one_win_percent = format((float(one_likes)/one_total)*100, '.0f')
 					else: 
@@ -64,13 +69,26 @@ class MainHandler(views.Template):
 		else:
 			participation = None
 
-		musicians_states = [{'name':'Michigan', 'abbr':'MI'}, {'name':'California', 'abbr':'CA'}, {'name':'Florida', 'abbr':'FL'}]
+		try:
+			states = models.musician.Musician.fetch_distinct_states()
+			genres = models.videos.Videos.fetch_distinct_genres()
+			musicians_states = []
+			for x in states:
+				data = {}
+				data['abbr']= x.musician_state
+				data['name']= lookup.states[x.musician_state]
+				musicians_states.append(data)
+				
+		except:
+			musicians_states = None
 		template_values = {'musicians_states':musicians_states, 'vids': vids, 'matchups':participation}			
 		self.render('index.html', template_values)
 					
 
 	def post(self):
 		# NOTE: we are posting genre and state.
+		state = self.request.get('state_code')
+		genre = self.request.get('genre_code')
 		user = self.user_check()
 		self.videos = models.videos.Videos.fetch_featured()
 		

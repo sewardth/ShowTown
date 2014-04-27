@@ -85,7 +85,7 @@ function load_page_content(genre_code, state_code){
                 )
                 .append($(document.createElement('a'))
                   .attr({href:"#"})
-                  .text(entries[i].genre)
+                  .text(entries[i].band_genre)
                 )
                 .append($(document.createElement('br')))
                 .append($(document.createElement('span'))

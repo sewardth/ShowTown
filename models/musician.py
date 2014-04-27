@@ -9,6 +9,7 @@ class Musician(ndb.Model):
 	band_genre = ndb.StringProperty(repeated = True)
 	email = ndb.StringProperty()
 	address = ndb.StructuredProperty(Address, repeated=True)
+	musician_state = ndb.ComputedProperty(lambda self: self.address[0].state)
 	profile_pic = ndb.BlobProperty()
 	num_of_members = ndb.IntegerProperty()
 	bio = ndb.TextProperty()
@@ -35,3 +36,12 @@ class Musician(ndb.Model):
 			return cls.query(cls._key.IN(keys)).fetch()
 		except:
 			return None
+			
+	@classmethod
+	def filter_by_state(cls, state):
+		return cls.query(cls.address[0].state == state).all()
+		
+	@classmethod
+	def fetch_distinct_states(cls):
+		return cls.query(projection=[cls.musician_state], distinct=True).fetch()
+		

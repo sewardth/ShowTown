@@ -295,7 +295,7 @@ class SignupHandler(views.Template):
 									address= [models.address.Address(city=params['city'][0],
 																	 state = static_lookups.us_state_abbrev[params['state'][0]], 
 																	 zip = int(params['zip'][0]))], 
-					
+									
 									profile_pic = profile_pic,
 									num_of_members = int(params['num_of_members'][0]),
 									bio = params['bio'][0],
