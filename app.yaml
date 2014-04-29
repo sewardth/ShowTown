@@ -62,6 +62,9 @@ handlers:
 - url: /musician.*
   script: musician.app
 
+- url: /find_musician.*
+  script: find_musicians.app
+    
 - url: /follow.*
   script: follow.app
   
