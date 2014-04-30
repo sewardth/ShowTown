@@ -4,6 +4,7 @@
 	<meta charset="utf-8">
   {% include 'common_links.inc' %}
 	<title>{{musician.band_name}}</title>
+	<script src="javascript/musician.js"></script>
 	<!--[if lt IE 9]>
 	<script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script>
 	<![endif]-->
@@ -16,7 +17,7 @@
       <a href="/trending">Musicians</a> <i class="fa fa-angle-double-right"></i> 
       {{musician.band_name}}
     </div>
-		<hr/>
+		<hr/> 
     <div class="row">
       <div class="col-lg-2 profile-pic">
     		<img class="artist_image" src="/imgs?id={{musician.key.urlsafe()}}&width=165&height=165" />
@@ -26,7 +27,19 @@
           <a href="/trending">
             <strong>{{trending_category}}</strong> in <strong>{{trending_state}}</strong>
           </a>
+          <div><a href="{{musician.facebook}}" target="_blank">FB</a></div>
+          <div><a href="{{musician.twitter}}" target="_blank">twitter</a></div>
+          <div><a href="{{musician.sound_cloud}}" target="_blank">sound_cloud</a></div>
+          <div><a href="{{musician.video_hosting_page}}" target="_blank">video_hosting_page</a></div>
         </p>
+        <!-- AddThis Button BEGIN -->
+        <div class="addthis_toolbox addthis_default_style addthis_32x32_style">
+        <a class="addthis_button_facebook"></a>
+        <a class="addthis_button_twitter"></a>
+        </div>
+        <script type="text/javascript">var addthis_config = {"data_track_addressbar":true};</script>
+        <script type="text/javascript" src="//s7.addthis.com/js/300/addthis_widget.js#pubid=ra-535f25a708c8a1e9"></script>
+        <!-- AddThis Button END -->
     	</div>
       <div class="col-lg-10">
         <div class="row">
@@ -106,11 +119,17 @@
               {% if v.featured %}
     				  <h2 class="text-center featured"><span>Featured:</span> {{v.video_title}}</h2>
     				  <div class="text-center">Wins {{v.win_percent}}% of Match Ups</div>
-    				  <h4 class="text-center informational"><img src="/images/voting.png"> {{v.likes}} Likes.</h4>
+    				  <h4 class="text-center informational">
+    				    <a href="javascript:void(0)" onclick="like_musician('{{musician.key.urlsafe()}}')">
+    				      <img src="/images/voting.png">
+    				    </a> {{v.likes}} Likes.</h4>
     					{% else %}
     				  <h2 class="text-center">{{v.video_title}}</h2>
     				  <div class="text-center">Wins {{v.win_percent}}% of Match Ups</div>
-    				  <h4 class="text-center informational"><img src="/images/voting.png"> {{v.likes}} Likes.</h4>
+    				  <h4 class="text-center informational">
+    				    <a href="javascript:void(0)" onclick="like_musician('{{musician.key.urlsafe()}}')">
+    				      <img src="/images/voting.png" />
+    				    </a> {{v.likes}} Likes.</h4>
     					{% endif %}
     			</div>
     			{% endfor %}
