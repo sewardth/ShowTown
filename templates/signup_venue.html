@@ -144,6 +144,7 @@
       			</div>
     				<br>
             <input class="btn btn-primary" type="submit" {% if user %} value="Update Profile" {% else %} value="Sign Up" {% endif %} />
+            {% if user %}<input class="btn btn-deemphasize" type="button" onclick="location='/venue_profile'" value="Cancel" /> {% endif %}
   				</fieldset>
 				</form>
 			</div>

@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+  {% include 'common_links.inc' %}
+  <script src="javascript/find_musicians.js"></script>
+	<title>Venues</title>
+	<!--[if lt IE 9]>
+	<script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+	<![endif]-->
+	<script>var user_type = '{{user.account_type}}';</script>
+</head>
+<body>
+  <div id="page">
+    {% include 'header.html' %}
+    <div class="microcopy">
+      <a href="/">Home</a> <i class="fa fa-angle-double-right"></i> 
+      <a href="/trending">Musicians</a> <i class="fa fa-angle-double-right"></i> 
+      Find Musicians
+    </div>
+		<hr/>
+    <h1>Find Musicians</h1>
+    <div class="row">
+      <div class="col-lg-12">
+        <form>
+					<fieldset>
+						<div class="control-group col-lg-2">
+						  <label for="genre" class="control-label">Genre</label>
+						  <div class="controls">
+						    <select class="input-xlarge" name="genre" id="genre">
+							    <option>All</option>      
+						   	  <option>Alternative</option>
+				          <option>Blues</option>
+				          <option>Classical</option>
+				          <option>Country</option>
+				          <option>Dance</option>
+				          <option>Easy Listening</option>
+				          <option>Electronic</option>
+				          <option>Hip-Hop/Rap</option>
+				          <option>Classical</option>
+				          <option>Industrial</option>
+				          <option>Instrumental</option>
+				          <option>Jazz</option>
+				          <option>Pop</option>
+				          <option>Rock</option>
+				          <option>Singer/Songwriter</option>
+				          <option>Vocal</option>
+						    </select>
+						  </div>
+						</div>
+
+						<div class="control-group col-lg-2">
+						  <label for="popularity" class="control-label">Popularity</label>
+						  <div class="controls">
+						    <select class="input-xlarge" name="popularity" id="popularity">
+							    <option>Top 10</option>      
+						   	  <option>Top 25</option>
+				          <option>Top 50</option>
+				          <option>Top 100</option>
+				          <option>Top 250</option>
+				          <option>Top 500</option>
+				          <option>All</option>
+						    </select>
+						  </div>
+						</div>
+
+						<div class="control-group col-lg-2">
+						  <label for="distance" class="control-label">Distance</label>
+						  <div class="controls">
+						    <select class="input-xlarge" name="distance" id="distance">
+							  `<option>25 Miles</option>      
+						   	  <option>50 Miles</option>
+				          <option>100 Miles</option>
+				          <option>250 Miles</option>
+				          <option>Any Distance</option>
+						    </select>
+						  </div>
+						</div>
+
+						<div class="control-group col-lg-3">
+						  <label for="keywords" class="control-label">Keywords</label>
+						  <div class="controls">
+						    <input type="text" name="keywords" id="keywords">
+						  </div>
+						</div>
+
+						<div class="control-group col-lg-2">
+							<br>
+							<p><a class="btn btn-primary" href="javascript:void(0)" onclick="do_search()">Search</a></p>
+						</div>
+			</fieldset>
+		</form>
+
+    {% include 'footer.html' %}
+  </div>
+</body>
+</html>
+
+
+
+
+
+ 
+

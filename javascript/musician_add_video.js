@@ -51,7 +51,8 @@ function show_add_video_popup(){
 				      			'</div>'+
 								'<br>'+
                 			'</div>' +
-  					          '<p><input class="btn btn-primary" value="Submit"type="submit"/ ></p>' +
+  					          '<p><input class="btn btn-primary" value="Submit"type="submit"/ > ' +
+  					          '<input class="btn btn-deemphasize" type="button" onclick="global.add_video_popup_dialog.dialog(\'close\')" value="Cancel" /></p>'
   				          '</fieldset></form></div>';
 	$('#generic_popup_dialog')
 	  .append(add_video_html)  
