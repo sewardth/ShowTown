@@ -8,6 +8,7 @@ from helpers.form_validation import Validate as valid
 from helpers import messages, static_lookups
 import models
 
+
 class SignupFanHandler(views.Template):
 	def get(self):
 		user = self.user_check()

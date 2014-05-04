@@ -39,9 +39,13 @@ class Musician(ndb.Model):
 			
 	@classmethod
 	def filter_by_state(cls, state):
-		return cls.query(cls.address[0].state == state).all()
+		return cls.query(cls.address[0].state == state).fetch()
 		
 	@classmethod
 	def fetch_distinct_states(cls):
 		return cls.query(projection=[cls.musician_state], distinct=True).fetch()
+
+	@classmethod
+	def fetch_all(cls):
+		return cls.query().fetch(100000)
 		

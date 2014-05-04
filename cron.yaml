@@ -1,0 +1,5 @@
+cron:
+- description: Trending Ranks
+  url: /tasks/trending
+  schedule: every 5 minutes from 10:00 to 23:00
+  timezone: America/Detroit
