@@ -3,13 +3,14 @@
  */
 
 
-function like_musician(mus_id){
+function like_musician(mus_id, vid_id){
   $.ajax({
     type: "POST",
-    url: '/video_likes',
+    url: '/vote/likes',
     dataType: 'json',
     data: {
-      mus_id:mus_id
+      mus_id:mus_id,
+      vid_id:vid_id
     }})
     .done(function(data, textStatus, xhr){
       // var entries = data.trending_data;

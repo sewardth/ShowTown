@@ -120,14 +120,14 @@
     				  <h2 class="text-center featured"><span>Featured:</span> {{v.video_title}}</h2>
     				  <div class="text-center">Wins {{v.win_percent}}% of Match Ups</div>
     				  <h4 class="text-center informational">
-    				    <a href="javascript:void(0)" onclick="like_musician('{{musician.key.urlsafe()}}')">
+    				    <a href="javascript:void(0)" onclick="like_musician('{{musician.key.urlsafe()}}','{{v.key.urlsafe()}}')">
     				      <img src="/images/voting.png">
     				    </a> {{v.likes}} Likes.</h4>
     					{% else %}
     				  <h2 class="text-center">{{v.video_title}}</h2>
     				  <div class="text-center">Wins {{v.win_percent}}% of Match Ups</div>
     				  <h4 class="text-center informational">
-    				    <a href="javascript:void(0)" onclick="like_musician('{{musician.key.urlsafe()}}')">
+    				    <a href="javascript:void(0)" onclick="like_musician('{{musician.key.urlsafe()}}', '{{v.key.urlsafe()}}')">
     				      <img src="/images/voting.png" />
     				    </a> {{v.likes}} Likes.</h4>
     					{% endif %}

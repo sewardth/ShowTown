@@ -1,4 +1,4 @@
-import views, webapp2, models, time
+import views, webapp2, models, time, json
 from google.appengine.ext import ndb
 
 
@@ -35,10 +35,26 @@ class VoteHandler(views.Template):
 			self.redirect('/')
 		else:
 			self.response.out.write('Record Already Exists')
-	
+
+
+
+class LikeHandler(views.Template):
+	def post(self):
+		user = self.user_check()
+		musician_key = ndb.Key(urlsafe = self.request.get('mus_id'))
+		video_key = ndb.Key(urlsafe = self.request.get('vid_id'))
+		data = models.likes.Likes(user_key = user.key,
+								  musician_key = musician_key,
+								  video_key = video_key).put()
+
+
+
+
+
 app = webapp2.WSGIApplication([
    
-    ('/vote*', VoteHandler)
+    ('/vote/likes.*', LikeHandler),
+    ('/vote.*', VoteHandler)
 
 
 ], debug=True)
