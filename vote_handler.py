@@ -43,12 +43,17 @@ class LikeHandler(views.Template):
 		user = self.user_check()
 		musician_key = ndb.Key(urlsafe = self.request.get('mus_id'))
 		video_key = ndb.Key(urlsafe = self.request.get('vid_id'))
-		data = models.likes.Likes(user_key = user.key,
+		if self.existing(user.key, video_key) != None:
+			pass
+		else:
+			data = models.likes.Likes(user_key = user.key,
 								  musician_key = musician_key,
 								  video_key = video_key).put()
 
 
-
+	def existing(self, user_key, video_key):
+		test = models.likes.Likes.get_existing(user_key, video_key)
+		return test
 
 
 app = webapp2.WSGIApplication([

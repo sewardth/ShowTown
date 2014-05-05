@@ -17,4 +17,6 @@ class Likes(ndb.Model):
 	def count_by_musician(cls, musician_key):
 		return cls.query(cls.musician_key == musician_key).count()
 
-	
+	@classmethod
+	def get_existing(cls, user_key, video_key):
+		return cls.query(cls.user_key == user_key, cls.video_key == video_key).get()
