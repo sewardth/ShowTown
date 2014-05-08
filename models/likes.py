@@ -1,4 +1,5 @@
 from google.appengine.ext import ndb
+import datetime
 
 class Likes(ndb.Model):
 	user_key = ndb.KeyProperty()
@@ -20,3 +21,7 @@ class Likes(ndb.Model):
 	@classmethod
 	def get_existing(cls, user_key, video_key):
 		return cls.query(cls.user_key == user_key, cls.video_key == video_key).get()
+
+	@classmethod
+	def recent_trends(cls):
+		return cls.query(cls.like_time >= datetime.datetime.now() + datetime.timedelta(-30)).fetch()

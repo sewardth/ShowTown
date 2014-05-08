@@ -2,5 +2,8 @@ from google.appengine.ext import ndb
 
 class Trending(ndb.Model):
 	musician_key = ndb.KeyProperty()
-	points = ndb.FloatProperty()
+	likes_rank = ndb.IntegerProperty()
+	win_rank = ndb.IntegerProperty()
+	following_rank = ndb.IntegerProperty()
+	total = ndb.ComputedProperty(lambda self: ((self.likes_rank+self.win_rank+self.following_rank)/3))
 

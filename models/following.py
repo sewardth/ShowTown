@@ -1,4 +1,5 @@
 from google.appengine.ext import ndb
+import datetime
 
 class Following(ndb.Model):
 	followed_entity_key = ndb.KeyProperty()
@@ -21,3 +22,7 @@ class Following(ndb.Model):
 	@classmethod
 	def fetch_followers_count(cls, followed_keys):
 		return cls.query(cls.followed_entity_key.IN(followed_keys)).fetch()
+
+	@classmethod
+	def recent_trends(cls):
+		return cls.query(cls.followed_date >= datetime.datetime.now() + datetime.timedelta(-30)).fetch()

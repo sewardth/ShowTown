@@ -30,6 +30,10 @@ class Videos(ndb.Model):
 	@classmethod
 	def fetch_distinct_genres(cls):
 		return cls.query(projection=[cls.genre_tag], distinct=True).fetch()
+        
+	@classmethod
+	def fetch_all(cls):
+		return cls.query().fetch(100000)
 	
 	
 		
