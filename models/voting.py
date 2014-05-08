@@ -1,4 +1,5 @@
 from google.appengine.ext import ndb
+import datetime
 
 class Voting(ndb.Model):
 	voter_acc_key = ndb.KeyProperty()
@@ -35,3 +36,7 @@ class Voting(ndb.Model):
 	@classmethod
 	def get_by_vote(cls, user_key, video_keys):
 		return cls.query(cls.voter_acc_key == user_key, cls.video_one.IN(video_keys), cls.video_two.IN(video_keys)).get()
+        
+	@classmethod
+	def recent_trends(cls):
+		return cls.query(cls.vote_time >= datetime.datetime.now() + datetime.timedelta(-30)).fetch()
