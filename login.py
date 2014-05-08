@@ -13,9 +13,8 @@ class Login(views.Template):
 		path = self.request.get('url_path')
 
 		self.user = models.account.Account.query_by_email(email)
-
-
-
+    
+		result = {}
 		if self.user == None:
 			result = {'error':'User not found.  Please check the email - ' + email}
 		else:
@@ -27,12 +26,11 @@ class Login(views.Template):
 				Cookie.set_cookie(_auth_, self.response)
 				Cookie.set_cookie(_term_, self.response)
 				time.sleep(.5)
-				self.redirect(path)
 			except:
 				result = {'error':'Invalid password. Please try again.'}
 
 		self.response.headers.add_header('content-type', 'application/json', charset='utf-8')
-		if result: self.response.out.write(json.dumps(result)) 
+		self.response.out.write(json.dumps(result)) 
 
 
 	def verify_password(self, password, pwhash):
