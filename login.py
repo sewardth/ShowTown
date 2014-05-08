@@ -1,4 +1,4 @@
-import webapp2, sys, uuid, datetime, time, views
+import webapp2, sys, uuid, datetime, time, views, json
 sys.path.insert(0,'libs')
 import models
 from sessions.password import Passwords as pwd
@@ -14,17 +14,25 @@ class Login(views.Template):
 
 		self.user = models.account.Account.query_by_email(email)
 
+
+
 		if self.user == None:
-			messages.Message.warning('User not found.  Please check the email: ' + email)
+			result = {'error':'User not found.  Please check the email - ' + email}
 		else:
-			self.verify_password(password, self.user.password)
-			session_hash = enc.generate_hash(self.user.session_token)
-			_auth_ = Cookie.create_cookie('_auth_',self.user.key.urlsafe())
-			_term_ = Cookie.create_cookie('_term_',session_hash)
-			Cookie.set_cookie(_auth_, self.response)
-			Cookie.set_cookie(_term_, self.response)
-			time.sleep(.5)
-			self.redirect(path)
+			try:
+				self.verify_password(password, self.user.password)
+				session_hash = enc.generate_hash(self.user.session_token)
+				_auth_ = Cookie.create_cookie('_auth_',self.user.key.urlsafe())
+				_term_ = Cookie.create_cookie('_term_',session_hash)
+				Cookie.set_cookie(_auth_, self.response)
+				Cookie.set_cookie(_term_, self.response)
+				time.sleep(.5)
+				self.redirect(path)
+			except:
+				result = {'error':'Invalid password. Please try again.'}
+
+		self.response.headers.add_header('content-type', 'application/json', charset='utf-8')
+		if result: self.response.out.write(json.dumps(result)) 
 
 
 	def verify_password(self, password, pwhash):
@@ -33,7 +41,7 @@ class Login(views.Template):
 			self.user.session_token = str(uuid.uuid4())
 			self.user.put()
 		else:
-			messages.Message.warning('Password does not match the one stored for ' + self.user.email)
+			raise ValueError ('invalid password')
 
 
 		
