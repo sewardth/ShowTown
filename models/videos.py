@@ -25,7 +25,7 @@ class Videos(ndb.Model):
 		
 	@classmethod
 	def filter_by_state_genre(cls, musician_keys, genre):
-		return cls.query(cls.musician_key.IN(musician_keys), cls.genre_tag == genre, cls.featured == True).order(-cls.video_added).all()
+		return cls.query(cls.musician_key.IN(musician_keys), cls.genre_tag == genre, cls.featured == True).order(-cls.video_added).fetch()
 		
 	@classmethod
 	def fetch_distinct_genres(cls):

@@ -3,6 +3,7 @@
 import webapp2, json, sys, views
 from google.appengine.ext import ndb
 from google.appengine.datastore.datastore_query import Cursor
+from helpers import static_lookups as lookup
 sys.path.insert(0,'libs')
 import models
 
@@ -10,7 +11,18 @@ import models
 
 class TrendingHandler(views.Template):
 	def get(self):
-		musicians_states = [{'name':'Michigan', 'abbr':'MI'}, {'name':'California', 'abbr':'CA'}, {'name':'Florida', 'abbr':'FL'}]
+		try:
+			states = models.musician.Musician.fetch_distinct_states()
+			genres = models.videos.Videos.fetch_distinct_genres()
+			musicians_states = []
+			for x in states:
+				data = {}
+				data['abbr']= x.musician_state
+				data['name']= lookup.states[x.musician_state]
+				musicians_states.append(data)
+				
+		except:
+			musicians_states = []
 
 		template_values = {'musicians_states':musicians_states}
 		self.render('trending.html', template_values)
