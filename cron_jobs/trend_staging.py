@@ -16,6 +16,7 @@ class Trending(views.Template):
 
 
 
+
     def fetch_likes(self):
         query = models.likes.Likes.recent_trends()
         return [x.musician_key for x in query]
@@ -48,11 +49,21 @@ class Trending(views.Template):
         win_percent_rank = self.rank_by_value(musician_list, win_percents, count = False)
 
         #insert into NDB class Trending
-        for x in musician_list:
-            obj = models.trending.Trending(musician_key = x,
-                                          likes_rank = likes_rank[x],
-                                          following_rank = following_rank[x],
-                                          win_rank = win_percent_rank[x]).put()
+        existing_data = models.trending.Trending.return_by_rank() #checks for existing data in table
+        if existing_data != None: ndb.delete_multi([x.key for x in existing_data]) #deletes existing data
+        put_list =[]
+        for x in musicians:
+            obj = models.trending.Trending(musician_key = x.key,
+                                          likes_rank = likes_rank[x.key],
+                                          following_rank = following_rank[x.key],
+                                          win_rank = win_percent_rank[x.key])
+            put_list.append(obj)
+            x.current_rank = (obj.likes_rank+ obj.following_rank + obj.win_rank)/float(3)
+        ndb.put_multi(put_list)
+        ndb.put_multi(musicians)
+
+
+
 
 
     def rank_by_value(self, key_list, value_list, count = True):
@@ -63,6 +74,10 @@ class Trending(views.Template):
             counter = value_list
         mapping =  dict(zip(key_list, counter))
         return {x:sorted(counter, reverse =True).index(mapping[x])+1 for x in mapping}
+
+
+        
+
 
 
 

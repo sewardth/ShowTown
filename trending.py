@@ -30,8 +30,9 @@ class TrendingHandler(views.Template):
 
 	def post(self):
 		# NOTE: we are posting genre, state and the cursor from a previous request or null if this is the initial one.
-		curs = Cursor(urlsafe=self.request.get('cursor'))
-		musicians, next_curs, more = models.musician.Musician.query().fetch_page(10, start_cursor=curs)
+		#curs = Cursor(urlsafe=self.request.get('cursor'))
+		#musicians, next_curs, more = models.musician.Musician.query().fetch_page(10, start_cursor=curs)
+		musicians = models.musician.Musician.fetch_by_genre_state('Pop',self.request.get('state_code'))
 		followers = models.following.Following.fetch_followers_count([x.key for x in musicians])
 		followers_list = [x.followed_entity_key for x in followers]
 		total_matchups = models.voting.Voting.fetch_votes_musicians([x.key for x in musicians])
@@ -50,13 +51,13 @@ class TrendingHandler(views.Template):
 			else:
 				data['like_percent'] = 0
 			trending_data.append(data)
-		if more and next_curs:
-		      next = next_curs.urlsafe()
-		else:
-			next = None
+		#if more and next_curs:
+		#      next = next_curs.urlsafe()
+		#else:
+		#	next = None
 		
 		
-		data = {'cursor_for_next_page':next, 'trending_data':trending_data}
+		data = {'trending_data':trending_data}
 		self.response.headers.add_header('content-type', 'application/json', charset='utf-8')
 		self.response.out.write(json.dumps(data)) 
 

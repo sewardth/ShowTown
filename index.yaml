@@ -15,6 +15,12 @@ indexes:
   - name: gig_key
   - name: musician_key
 
+- kind: Musician
+  properties:
+  - name: band_genre
+  - name: musician_state
+  - name: current_rank
+
 - kind: Voting
   properties:
   - name: voter_acc_key
