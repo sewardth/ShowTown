@@ -78,10 +78,14 @@ class MainHandler(views.Template):
 				data['abbr']= x.musician_state
 				data['name']= lookup.states[x.musician_state]
 				musicians_states.append(data)
+
+			genre = {x.genre_tag:x.genre_tag for x in genres}
 				
 		except:
-			musicians_states = None
-		template_values = {'musicians_states':musicians_states, 'vids': vids, 'matchups':participation}			
+			musicians_states = []
+			genre = []
+			
+		template_values = {'musicians_states':musicians_states, 'vids': vids, 'matchups':participation, 'genres':genre}			
 		self.render('index.html', template_values)
 					
 
