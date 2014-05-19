@@ -52,7 +52,7 @@ class Musician(ndb.Model):
 		return cls.query().fetch(100000)
 
 	@classmethod
-	def fetch_by_genre_state(cls, genre, state):
+	def fetch_by_genre_state(cls, genre = 'Pop', state ='CA'):
 		return cls.query(cls.band_genre == genre, cls.musician_state == state).order(cls.current_rank).fetch()
 
 		

@@ -20,19 +20,25 @@ class TrendingHandler(views.Template):
 				data['abbr']= x.musician_state
 				data['name']= lookup.states[x.musician_state]
 				musicians_states.append(data)
-				
+			
+			genre = {x.genre_tag:x.genre_tag for x in genres}
+
+
 		except:
 			musicians_states = []
+			genres = []
 
-		template_values = {'musicians_states':musicians_states}
+		template_values = {'musicians_states':musicians_states, 'genres':genre}
 		self.render('trending.html', template_values)
 	
 
 	def post(self):
 		# NOTE: we are posting genre, state and the cursor from a previous request or null if this is the initial one.
 		#curs = Cursor(urlsafe=self.request.get('cursor'))
-		#musicians, next_curs, more = models.musician.Musician.query().fetch_page(10, start_cursor=curs)
-		musicians = models.musician.Musician.fetch_by_genre_state('Pop',self.request.get('state_code'))
+		#musicians, next_curs, more = models.musician.Musician.query().fetch_page(10, start_cursor=curs)\
+		genre_selection = self.request.get('genre_code')
+		state_selection = self.request.get('state_code')
+		musicians = models.musician.Musician.fetch_by_genre_state(genre_code, state_code)
 		followers = models.following.Following.fetch_followers_count([x.key for x in musicians])
 		followers_list = [x.followed_entity_key for x in followers]
 		total_matchups = models.voting.Voting.fetch_votes_musicians([x.key for x in musicians])
