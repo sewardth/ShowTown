@@ -50,8 +50,6 @@ class Template(webapp2.RequestHandler):
 			user = self._verify_user(user, cookies['session'])
 			return user
 		
-			
-			
 		
 	def email_sender(self, template, **kwargs):
 		pass
