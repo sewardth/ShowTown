@@ -14,31 +14,25 @@ class TrendingHandler(views.Template):
 		try:
 			states = models.musician.Musician.fetch_distinct_states()
 			genres = models.videos.Videos.fetch_distinct_genres()
-			musicians_states = []
-			for x in states:
-				data = {}
-				data['abbr']= x.musician_state
-				data['name']= lookup.states[x.musician_state]
-				musicians_states.append(data)
-			
+			states_select = {lookup.states[x.musician_state]:x.musician_state for x in states}
 			genre = {x.genre_tag:x.genre_tag for x in genres}
 
 
 		except:
-			musicians_states = []
-			genres = []
+			states_select = {}
+			genre = {}
 
-		template_values = {'musicians_states':json.dumps(musicians_states), 'genres':json.dumps(genre)}
+		template_values = {'musicians_states':states_select, 'genres':json.dumps(genre)}
 		self.render('trending.html', template_values)
 	
 
-	def post(self):
+	"""def post(self):
 		# NOTE: we are posting genre, state and the cursor from a previous request or null if this is the initial one.
 		#curs = Cursor(urlsafe=self.request.get('cursor'))
 		#musicians, next_curs, more = models.musician.Musician.query().fetch_page(10, start_cursor=curs)\
 		genre_selection = self.request.get('genre_code')
 		state_selection = self.request.get('state_code')
-		musicians = models.musician.Musician.fetch_by_genre_state(genre_code, state_code)
+		musicians = models.musician.Musician.fetch_by_genre_state(genre_selection, state_selection)
 		followers = models.following.Following.fetch_followers_count([x.key for x in musicians])
 		followers_list = [x.followed_entity_key for x in followers]
 		total_matchups = models.voting.Voting.fetch_votes_musicians([x.key for x in musicians])
@@ -65,7 +59,7 @@ class TrendingHandler(views.Template):
 		
 		data = {'trending_data':trending_data}
 		self.response.headers.add_header('content-type', 'application/json', charset='utf-8')
-		self.response.out.write(json.dumps(data)) 
+		self.response.out.write(json.dumps(data)) """
 
     		    		                                         		
 app = webapp2.WSGIApplication([
