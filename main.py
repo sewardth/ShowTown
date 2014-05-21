@@ -85,7 +85,7 @@ class MainHandler(views.Template):
 			musicians_states = []
 			genre = []
 			
-		template_values = {'musicians_states':musicians_states, 'vids': vids, 'matchups':participation, 'genres':genre}			
+		template_values = {'musicians_states':json.dumps(musicians_states), 'vids': vids, 'matchups':participation, 'genres':json.dumps(genre)}			
 		self.render('index.html', template_values)
 					
 

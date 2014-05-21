@@ -23,7 +23,7 @@ function init_page(){
         .append($(document.createElement('a'))
           .attr({href:'javascript:void(0)'})
           .bind('click',{key: key}, function(e) {
-            load_page_content(e.data.key, null)
+            load_page_content(e.data.key, 'Michigan')
           })
           .text(genres[key])
         )
