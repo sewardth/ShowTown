@@ -22,11 +22,11 @@ class TrendingHandler(views.Template):
 			states_select = {}
 			genre = {}
 
-		template_values = {'musicians_states':states_select, 'genres':json.dumps(genre)}
+		template_values = {'musicians_states':json.dumps(states_select), 'genres':json.dumps(genre)}
 		self.render('trending.html', template_values)
 	
 
-	"""def post(self):
+	def post(self):
 		# NOTE: we are posting genre, state and the cursor from a previous request or null if this is the initial one.
 		#curs = Cursor(urlsafe=self.request.get('cursor'))
 		#musicians, next_curs, more = models.musician.Musician.query().fetch_page(10, start_cursor=curs)\
@@ -59,7 +59,7 @@ class TrendingHandler(views.Template):
 		
 		data = {'trending_data':trending_data}
 		self.response.headers.add_header('content-type', 'application/json', charset='utf-8')
-		self.response.out.write(json.dumps(data)) """
+		self.response.out.write(json.dumps(data)) 
 
     		    		                                         		
 app = webapp2.WSGIApplication([
