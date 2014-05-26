@@ -4,7 +4,8 @@
 
 function init_page(){
   $('li.trending').addClass('selected');
-  //
+  // ========================
+  // Genres
   $('#selected_genre').text('All');
   $('#genres_list').empty();
   $('#genres_list')
@@ -12,7 +13,8 @@ function init_page(){
       .append($(document.createElement('a'))
         .attr({href:'javascript:void(0)'})
         .bind('click',{}, function(e) {
-          load_page_content('all', null)
+          $('#selected_genre').text('All');
+          load_page_content('All', states[$('#selected_state').text()])
         })
         .text('All')
       )
@@ -23,7 +25,8 @@ function init_page(){
         .append($(document.createElement('a'))
           .attr({href:'javascript:void(0)'})
           .bind('click',{key: key}, function(e) {
-            load_page_content(e.data.key, 'Michigan')
+            $('#selected_genre').text(genres[e.data.key]);
+            load_page_content(e.data.key, states[$('#selected_state').text()])
           })
           .text(genres[key])
         )
@@ -35,11 +38,29 @@ function init_page(){
       .append($(document.createElement('a'))
         .attr({href:'javascript:void(0)'})
         .bind('click',{}, function(e) {
-          load_page_content('random', null)
+          $('#selected_genre').text('Random');
+          load_page_content('Random', states[$('#selected_state').text()])
         })
         .text('Random')
       )
     );
+  // ========================
+  // States 
+  $('#selected_state').text(Object.keys(states)[0]); 
+  $('#states_list').empty();
+  for(key in states){
+    $('#states_list')
+      .append($(document.createElement('li'))
+        .append($(document.createElement('a'))
+          .attr({href:'javascript:void(0)'})
+          .bind('click',{key: states[key]}, function(e) {
+            $('#selected_state').text(states[e.data.key]);
+            load_page_content($('#selected_genre').text(), e.data.key);
+          })
+          .text(key)
+        )
+      );
+  }
   load_page_content(null, states[$('#selected_state').text()])
 }
    
