@@ -3,7 +3,7 @@ from address import Address
 from videos import Videos
 
 class Musician(ndb.Model):
-	user_key = ndb.KeyProperty()
+	user_key = ndb.KeyProperty(required = True)
 	user_name = ndb.StringProperty()
 	band_name = ndb.StringProperty()
 	band_genre = ndb.StringProperty(repeated = True)

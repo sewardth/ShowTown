@@ -1,8 +1,9 @@
-import webapp2, json, sys, views, time
+import webapp2, json, sys, views, time, logging
 from google.appengine.api import images
 sys.path.insert(0,'libs')
 import lassie, requests
 from google.appengine.api import urlfetch
+from helpers.email_handler import Email
 from datetime import datetime
 from helpers.form_validation import Validate as valid
 from helpers import messages, static_lookups
@@ -201,9 +202,15 @@ class SignupHandler(views.Template):
 				acc_key = self.account_creator(params, password)
 				try:
 					user = models.fan.Fan(user_key = acc_key, email = email, DOB = DOB, genres = params['checkboxes']).put()
+					email_body = self.email_sender('email_FanSignUp.html', template_values ={'user':email, 'user_id':acc_key.urlsafe()})
+					Email.email('Welcome to ShowTown', email_body, email)
 					self.redirect('/')
-				except:
+				except Exception as e:
+					logging.error(e)
 					acc_key.delete()
+					if user: user.delete()
+					for x in params:
+						self.template_values[x] = params[x]
 					self.template_values['error'] = 'Something went wrong, please try again'
 					self.render_errors('signup_fan.html')
 			
@@ -313,12 +320,18 @@ class SignupHandler(views.Template):
 																genre_tag = params['band_genre'][0],
 																video_title = submission_video['title'],
 																featured = True).put()
+
+					email_body = self.email_sender('email_MusicianSignUp.html', template_values ={'user':email, 'user_id':acc_key.urlsafe()})
+					Email.email('Welcome to ShowTown', email_body, email)
 					self.redirect('/')
 		
-				except:
+				except Exception as e:
+					logging.error(e)
 					acc_key.delete()
 					if user: user.delete()
 					if video: video.delete()
+					for x in params:
+						self.template_values[x] = params[x]
 					self.template_values['error'] = 'Something went wrong, please try again'
 					self.render_errors('signup_musician.html') 
 		

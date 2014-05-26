@@ -27,7 +27,7 @@ class Login(views.Template):
 				Cookie.set_cookie(_term_, self.response)
 				time.sleep(.5)
 			except:
-				result = {'error':'Invalid password. Please try again.'}
+				result = {'error':'Invalid password or account has not been activated'}
 
 		self.response.headers.add_header('content-type', 'application/json', charset='utf-8')
 		self.response.out.write(json.dumps(result)) 
@@ -35,7 +35,7 @@ class Login(views.Template):
 
 	def verify_password(self, password, pwhash):
 		check = pwd.compare_hash(password, pwhash)
-		if check == True:   #add and user.verified == True after testing
+		if check == True and user.verified == True:
 			self.user.session_token = str(uuid.uuid4())
 			self.user.put()
 		else:

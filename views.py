@@ -51,5 +51,9 @@ class Template(webapp2.RequestHandler):
 			return user
 		
 		
-	def email_sender(self, template, **kwargs):
-		pass
+	def email_sender(self, template, template_values):
+		self.response.headers['Content-Type'] = 'text/html'
+		page = jinja_environment.get_template(template)
+		template = page.render(template_values)
+		return template
+		
