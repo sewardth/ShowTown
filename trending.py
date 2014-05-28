@@ -19,7 +19,7 @@ class TrendingHandler(views.Template):
 
 
 		except Exception as e:
-            logging.exception(e)
+			logging.exception(e)
 			states_select = {}
 			genre = {}
 

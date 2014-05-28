@@ -32,7 +32,7 @@ class Template(webapp2.RequestHandler):
 			user = models.account.Account.query_by_key(ndb.Key(urlsafe=user))
 			return user
 		except Exception as e:
-            logging.info(e)
+			logging.info(e)
 			return None
 		
 	def _verify_user(self, user, session_cookie):

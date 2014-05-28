@@ -27,7 +27,7 @@ class MainHandler(views.Template):
 		try:
 			vids = random.sample(videos,2)
 		except Exception as e:
-            logging.exception(e)
+			logging.exception(e)
 			vids = None
 		
 		user = self.user_check()
@@ -83,7 +83,7 @@ class MainHandler(views.Template):
 			genre = {x.genre_tag:x.genre_tag for x in genres}
 				
 		except Exception as e:
-            logging.exception(e)
+			logging.exception(e)
 			musicians_states = []
 			genre = []
 			
@@ -127,7 +127,7 @@ class MainHandler(views.Template):
 				video_data.append(data)
 			
 		except Exception as e:
-            logging.exception(e)
+			logging.exception(e)
 			video_data = None
 		
 		

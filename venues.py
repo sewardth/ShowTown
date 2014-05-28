@@ -67,7 +67,7 @@ class VenueHandler(views.Template):
 			venue_key = ndb.Key(urlsafe=self.request.get('id'))
 			data = venue_key.get()
 		except Exception as e:
-            logging.exception(e)
+			logging.exception(e)
 			data = None
 		template_values = {'venue':data}
 		self.render('venue.html', template_values)
