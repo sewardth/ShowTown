@@ -25,7 +25,7 @@ function show_login_popup(){
   					          '<p class="fl"><label>E-mail</label> <input type="text" name="email"></p>' +
   					          '<p class="fl"><label>Password</label> <input type="password" name="password"></p>' +
   					          '<p><input class="btn btn-primary" value="Login"type="button" onclick="do_ajax_login()"/> ' +
-  					          '<a style="color:blue;" href="/login_handler_reset">I forgot my password</a></p>' +
+  					          '<a style="color:blue;" href="/account">I forgot my password</a></p>' +
   				          '</fieldset></div>';
 	$('#login_popup_dialog')
 	  .append(login_html)  

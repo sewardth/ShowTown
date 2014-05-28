@@ -27,7 +27,7 @@ class Activate(views.Template):
 			self.redirect('/')
 
 		except Exception as e:
-			logging.error(e)
+			logging.exception(e)
 			self.response.out.write('An Error Occured')
 
 

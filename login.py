@@ -54,13 +54,8 @@ class Logout(views.Template):
 		self.redirect('/')
 		
 
-class LoginReset(views.Template):
-	def get(self):
-		pass
-
 app = webapp2.WSGIApplication([
     ('/login_handler', Login),
-    ('/logout_handler', Logout),
-	('/login_handler_reset', LoginReset)
+    ('/logout_handler', Logout)
 
 ], debug=True)

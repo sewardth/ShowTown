@@ -10,6 +10,7 @@ class Account(ndb.Model):
 	known_ip_addresses = ndb.StringProperty(repeated=True)
 	account_type = ndb.StringProperty()
 	verified = ndb.BooleanProperty(default = False)
+	iniatied_reset = ndb.BooleanProperty(default = False)
 	account_created = ndb.DateTimeProperty(auto_now_add = True)
 	latest_update = ndb.DateTimeProperty(auto_now = True)
 	

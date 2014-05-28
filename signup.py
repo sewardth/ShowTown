@@ -1,4 +1,4 @@
-import webapp2, json, sys, views, time, logging, traceback
+import webapp2, json, sys, views, time, logging
 from google.appengine.api import images
 sys.path.insert(0,'libs')
 import lassie, requests
@@ -206,8 +206,7 @@ class SignupHandler(views.Template):
 					Email.email('Welcome to ShowTown', email_body, email)
 					self.redirect('/')
 				except Exception as e:
-					logging.error(e)
-					traceback.print_exc()
+					logging.exception(e)
 					acc_key.delete()
 					try:
 						if user: user.delete()
@@ -331,8 +330,7 @@ class SignupHandler(views.Template):
 					self.redirect('/')
 		
 				except Exception as e:
-					logging.error(e)
-					traceback.print_exc()
+					logging.exception(e)
 					acc_key.delete()
 					try:
 						if user: user.delete()
