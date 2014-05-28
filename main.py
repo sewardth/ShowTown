@@ -73,21 +73,16 @@ class MainHandler(views.Template):
 		try:
 			states = models.musician.Musician.fetch_distinct_states()
 			genres = models.videos.Videos.fetch_distinct_genres()
-			musicians_states = []
-			for x in states:
-				data = {}
-				data['abbr']= x.musician_state
-				data['name']= lookup.states[x.musician_state]
-				musicians_states.append(data)
-
+			states_select = {lookup.states[x.musician_state]:x.musician_state for x in states}
 			genre = {x.genre_tag:x.genre_tag for x in genres}
-				
+
+
 		except Exception as e:
 			logging.exception(e)
-			musicians_states = []
-			genre = []
+			states_select = {}
+			genre = {}
 			
-		template_values = {'musicians_states':json.dumps(musicians_states), 'vids': vids, 'matchups':participation, 'genres':json.dumps(genre)}			
+		template_values = {'musicians_states':json.dumps(states_select), 'vids': vids, 'matchups':participation, 'genres':json.dumps(genre)}			
 		self.render('index.html', template_values)
 					
 
