@@ -18,7 +18,8 @@ class TrendingHandler(views.Template):
 			genre = {x.genre_tag:x.genre_tag for x in genres}
 
 
-		except:
+		except Exception as e:
+            logging.exception(e)
 			states_select = {}
 			genre = {}
 

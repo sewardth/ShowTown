@@ -15,7 +15,7 @@
 # limitations under the License.
 #
 
-import webapp2, json, sys, views, random
+import webapp2, json, sys, views, random, logging
 sys.path.insert(0,'libs')
 from helpers import static_lookups as lookup
 import models
@@ -26,7 +26,8 @@ class MainHandler(views.Template):
 		videos = models.videos.Videos.fetch_featured()
 		try:
 			vids = random.sample(videos,2)
-		except:
+		except Exception as e:
+            logging.exception(e)
 			vids = None
 		
 		user = self.user_check()
@@ -81,7 +82,8 @@ class MainHandler(views.Template):
 
 			genre = {x.genre_tag:x.genre_tag for x in genres}
 				
-		except:
+		except Exception as e:
+            logging.exception(e)
 			musicians_states = []
 			genre = []
 			
@@ -124,7 +126,8 @@ class MainHandler(views.Template):
 				data['vid_key'] = x.key
 				video_data.append(data)
 			
-		except:
+		except Exception as e:
+            logging.exception(e)
 			video_data = None
 		
 		

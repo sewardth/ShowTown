@@ -1,4 +1,4 @@
-import webapp2, sys, uuid, datetime, time, views, json
+import webapp2, sys, uuid, datetime, time, views, json, logging
 sys.path.insert(0,'libs')
 import models
 from sessions.password import Passwords as pwd
@@ -26,7 +26,8 @@ class Login(views.Template):
 				Cookie.set_cookie(_auth_, self.response)
 				Cookie.set_cookie(_term_, self.response)
 				time.sleep(.5)
-			except:
+			except Exception as e:
+                logging.exception(e)
 				result = {'error':'Invalid password or account has not been activated'}
 
 		self.response.headers.add_header('content-type', 'application/json', charset='utf-8')

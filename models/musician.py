@@ -1,6 +1,7 @@
 from google.appengine.ext import ndb
 from address import Address
 from videos import Videos
+import logging
 
 class Musician(ndb.Model):
 	user_key = ndb.KeyProperty(required = True)
@@ -35,7 +36,8 @@ class Musician(ndb.Model):
 	def fetch_artists(cls, keys):
 		try:
 			return cls.query(cls._key.IN(keys)).fetch()
-		except:
+		except Exception as e:
+            logging.exception(e)
 			return None
 			
 	@classmethod
