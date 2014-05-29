@@ -1,5 +1,6 @@
-import views, webapp2, models, time, json
+import views, webapp2, models, time, json, stats_updater as stats
 from google.appengine.ext import ndb
+
 
 
 class VoteHandler(views.Template):
@@ -32,6 +33,20 @@ class VoteHandler(views.Template):
 										voter_ip = self.request.remote_addr).put()
 	
 			time.sleep(.5)
+
+			#Update musician and video model counts
+			stats.MusicianStats.update_wins(video_one_artist_key)
+			stats.MusicianStats.update_wins(video_two_artist_key)
+			stats.MusicianStats.update_total_matches(video_one_artist_key)
+			stats.MusicianStats.update_total_matches(video_two_artist_key)
+
+			stats.VideoStats.update_wins(video_one)
+			stats.VideoStats.update_wins(video_two)
+			stats.VideoStats.update_total_matches(video_one)
+			stats.VideoStats.update_total_matches(video_two)
+
+
+
 			self.redirect('/')
 		else:
 			self.response.out.write('Record Already Exists')
@@ -43,12 +58,21 @@ class LikeHandler(views.Template):
 		user = self.user_check()
 		musician_key = ndb.Key(urlsafe = self.request.get('mus_id'))
 		video_key = ndb.Key(urlsafe = self.request.get('vid_id'))
-		if self.existing(user.key, video_key) != None:
+		if self.existing(user.key, video_key):
 			pass
 		else:
 			data = models.likes.Likes(user_key = user.key,
 								  musician_key = musician_key,
 								  video_key = video_key).put()
+
+			time.sleep(.5)
+
+			#update musician and video model counts for likes
+			stats.MusicianStats.update_likes(musician_key)
+			stats.VideoStats.update_likes(video_key)
+
+			redirect = '/musician?id=%s' %(musician_key.urlsafe())
+			self.redirect(redirect)
 
 
 	def existing(self, user_key, video_key):

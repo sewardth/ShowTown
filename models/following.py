@@ -26,3 +26,7 @@ class Following(ndb.Model):
 	@classmethod
 	def recent_trends(cls):
 		return cls.query(cls.followed_date >= datetime.datetime.now() + datetime.timedelta(-30)).fetch()
+
+	@classmethod
+	def return_follower_count(cls, musician_key):
+		return cls.query(cls.followed_entity_key == musician_key).count()

@@ -11,12 +11,14 @@ class MusicianHandler(views.Template):
 		hide_follow = False
 		musician_key = ndb.Key(urlsafe = self.request.get('id'))
 		musician = musician_key.get()
+		self.response.out.write(musician.musician_stats)
 		if user:
 			if user.account_type == 'musician':
 				profile = models.musician.Musician.query_by_account(user.key)
 				if musician_key == profile.key: hide_follow = True
 
 		videos = models.videos.Videos.fetch_by_musician(musician_key)
+		self.response.out.write(videos[0].video_stats)
 		followers = models.following.Following.fetch_by_followed_key(musician.key)
 		likes = models.voting.Voting.fetch_winning_count([x.key for x in videos])
 		if likes != None:

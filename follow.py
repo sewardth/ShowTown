@@ -1,4 +1,5 @@
 import webapp2, time, sys, views
+from stats_updater import MusicianStats
 from google.appengine.ext import ndb
 from google.appengine.datastore.datastore_query import Cursor
 sys.path.insert(0,'libs')
@@ -20,7 +21,11 @@ class FollowHandler(views.Template):
 		else:
 			record = models.following.Following.get_by_keys(user.key, to_follow)
 			record.key.delete()
+
 		time.sleep(.5)
+		#update musician stats
+		MusicianStats.update_followers(to_follow)
+		
 		redirect = '/%s?id=%s' %(call_back, self.request.get('id'))
 		self.redirect(redirect)
 	

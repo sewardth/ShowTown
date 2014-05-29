@@ -20,6 +20,7 @@ class Musician(ndb.Model):
 	sound_cloud = ndb.StringProperty()
 	video_hosting_page = ndb.StringProperty()
 	current_rank = ndb.FloatProperty()
+	musician_stats = ndb.JsonProperty(default ={})
 	latest_update = ndb.DateTimeProperty(auto_now = True)
 	account_created = ndb.DateTimeProperty(auto_now_add = True)
 	
