@@ -13,7 +13,14 @@ function like_musician(mus_id, vid_id){
       vid_id:vid_id
     }})
     .done(function(data, textStatus, xhr){
-      // var entries = data.trending_data;
+      if(data.musician_likes){
+        $('#mus_likes').html(data.musician_likes + data.musician_wins);
+        $('#'+data.video_key).html(data.video_wins + data.video_likes);
+      }
+
+      else{
+        location.reload(true);
+      }
 
 
 

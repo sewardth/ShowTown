@@ -65,14 +65,21 @@ class LikeHandler(views.Template):
 								  musician_key = musician_key,
 								  video_key = video_key).put()
 
-			time.sleep(.5)
+			time.sleep(.2)
 
 			#update musician and video model counts for likes
-			stats.MusicianStats.update_likes(musician_key)
-			stats.VideoStats.update_likes(video_key)
+			musician_likes = stats.MusicianStats.update_likes(musician_key)
+			musician_wins = stats.MusicianStats.update_wins(musician_key)
+			video_likes = stats.VideoStats.update_likes(video_key)
+			video_wins = stats.VideoStats.update_wins(video_key)
 
-			redirect = '/musician?id=%s' %(musician_key.urlsafe())
-			self.redirect(redirect)
+			time.sleep(.5)
+
+			self.response.out.write(json.dumps({'musician_likes':musician_likes,
+												'musician_wins': musician_wins,
+												'video_likes':video_likes, 
+												'video_key':video_key.urlsafe(),
+												'video_wins':video_wins}))
 
 
 	def existing(self, user_key, video_key):

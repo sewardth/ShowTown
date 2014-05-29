@@ -10,6 +10,7 @@ class MusicianStats:
 		musician = musician_key.get()
 		musician.musician_stats['head_to_head_wins']=wins
 		musician.put()
+		return wins
 
 
 	@classmethod
@@ -18,6 +19,7 @@ class MusicianStats:
 		musician = musician_key.get()
 		musician.musician_stats['total_matchups']=total_matches
 		musician.put()
+		return total_matches
 
 
 	@classmethod
@@ -26,6 +28,7 @@ class MusicianStats:
 		musician = musician_key.get()
 		musician.musician_stats['likes']=likes
 		musician.put()
+		return likes
 
 
 	@classmethod
@@ -34,6 +37,7 @@ class MusicianStats:
 		musician = musician_key.get()
 		musician.musician_stats['followers']=followers
 		musician.put()
+		return followers
 
 
 
@@ -45,6 +49,7 @@ class VideoStats:
 		video = video_key.get()
 		video.video_stats['head_to_head_wins']=wins
 		video.put()
+		return wins
 
 
 	@classmethod
@@ -53,6 +58,7 @@ class VideoStats:
 		video = video_key.get()
 		video.video_stats['total_matchups']=total_matches
 		video.put()
+		return total_matches
 
 
 	@classmethod
@@ -61,3 +67,4 @@ class VideoStats:
 		video = video_key.get()
 		video.video_stats['likes']=likes
 		video.put()
+		return likes

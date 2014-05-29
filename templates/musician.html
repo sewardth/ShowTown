@@ -44,7 +44,7 @@
       <div class="col-lg-10">
         <div class="row">
           <h1 class="pull-left">{{musician.band_name}} 
-            <span class="microcopy informational middle"><i class="fa fa-thumbs-o-up"></i> {{likes}} Likes 
+            <span class="microcopy informational middle"><i class="fa fa-thumbs-o-up"></i> <span id="mus_likes">{{likes}}</span> Likes 
               <i class="fa fa-users left_spaced"></i> {{followers}} Followers</span>
           </h1>
         </div>
@@ -122,14 +122,14 @@
     				  <h4 class="text-center informational">
     				    <a href="javascript:void(0)" onclick="like_musician('{{musician.key.urlsafe()}}','{{v.key.urlsafe()}}')">
     				      <img src="/images/voting.png">
-    				    </a> {{v.likes}} Likes.</h4>
+    				    </a> <span id="{{v.key.urlsafe()}}">{{v.likes}}</span> Likes.</h4>
     					{% else %}
     				  <h2 class="text-center">{{v.video_title}}</h2>
     				  <div class="text-center">Wins {{v.win_percent}}% of Match Ups</div>
     				  <h4 class="text-center informational">
     				    <a href="javascript:void(0)" onclick="like_musician('{{musician.key.urlsafe()}}', '{{v.key.urlsafe()}}')">
     				      <img src="/images/voting.png" />
-    				    </a> {{v.likes}} Likes.</h4>
+    				    </a> <span id="{{v.key.urlsafe()}}">{{v.likes}}</span> Likes.</h4>
     					{% endif %}
     			</div>
     			{% endfor %}
