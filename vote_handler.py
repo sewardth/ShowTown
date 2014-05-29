@@ -11,6 +11,7 @@ class VoteHandler(views.Template):
 		video_two = ndb.Key(urlsafe = self.request.get('right_vid'))
 		video_two_artist_key = ndb.Key(urlsafe = self.request.get('right_mus_id'))
 		if self.request.get('win') == '':
+			mus_choice = None
 			voter_choice = None
 		else:
 			voter_choice =  ndb.Key(urlsafe = self.request.get('win'))
