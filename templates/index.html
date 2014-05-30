@@ -22,16 +22,11 @@
 				<li>You are currently comparing </li>
 				<li class="dropdown">
 				  <a data-toggle="dropdown" class="dropdown-toggle" id="selected_genre" href="javascript:void(0)"><b class="caret"></b></a>
-          <ul class="dropdown-menu" id="genres_list"><!-- filled in by set_selection_nav --></ul>
+          <ul class="dropdown-menu" id="genres_list"><!-- filled in by init_page --></ul>
         </li>
 				<li>musicians in </li>
-				<li class="dropdown">
-				  <a data-toggle="dropdown" class="dropdown-toggle" id="selected_state" href="javascript:void(0)">Michigan<b class="caret"></b></a>
-					<ul class="dropdown-menu">
-				  {% for musicians_state in musicians_states %}
-            <li><a href="javascript:void(0)" onclick="load_page_content(null,'{{musicians_state.abbr}}')">{{musicians_state.name}}</a></li>
-          {% endfor %}
-	        </ul>
+				<li class="dropdown"><a data-toggle="dropdown" class="dropdown-toggle" id="selected_state" href="#"><b class="caret"></b></a>
+					<ul class="dropdown-menu" id="states_list"><!-- filled in by init_page --></ul>
 				</li>
 			</ul>
 		</div>

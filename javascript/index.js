@@ -5,8 +5,8 @@
 function init_page(){
   $('li.musicians').addClass('selected');
   //
-  var selected_genre_code = 'alt';
-  $('#selected_genre').text(genres[selected_genre_code]);
+  // ========================
+  // Genres
   $('#genres_list').empty();
   for(key in genres){
     $('#genres_list')
@@ -14,24 +14,31 @@ function init_page(){
         .append($(document.createElement('a'))
           .attr({href:'javascript:void(0)'})
           .bind('click',{key: key}, function(e) {
-            load_page_content(e.data.key, null)
+            $('#selected_genre').text(genres[e.data.key]);
+            load_page_content(e.data.key, states[$('#selected_state').text()])
           })
           .text(genres[key])
         )
       );
   }
-  $('#genres_list').append($(document.createElement('li')).attr({class:'divider'}))
-  $('#genres_list')
-    .append($(document.createElement('li'))
-      .append($(document.createElement('a'))
-        .attr({href:'javascript:void(0)'})
-        .bind('click',{}, function(e) {
-          load_page_content('random', null)
-        })
-        .text('Random')
-      )
-    );
-  load_page_content(selected_genre_code, states[$('#selected_state').text()])
+  // ========================
+  // States 
+  $('#selected_state').text(Object.keys(states)[0]); 
+  $('#states_list').empty();
+  for(key in states){
+    $('#states_list')
+      .append($(document.createElement('li'))
+        .append($(document.createElement('a'))
+          .attr({href:'javascript:void(0)'})
+          .bind('click',{key: key}, function(e) {
+            $('#selected_state').text(e.data.key);
+            load_page_content($('#selected_genre').text(), states[e.data.key]);
+          })
+          .text(key)
+        )
+      );
+  }
+  load_page_content(null, states[$('#selected_state').text()])
 }
 
 
@@ -43,6 +50,8 @@ console.log('Load genre=' + genre_code + ' - state=' + state_code)
     dataType: 'json',
     data: {genre_code:genre_code, state_code:state_code}})
     .done(function(data, textStatus, xhr){
+      // Update genre selection
+      $('#selected_genre').text(data.genre_tag);
       // Title
       $('#matchup_title').text(data.genre_tag + ' Matchup');
       // Left
