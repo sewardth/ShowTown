@@ -53,9 +53,9 @@ function init_page(){
       .append($(document.createElement('li'))
         .append($(document.createElement('a'))
           .attr({href:'javascript:void(0)'})
-          .bind('click',{key: states[key]}, function(e) {
-            $('#selected_state').text(states[e.data.key]);
-            load_page_content($('#selected_genre').text(), e.data.key);
+          .bind('click',{key: key}, function(e) {
+            $('#selected_state').text(e.data.key);
+            load_page_content($('#selected_genre').text(), states[e.data.key]);
           })
           .text(key)
         )
@@ -71,6 +71,7 @@ function load_page_content(genre_code, state_code){
     dataType: 'json',
     data: {genre_code:genre_code, state_code:state_code}})
     .done(function(data, textStatus, xhr){
+      $('#trending_data').empty();
       var entries = data.trending_data;
       for(var i = 0, len = entries.length; i < len; i++){
         $('#trending_data')
