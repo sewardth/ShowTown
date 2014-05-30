@@ -23,7 +23,7 @@ class TrendingHandler(views.Template):
 			states_select = {}
 			genre = {}
 
-		template_values = {'musicians_states':json.dumps(states_select), 'genres':json.dumps(genre)}
+		template_values = {'musicians_states':json.dumps(states_select, sort_keys = True), 'genres':json.dumps(genre, sort_keys = True)}
 		self.render('trending.html', template_values)
 	
 

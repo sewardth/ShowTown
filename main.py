@@ -82,7 +82,7 @@ class MainHandler(views.Template):
 			states_select = {}
 			genre = {}
 			
-		template_values = {'musicians_states':json.dumps(states_select), 'vids': vids, 'matchups':participation, 'genres':json.dumps(genre)}			
+		template_values = {'musicians_states':json.dumps(states_select, sort_keys = True), 'vids': vids, 'matchups':participation, 'genres':json.dumps(genre, sort_keys = True)}			
 		self.render('index.html', template_values)
 					
 
