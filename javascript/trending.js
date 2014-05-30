@@ -85,6 +85,12 @@ function load_page_content(genre_code, state_code){
     data: {genre_code:genre_code, state_code:state_code}})
     .done(function(data, textStatus, xhr){
       $('#trending_data').empty();
+
+      if (data.error)
+      {
+        $('#trending_data').html(data.error);
+      }
+      else{
       var entries = data.trending_data;
       for(var i = 0, len = entries.length; i < len; i++){
           var likes = variableType(entries[i].musician_stats.likes);
@@ -161,7 +167,7 @@ function load_page_content(genre_code, state_code){
           );
       }// for
             
-            
+      }     
     })
     .fail(function(xhr){ 
 console.log(xhr)

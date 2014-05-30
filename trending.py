@@ -32,18 +32,21 @@ class TrendingHandler(views.Template):
 		state_selection = self.request.get('state_code')
 
 		try:
-			trending_data =[]
+
 			if genre_selection and genre_selection != 'All':
 				musicians = models.musician.Musician.fetch_by_genre_state(genre_selection, state_selection)
 			else:
 				musicians = models.musician.Musician.filter_by_state(state_selection)
-			for x in musicians:
-				data = x.to_dict()
-				del data['profile_pic'], data['user_key'], data['DOB'],data['account_created'], data['latest_update']
-				data['key']=x.key.urlsafe()
-				trending_data.append(data)
 
-			data = {'trending_data':trending_data}
+			if musicians:
+				trending_data =[]
+				for x in musicians:
+					data = x.to_dict()
+					del data['profile_pic'], data['user_key'], data['DOB'],data['account_created'], data['latest_update']
+					data['key']=x.key.urlsafe()
+					trending_data.append(data)
+
+			data = {'trending_data':trending_data, 'error':''}
 			self.response.headers.add_header('content-type', 'application/json', charset='utf-8')
 			self.response.out.write(json.dumps(data)) 
 
