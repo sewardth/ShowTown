@@ -21,6 +21,11 @@ indexes:
   - name: musician_state
   - name: current_rank
 
+- kind: Musician
+  properties:
+  - name: musician_state
+  - name: current_rank
+
 - kind: Voting
   properties:
   - name: voter_acc_key
