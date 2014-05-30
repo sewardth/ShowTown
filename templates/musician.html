@@ -51,7 +51,7 @@
         <div class="row">
           <div class="microcopy">
             <p>
-              Genre: <strong>{{musician.genre}}</strong> 
+              Genre: <strong>{% for x in musician.band_genre %}{{ x }} {% endfor %}</strong> 
               <span class="left_spaced">Location: <strong>{{musician.address[0].city}}, {{musician.address[0].state}}</strong></span>  
               <span class="left_spaced">Born: <strong>{% if musician.DOB %}{{musician.DOB.strftime('%B %d, %Y')}} {% else %}{% endif %}</strong></span>
             </p>
@@ -118,18 +118,18 @@
     				<iframe width="490" height="300" frameborder="0" allowfullscreen="" src="{{v.embed_link}}"></iframe>
               {% if v.featured %}
     				  <h2 class="text-center featured"><span>Featured:</span> {{v.video_title}}</h2>
-    				  <div class="text-center">Wins {{v.win_percent}}% of Match Ups</div>
+    				  <div class="text-center">Wins {{((v.video_stats.get('head_to_head_wins',0) / v.video_stats.get('total_matchups',0))*100)|round|int}}% of Match Ups</div>
     				  <h4 class="text-center informational">
     				    <a href="javascript:void(0)" onclick="like_musician('{{musician.key.urlsafe()}}','{{v.key.urlsafe()}}')">
     				      <img src="/images/voting.png">
-    				    </a> <span id="{{v.key.urlsafe()}}">{{v.likes}}</span> Likes.</h4>
+    				    </a> <span id="{{v.key.urlsafe()}}">{{v.video_stats.get('likes',0) + v.video_stats.get('head_to_head_wins',0)}}</span> Likes.</h4>
     					{% else %}
     				  <h2 class="text-center">{{v.video_title}}</h2>
-    				  <div class="text-center">Wins {{v.win_percent}}% of Match Ups</div>
+    				  <div class="text-center">Wins {{((v.video_stats.get('head_to_head_wins',0) / v.video_stats.get('total_matchups',0))*100)|round|int}}% of Match Ups</div>
     				  <h4 class="text-center informational">
     				    <a href="javascript:void(0)" onclick="like_musician('{{musician.key.urlsafe()}}', '{{v.key.urlsafe()}}')">
     				      <img src="/images/voting.png" />
-    				    </a> <span id="{{v.key.urlsafe()}}">{{v.likes}}</span> Likes.</h4>
+    				    </a> <span id="{{v.key.urlsafe()}}">{{v.video_stats.get('likes',0) + v.video_stats.get('head_to_head_wins',0)}}</span> Likes.</h4>
     					{% endif %}
     			</div>
     			{% endfor %}
