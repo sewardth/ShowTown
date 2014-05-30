@@ -11,7 +11,7 @@ class Likes(ndb.Model):
 
 	@classmethod
 	def count_by_video(cls,video_key):
-		return cls.query(cls.vide_key == video_key).count()
+		return cls.query(cls.video_key == video_key).count()
 
 
 	@classmethod

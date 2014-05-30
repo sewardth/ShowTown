@@ -1,4 +1,4 @@
-import webapp2, jinja2, os, datetime, sys
+import webapp2, jinja2, os, datetime, sys, logging
 from google.appengine.ext import ndb
 sys.path.insert(0,'libs')
 import models
@@ -31,7 +31,8 @@ class Template(webapp2.RequestHandler):
 		try:
 			user = models.account.Account.query_by_key(ndb.Key(urlsafe=user))
 			return user
-		except:
+		except Exception as e:
+			logging.info(e)
 			return None
 		
 	def _verify_user(self, user, session_cookie):
@@ -51,5 +52,9 @@ class Template(webapp2.RequestHandler):
 			return user
 		
 		
-	def email_sender(self, template, **kwargs):
-		pass
+	def email_sender(self, template, template_values):
+		self.response.headers['Content-Type'] = 'text/html'
+		page = jinja_environment.get_template(template)
+		template = page.render(template_values)
+		return template
+		

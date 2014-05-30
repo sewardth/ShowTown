@@ -70,6 +70,12 @@ handlers:
   
 - url: /trending.*
   script: trending.app
+
+- url: /activate.*
+  script: activate.app
+
+- url: /account.*
+  script: account.app
   
 - url: .*
   script: main.app

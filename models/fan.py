@@ -2,7 +2,7 @@ from google.appengine.ext import ndb
 from musician import Musician
 
 class Fan(ndb.Model):
-	user_key = ndb.KeyProperty()
+	user_key = ndb.KeyProperty(required = True)
 	#user_name = ndb.StringProperty()
 	#first_name = ndb.StringProperty()
 	#last_name = ndb.StringProperty()

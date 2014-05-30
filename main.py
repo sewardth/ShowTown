@@ -15,7 +15,7 @@
 # limitations under the License.
 #
 
-import webapp2, json, sys, views, random
+import webapp2, json, sys, views, random, logging
 sys.path.insert(0,'libs')
 from helpers import static_lookups as lookup
 import models
@@ -26,7 +26,8 @@ class MainHandler(views.Template):
 		videos = models.videos.Videos.fetch_featured()
 		try:
 			vids = random.sample(videos,2)
-		except:
+		except Exception as e:
+			logging.exception(e)
 			vids = None
 		
 		user = self.user_check()
@@ -72,20 +73,16 @@ class MainHandler(views.Template):
 		try:
 			states = models.musician.Musician.fetch_distinct_states()
 			genres = models.videos.Videos.fetch_distinct_genres()
-			musicians_states = []
-			for x in states:
-				data = {}
-				data['abbr']= x.musician_state
-				data['name']= lookup.states[x.musician_state]
-				musicians_states.append(data)
-
+			states_select = {lookup.states[x.musician_state]:x.musician_state for x in states}
 			genre = {x.genre_tag:x.genre_tag for x in genres}
-				
-		except:
-			musicians_states = []
-			genre = []
+
+
+		except Exception as e:
+			logging.exception(e)
+			states_select = {}
+			genre = {}
 			
-		template_values = {'musicians_states':json.dumps(musicians_states), 'vids': vids, 'matchups':participation, 'genres':json.dumps(genre)}			
+		template_values = {'musicians_states':json.dumps(states_select), 'vids': vids, 'matchups':participation, 'genres':json.dumps(genre)}			
 		self.render('index.html', template_values)
 					
 
@@ -124,7 +121,8 @@ class MainHandler(views.Template):
 				data['vid_key'] = x.key
 				video_data.append(data)
 			
-		except:
+		except Exception as e:
+			logging.exception(e)
 			video_data = None
 		
 		

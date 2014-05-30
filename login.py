@@ -1,4 +1,4 @@
-import webapp2, sys, uuid, datetime, time, views, json
+import webapp2, sys, uuid, datetime, time, views, json, logging
 sys.path.insert(0,'libs')
 import models
 from sessions.password import Passwords as pwd
@@ -26,8 +26,9 @@ class Login(views.Template):
 				Cookie.set_cookie(_auth_, self.response)
 				Cookie.set_cookie(_term_, self.response)
 				time.sleep(.5)
-			except:
-				result = {'error':'Invalid password. Please try again.'}
+			except Exception as e:
+				logging.exception(e)
+				result = {'error':'Invalid password or account has not been activated'}
 
 		self.response.headers.add_header('content-type', 'application/json', charset='utf-8')
 		self.response.out.write(json.dumps(result)) 
@@ -35,7 +36,7 @@ class Login(views.Template):
 
 	def verify_password(self, password, pwhash):
 		check = pwd.compare_hash(password, pwhash)
-		if check == True:   #add and user.verified == True after testing
+		if check == True and self.user.verified == True:
 			self.user.session_token = str(uuid.uuid4())
 			self.user.put()
 		else:
@@ -54,13 +55,8 @@ class Logout(views.Template):
 		self.redirect('/')
 		
 
-class LoginReset(views.Template):
-	def get(self):
-		pass
-
 app = webapp2.WSGIApplication([
     ('/login_handler', Login),
-    ('/logout_handler', Logout),
-	('/login_handler_reset', LoginReset)
+    ('/logout_handler', Logout)
 
 ], debug=True)

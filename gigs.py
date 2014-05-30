@@ -1,4 +1,4 @@
-import views, webapp2, models, time, json
+import views, webapp2, models, time, json, logging
 from helpers.form_validation import Validate
 from datetime import datetime
 from google.appengine.ext import ndb
@@ -39,7 +39,8 @@ class VenueAddEditGigHandler(views.Template):
 				else:
 					self.response.out.write('Not Authorized')
 		
-			except: #Else displays blank form
+			except Exception as e: #Else displays blank form
+                logging.exception(e)
 				template_values = {'add':1,
 								   'gig_name': '',
 								   'event_date':'',
@@ -102,7 +103,8 @@ class VenueAddEditGigHandler(views.Template):
 					gig.description = description
 					gig.put()
 			
-				except:
+				except Exception as e:
+                    logging.exception(e)
 					gig = models.events.Event(venue_key = venue.key,
 												venue_account_key = user.key,
 												venue = venue.venue_name,

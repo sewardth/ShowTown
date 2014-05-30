@@ -1,9 +1,10 @@
 from google.appengine.ext import ndb
 from address import Address
 from videos import Videos
+import logging
 
 class Musician(ndb.Model):
-	user_key = ndb.KeyProperty()
+	user_key = ndb.KeyProperty(required = True)
 	user_name = ndb.StringProperty()
 	band_name = ndb.StringProperty()
 	band_genre = ndb.StringProperty(repeated = True)
@@ -19,6 +20,7 @@ class Musician(ndb.Model):
 	sound_cloud = ndb.StringProperty()
 	video_hosting_page = ndb.StringProperty()
 	current_rank = ndb.FloatProperty()
+	musician_stats = ndb.JsonProperty(default ={})
 	latest_update = ndb.DateTimeProperty(auto_now = True)
 	account_created = ndb.DateTimeProperty(auto_now_add = True)
 	
@@ -35,7 +37,8 @@ class Musician(ndb.Model):
 	def fetch_artists(cls, keys):
 		try:
 			return cls.query(cls._key.IN(keys)).fetch()
-		except:
+		except Exception as e:
+			logging.exception(e)
 			return None
 			
 	@classmethod

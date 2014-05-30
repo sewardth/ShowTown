@@ -40,3 +40,19 @@ class Voting(ndb.Model):
 	@classmethod
 	def recent_trends(cls):
 		return cls.query(cls.vote_time >= datetime.datetime.now() + datetime.timedelta(-30)).fetch()
+
+	@classmethod
+	def return_win_count(cls, musician_key):
+		return cls.query(cls.voter_choice_musician_key == musician_key).count()
+
+	@classmethod
+	def return_matches_count(cls, musician_key):
+		return cls.query(ndb.OR(cls.video_one_artist_key == musician_key, cls.video_two_artist_key == musician_key)).count()
+
+	@classmethod
+	def return_win_count_videos(cls, video_key):
+		return cls.query(cls.voter_choice == video_key).count()
+
+	@classmethod
+	def return_matches_count_videos(cls, video_key):
+		return cls.query(ndb.OR(cls.video_one == video_key, cls.video_two == video_key)).count()

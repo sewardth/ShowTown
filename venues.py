@@ -15,7 +15,7 @@
 # limitations under the License.
 #
 
-import webapp2, json, sys, views
+import webapp2, json, sys, views, logging
 from google.appengine.ext import ndb
 from google.appengine.datastore.datastore_query import Cursor
 sys.path.insert(0,'libs')
@@ -66,7 +66,8 @@ class VenueHandler(views.Template):
 		try:
 			venue_key = ndb.Key(urlsafe=self.request.get('id'))
 			data = venue_key.get()
-		except:
+		except Exception as e:
+			logging.exception(e)
 			data = None
 		template_values = {'venue':data}
 		self.render('venue.html', template_values)

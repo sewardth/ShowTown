@@ -7,6 +7,7 @@ class Videos(ndb.Model):
 	genre_tag = ndb.StringProperty()
 	video_title = ndb.StringProperty()
 	featured = ndb.BooleanProperty(default = False)
+	video_stats = ndb.JsonProperty(default ={})
 	video_added = ndb.DateTimeProperty(auto_now_add = True)
 	
 
