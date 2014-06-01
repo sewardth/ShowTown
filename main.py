@@ -36,30 +36,47 @@ class MainHandler(views.Template):
 				pro = models.musician.Musician.query_by_account(user.key)
 			else:
 				pro = user
+
+			#pull recent votes for the user
 			participation = models.voting.Voting.recent_by_user(user.key)
-			if participation != None and len(participation)>0:
-				total_votes = models.voting.Voting.fetch_votes_musicians([x.video_one_artist_key for x in participation]+[x.video_two_artist_key for x in participation])
-				total_matches = [x.video_one_artist_key for x in total_votes] + [x.video_two_artist_key for x in total_votes]
-				likes = [x.voter_choice_musician_key for x in total_votes]
+			if participation:
+				
+				#query for the musicians the user follows, then covert the keys to an array.
 				user_followed = models.following.Following.fetch_by_user(user.key)
 				followed = [x.followed_entity_key for x in user_followed]
-				musician_data = {x.key:x.band_name for x in models.musician.Musician.fetch_artists([x.video_one_artist_key for x in participation]+[x.video_two_artist_key for x in participation])}
+				
+				#query for the musicians the user has voted for and convert results to a dictionary
+				musicians = models.musician.Musician.fetch_artists([x.video_one_artist_key for x in participation]+[x.video_two_artist_key for x in participation])
+				musician_data = {}
+				for x in musicians:
+					musician_data[x.key] = x.to_dict()
+
+				#maps participation results to musician data
 				for x in participation:
-					data = x.to_dict()
-					one_total = total_matches.count(x.video_one_artist_key)
-					two_total = total_matches.count(x.video_two_artist_key)
-					one_likes = likes.count(x.video_one_artist_key)
-					two_likes = likes.count(x.video_two_artist_key)
-					x.video_one_name = musician_data[x.video_one_artist_key]
-					x.video_two_name = musician_data[x.video_two_artist_key]
-					if one_likes !=0 or one_total !=0:
-						x.one_win_percent = format((float(one_likes)/one_total)*100, '.0f')
+					#map wins
+					one_wins = musician_data[x.video_one_artist_key]['musician_stats'].get('head_to_head_wins',0)
+					two_wins = musician_data[x.video_two_artist_key]['musician_stats'].get('head_to_head_wins',0)
+
+					#maps total matchups
+					one_total = musician_data[x.video_one_artist_key]['musician_stats'].get('total_matchups',0)
+					two_total = musician_data[x.video_two_artist_key]['musician_stats'].get('total_matchups',0)
+
+					#maps band names and add as object properties
+					x.video_one_name = musician_data[x.video_one_artist_key]['band_name']
+					x.video_two_name = musician_data[x.video_two_artist_key]['band_name']
+
+					#calculate win % and add as object properties
+					if one_wins != 0:
+						x.one_win_percent = format((float(one_wins)/one_total)*100, '.0f')
 					else: 
 						x.one_win_percent = '0'
-					if two_likes !=0 or two_total !=0:
-						x.two_win_percent = format((float(two_likes)/two_total)*100, '.0f')
+
+					if two_wins !=0:
+						x.two_win_percent = format((float(two_wins)/two_total)*100, '.0f')
 					else:
 						x.two_win_percent ='0'
+
+					#checks if user is already following musicians
 					if x.video_one_artist_key in followed or pro.key == x.video_one_artist_key: x.one_followed = True
 					if x.video_two_artist_key in followed or pro.key == x.video_two_artist_key: x.two_followed = True
 					
@@ -70,6 +87,8 @@ class MainHandler(views.Template):
 		else:
 			participation = None
 
+
+		#queries for distinct states and genres for query selectors
 		try:
 			states = models.musician.Musician.fetch_distinct_states()
 			genres = models.videos.Videos.fetch_distinct_genres()
@@ -93,24 +112,25 @@ class MainHandler(views.Template):
 		user = self.user_check()
 		self.videos = models.videos.Videos.fetch_featured()
 		
-		try:
-			random.sample(self.videos,2)
 
-			if user:
+		try:
+			random.sample(self.videos,2)  #Checks if more than 2 videos exist.  If not, displays error message
+
+			if user: #Checks for previous votes by user
 				self.user_votes = models.voting.Voting.query_by_user(user.key)
 		
 				if self.user_votes != None:
-					self.user_votes = [[x.video_one,x.video_two] for x in self.user_votes]
-					page_vids = False
+					self.user_votes = [[x.video_one,x.video_two] for x in self.user_votes] #if user has voted, create an array of votes
+					page_vids = False #set initial while loop variable
 					while page_vids == False and len(self.videos)>1:
-						rand_vid = random.choice(self.videos)
-						page_vids = self.find_match(rand_vid)
-						self.videos.remove(rand_vid)
+						rand_vid = random.choice(self.videos) #grabs a random choice video from all videos
+						page_vids = self.find_match(rand_vid) #calls find match function to find all possible unvoted matches for video
+						self.videos.remove(rand_vid) #if video has appeared in all available matches, remove video from array
 				else:
-					page_vids = random.sample(self.videos,2)
+					page_vids = random.sample(self.videos,2) #pull any random sample
 				
 			else:
-				page_vids = random.sample(self.videos,2)
+				page_vids = random.sample(self.videos,2) #pull any random sample
 		
 			#Match musician info to video data
 			musician_data = {x.key:x.band_name for x in models.musician.Musician.fetch_artists([x.musician_key for x in page_vids])}
@@ -134,6 +154,10 @@ class MainHandler(views.Template):
 		
 		
 	def find_match(self, rand_vid):
+		"""Takes a random video as an argument and searches for a second video match that is unique to the logged in fan.
+		   Once that video is found, it returns a two element array (random video, found match).  If not unique match is 
+		   found, then it returns false."""
+		   
 		i =0
 		
 		while i < len(self.videos):
@@ -141,8 +165,6 @@ class MainHandler(views.Template):
 				return [rand_vid,self.videos[i]]
 			i+=1
 		return False
-
-
 
 class FaqHandler(views.Template):
 	def get(self):

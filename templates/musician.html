@@ -44,8 +44,8 @@
       <div class="col-lg-10">
         <div class="row">
           <h1 class="pull-left">{{musician.band_name}} 
-            <span class="microcopy informational middle"><i class="fa fa-thumbs-o-up"></i> <span id="mus_likes">{{likes}}</span> Likes 
-              <i class="fa fa-users left_spaced"></i> {{followers}} Followers</span>
+            <span class="microcopy informational middle"><i class="fa fa-thumbs-o-up"></i> <span id="mus_likes">{% if musician.musician_stats.get('likes',0) == 0 %} 0 {% else %}{{musician.musician_stats.get('likes',0) + musician.musician_stats.get('head_to_head_wins',0)}} {% endif %}</span> Likes 
+              <i class="fa fa-users left_spaced"></i> {{musician.musician_stats.get('followers',0)}} Followers</span>
           </h1>
         </div>
         <div class="row">
@@ -118,14 +118,14 @@
     				<iframe width="490" height="300" frameborder="0" allowfullscreen="" src="{{v.embed_link}}"></iframe>
               {% if v.featured %}
     				  <h2 class="text-center featured"><span>Featured:</span> {{v.video_title}}</h2>
-    				  <div class="text-center">Wins {{((v.video_stats.get('head_to_head_wins',0) / v.video_stats.get('total_matchups',0))*100)|round|int}}% of Match Ups</div>
+    				  <div class="text-center">Wins {% if v.video_stats.get('total_matchups',0) ==0 %}0{% else %} {{((v.video_stats.get('head_to_head_wins',0) / v.video_stats.get('total_matchups',0))*100)|round|int}}{% endif %}% of Match Ups</div>
     				  <h4 class="text-center informational">
     				    <a href="javascript:void(0)" onclick="like_musician('{{musician.key.urlsafe()}}','{{v.key.urlsafe()}}')">
     				      <img src="/images/voting.png">
     				    </a> <span id="{{v.key.urlsafe()}}">{{v.video_stats.get('likes',0) + v.video_stats.get('head_to_head_wins',0)}}</span> Likes.</h4>
     					{% else %}
     				  <h2 class="text-center">{{v.video_title}}</h2>
-    				  <div class="text-center">Wins {{((v.video_stats.get('head_to_head_wins',0) / v.video_stats.get('total_matchups',0))*100)|round|int}}% of Match Ups</div>
+              <div class="text-center">Wins {% if v.video_stats.get('total_matchups',0) ==0 %}0{% else %} {{((v.video_stats.get('head_to_head_wins',0) / v.video_stats.get('total_matchups',0))*100)|round|int}}{% endif %}% of Match Ups</div>
     				  <h4 class="text-center informational">
     				    <a href="javascript:void(0)" onclick="like_musician('{{musician.key.urlsafe()}}', '{{v.key.urlsafe()}}')">
     				      <img src="/images/voting.png" />

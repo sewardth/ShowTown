@@ -31,8 +31,6 @@ class MusicianHandler(views.Template):
 						   'musician':musician, 
 						   'videos':videos, 
 						   'call_b':str(self.request.path), 
-						   'followers':musician.musician_stats.get('followers',0), 
-						   'likes':musician.musician_stats.get('likes',0)+musician.musician_stats.get('head_to_head_wins',0), 
 						   'is_following':user_following}
 						   
 		self.render('musician.html', template_values)
