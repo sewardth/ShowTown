@@ -19,7 +19,8 @@ class Musician(ndb.Model):
 	twitter = ndb.StringProperty()
 	sound_cloud = ndb.StringProperty()
 	video_hosting_page = ndb.StringProperty()
-	current_rank = ndb.FloatProperty()
+	current_rank = ndb.IntegerProperty()
+	state_rank = ndb.IntegerProperty()
 	musician_stats = ndb.JsonProperty(default ={})
 	latest_update = ndb.DateTimeProperty(auto_now = True)
 	account_created = ndb.DateTimeProperty(auto_now_add = True)
@@ -43,7 +44,7 @@ class Musician(ndb.Model):
 			
 	@classmethod
 	def filter_by_state(cls, state):
-		return cls.query(cls.address[0].state == state).fetch()
+		return cls.query(cls.musician_state == state).order(cls.state_rank).fetch()
 		
 	@classmethod
 	def fetch_distinct_states(cls):
@@ -55,7 +56,11 @@ class Musician(ndb.Model):
 		return cls.query().fetch(100000)
 
 	@classmethod
-	def fetch_by_genre_state(cls, genre = 'Pop', state ='CA'):
+	def fetch_by_genre_state(cls, genre, state):
 		return cls.query(cls.band_genre == genre, cls.musician_state == state).order(cls.current_rank).fetch()
+
+	@classmethod
+	def count_by_state(cls, state):
+		return cls.query(cls.musician_state == state).count()
 
 		

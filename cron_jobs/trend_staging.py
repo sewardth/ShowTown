@@ -1,19 +1,32 @@
 from google.appengine.ext import ndb
-import views, webapp2, models, datetime
+import views, webapp2, models, datetime, time, logging
 
 class Trending(views.Template):
     """Builds current trending ranks and inserts records into trending model"""
-    def get(self):
-        musicians_query = models.musician.Musician.fetch_all()
+    def post(self):
+        start_time = time.clock() #used to calculate process time for monitoring
+
+        self.selection = self.request.get('selection')
+
+        if self.selection == 'All':
+            musicians_query = models.musician.Musician.fetch_all()
+        else:
+            musicians_query = models.musician.Musician.filter_by_state(self.selection)
+
         self.likes = self.fetch_likes()
         self.votes = self.fetch_votes()
         self.wins = self.fetch_wins()
         self.following = self.fetch_following()
         self.videos = self.fetch_videos()
 
+
         #build models
         self.build_calcs(musicians_query)
 
+
+        end_time = time.clock() - start_time
+        logging.info(str(end_time) + " seconds") #logs process time
+        self.response.out.write('Finished in ' + str(end_time) + ' seconds')
 
 
 
@@ -44,23 +57,23 @@ class Trending(views.Template):
         musician_list = [x.key for x in musicians]
         win_percents = self.win_percent(musician_list)
 
+        #calculate ranks for each category
         likes_rank = self.rank_by_value(musician_list, self.likes)
         following_rank = self.rank_by_value(musician_list, self.following)
         win_percent_rank = self.rank_by_value(musician_list, win_percents, count = False)
 
-        #insert into NDB class Trending
-        existing_data = models.trending.Trending.return_by_rank() #checks for existing data in table
-        if existing_data != None: ndb.delete_multi([x.key for x in existing_data]) #deletes existing data
-        put_list =[]
+        #calculates total rank
+        total_ranks = self.rank_overall(musicians, likes_rank, following_rank, win_percent_rank)
+
+
+
         for x in musicians:
-            obj = models.trending.Trending(musician_key = x.key,
-                                          likes_rank = likes_rank[x.key],
-                                          following_rank = following_rank[x.key],
-                                          win_rank = win_percent_rank[x.key])
-            put_list.append(obj)
-            x.current_rank = (obj.likes_rank+ obj.following_rank + obj.win_rank)/float(3)
-        ndb.put_multi(put_list)
+            if self.selection == 'All':
+                x.current_rank = total_ranks.index(x.key)+1
+            else:
+                x.state_rank = total_ranks.index(x.key)+1
         ndb.put_multi(musicians)
+        return True
 
 
 
@@ -73,15 +86,22 @@ class Trending(views.Template):
         else:
             counter = value_list
         mapping =  dict(zip(key_list, counter))
-        return {x:sorted(counter, reverse =True).index(mapping[x])+1 for x in mapping}
+        return {x:sorted(counter, reverse =True).index(mapping[x]) for x in mapping}
 
 
-        
+    def rank_overall(self, musicians, likes_rank, following_rank, win_percent_rank):
+        overall = []
+        for x in musicians:
+            points = (likes_rank[x.key]+ following_rank[x.key] + win_percent_rank[x.key])/float(3)
+            overall.append([x.key, points])
+        ranks = sorted(overall, key = lambda x: x[1]) #sorts list based on total points
+        return [x[0] for x in ranks] #returns ranked list
+
 
 
 
 
 app = webapp2.WSGIApplication([
-    ('/tasks/trending', Trending)
+    ('/tasks/trending/builder.*', Trending)
 
 ], debug=True)

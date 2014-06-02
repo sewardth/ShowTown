@@ -29,8 +29,12 @@ handlers:
   login: admin
  
 
-- url: /tasks/trending.*
+- url: /tasks/trending
+  script: cron_jobs.trending.app
+
+- url: /tasks/trending/builder.*
   script: cron_jobs.trend_staging.app
+  
 
 - url: /signup.*
   script: signup.app
