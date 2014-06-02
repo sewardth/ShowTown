@@ -24,6 +24,9 @@ class MusicianHandler(views.Template):
 
 		#query all videos for this artist
 		videos = models.videos.Videos.fetch_by_musician(musician.key)
+
+		#count of musicians by state
+		total_musicians = models.musician.Musician.count_by_state(musician.musician_state)
 			
 
 		
@@ -31,7 +34,8 @@ class MusicianHandler(views.Template):
 						   'musician':musician, 
 						   'videos':videos, 
 						   'call_b':str(self.request.path), 
-						   'is_following':user_following}
+						   'is_following':user_following,
+						   'state_count':total_musicians}
 						   
 		self.render('musician.html', template_values)
     		    		                                         		

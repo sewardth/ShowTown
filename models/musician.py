@@ -59,4 +59,8 @@ class Musician(ndb.Model):
 	def fetch_by_genre_state(cls, genre, state):
 		return cls.query(cls.band_genre == genre, cls.musician_state == state).order(cls.current_rank).fetch()
 
+	@classmethod
+	def count_by_state(cls, state):
+		return cls.query(cls.musician_state == state).count()
+
 		
