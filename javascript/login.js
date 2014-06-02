@@ -22,8 +22,8 @@ function show_login_popup(){
   var login_html = '<div id="login">' +
                     '<fieldset><legend>Login to ShowTown</legend>' +
                       '<p id="login_error"></p>' +
-  					          '<p class="fl"><label>E-mail</label> <input type="text" name="email"></p>' +
-  					          '<p class="fl"><label>Password</label> <input type="password" name="password"></p>' +
+  					          '<p class="fl"><label>E-mail</label> <input type="text" name="login_email"></p>' +
+  					          '<p class="fl"><label>Password</label> <input type="password" name="login_password"></p>' +
   					          '<p><input class="btn btn-primary" value="Login"type="button" onclick="do_ajax_login()"/> ' +
   					          '<a style="color:blue;" href="/account">I forgot my password</a></p>' +
   				          '</fieldset></div>';
@@ -42,7 +42,7 @@ function do_ajax_login(){
     type: "POST",
     url: '/login_handler',
     dataType: 'json',
-    data: {url_path:window.location.pathname, email:$("[name='email']").val(), password:$("[name='password']").val()}})
+    data: {url_path:window.location.pathname, email:$("[name='login_email']").val(), password:$("[name='login_password']").val()}})
     .done(function(data, textStatus, xhr){
       if(data.error){
         $('#login_error').text(data.error);
