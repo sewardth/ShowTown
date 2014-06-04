@@ -37,8 +37,8 @@ class MainHandler(views.Template):
 			else:
 				pro = user
 
-			#pull recent votes for the user
-			participation = models.voting.Voting.recent_by_user(user.key)
+			#pull recent votes for the user (last 5)
+			participation = models.voting.Voting.recent_by_user(user.key)[:5]
 			if participation:
 				
 				#query for the musicians the user follows, then covert the keys to an array.

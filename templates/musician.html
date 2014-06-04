@@ -44,7 +44,7 @@
       <div class="col-lg-10">
         <div class="row">
           <h1 class="pull-left">{{musician.band_name}} 
-            <span class="microcopy informational middle"><i class="fa fa-thumbs-o-up"></i> <span id="mus_likes">{% if musician.musician_stats.get('likes',0) == 0 %} 0 {% else %}{{musician.musician_stats.get('likes',0) + musician.musician_stats.get('head_to_head_wins',0)}} {% endif %}</span> Likes 
+            <span class="microcopy informational middle"><i class="fa fa-thumbs-o-up"></i> <span id="mus_likes">{{musician.musician_stats.get('likes',0) + musician.musician_stats.get('head_to_head_wins',0)}}</span> Likes 
               <i class="fa fa-users left_spaced"></i> {{musician.musician_stats.get('followers',0)}} Followers</span>
           </h1>
         </div>

@@ -1,4 +1,4 @@
-import webapp2, json, sys, views, calculations as calc
+import webapp2, json, sys, views, logging
 from google.appengine.ext import ndb
 sys.path.insert(0,'libs')
 import models
@@ -8,67 +8,39 @@ class FanProfileHandler(views.Template):
 	def get(self):
 		user = self.user_check() #returns user account info
 		fan = models.fan.Fan.query_by_account(user.key) #returns fan profile info
-		participation = models.voting.Voting.recent_by_user(user.key)
-		following = models.following.Following.fetch_by_user(user.key)
-		match_count = len(models.voting.Voting.query_by_user(user.key))
-		
-		if participation != None and len(participation)>0:
-			matches = self.count_likes_participation(participation, following)
-		else:
-			matches = None
-		
-		if following != None and len(following)>0:
-			following = self.count_likes_followers(following)
-		else:
-			following = None
+		participation = models.voting.Voting.recent_by_user(user.key) #returns user voting
+		following = models.following.Following.fetch_by_user(user.key) #returns followed musicians for user
+
+
+
+		#Query musician data for participation matches
+		musician_participation_data = models.musician.Musician.fetch_artists([x.video_one_artist_key for x in participation] + [x.video_two_artist_key for x in participation])
+
+		#build dictionary of musician data
+		musician_data ={}
+		for x in musician_participation_data:
+			musician_data[x.key] = x.to_dict()
+
+
+		#map musician profile data to matches
+		for x in participation:
+			x.artist_one_stats = musician_data[x.video_one_artist_key]['musician_stats']
+			x.artist_two_stats = musician_data[x.video_two_artist_key]['musician_stats']
+
+		#check if user is currently following the musician
+			followed_keys = [y.followed_entity_key for y in following]
+			if x.video_one_artist_key in followed_keys: x.one_followed = True
+			if x.video_two_artist_key in followed_keys: x.two_followed = True
+
+
+		#query musician data for followed musicians
+		followed_musicians = models.musician.Musician.fetch_artists([x.followed_entity_key for x in following])
 
 		
-		template_values = {'followed_musicians':following, 'matchups':matches, 'fav_genres':'Hip-Hop/Rap, Alternative','upcoming_shows':None, 
-		'fan_profile':fan, 'match_count':match_count}
+		template_values = {'followed_musicians':followed_musicians,'participation':participation,  'upcoming_shows':None, 
+		'fan_profile':fan}
 		self.render('fan_profile.html', template_values)
 
-	def count_likes_participation(self, participation, followers = False):
-		musician_keys = [x.video_one_artist_key for x in participation] + [x.video_two_artist_key for x in participation]
-		counts = calc.LikesCount.counts_by_musicians(musician_keys)
-		musician_data = {x.key:x.band_name for x in models.musician.Musician.fetch_artists([x.video_one_artist_key for x in participation]+[x.video_two_artist_key for x in participation])}
-		
-		
-		template_data = []
-		for x in participation:
-			data = x.to_dict()
-			data['one_win_percent'] = counts[x.video_one_artist_key]
-			data['two_win_percent'] = counts[x.video_two_artist_key]
-			data['video_one_name'] = musician_data[x.video_one_artist_key]
-			data['video_two_name'] = musician_data[x.video_two_artist_key]
-			if followers:
-				followers_list = [y.followed_entity_key for y in followers]
-				if x.video_one_artist_key in followers_list: data['one_followed'] = True
-				if x.video_two_artist_key in followers_list: data['two_followed'] = True
-			template_data.append(data)
-		return template_data
-		
-		
-	
-	def count_likes_followers(self, followed):
-		musicians = models.musician.Musician.fetch_artists([x.followed_entity_key for x in followed])
-		counts = calc.LikesCount.counts_by_musicians([x.key for x in musicians])
-		print counts
-		
-		template_data = []
-		for x in musicians:
-			data = x.to_dict()
-			data['win_percent'] = counts[x.key]
-			data['key'] = x.key
-			template_data.append(data)
-		return template_data
-			
-			
-		
-		
-	
-	
-	
-	
 
 
 class VenueProfileHandler(views.Template):
@@ -83,8 +55,9 @@ class VenueProfileHandler(views.Template):
 			applicant_list = [x.gig_key for x in applicant_query]
 			for x in gigs:
 				x.applicant_count =   applicant_list.count(x.key)
-		except:
-			pass
+		except Exception as e:
+			logging.exception(e)
+			return False
 			
 
 
