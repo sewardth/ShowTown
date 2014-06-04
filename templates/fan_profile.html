@@ -13,7 +13,7 @@
   <div id="page">
     {% include 'header.html' %}
     <h1 class="pull-left">My Profile</h1>
-    <h1 class="pull-right"><a href="/signup_fan" class="btn btn-default">Edit Profile</a></h1>
+    <h1 class="pull-right"><a href="/signup_fan" class="btn top_btn btn-default">Edit Profile</a></h1>
     <div class="clearfix"></div>
     <div class="microcopy">
       <div>
@@ -58,14 +58,16 @@
 	{% if followed_musicians %}
     {% for fm in followed_musicians %}
     <div class="row prev-vid-row">
-
-			<div class="col-lg-6 prev-vid">
+			<div class="col-lg-12 prev-vid">
 				<div class="col-lg-8">
 					<img class="pull-left artist_image" src="/imgs?id={{fm.key.urlsafe()}}&width=100&height=100">
 					<div class="previous_matchup_info">
     			  <div>
     			    <span class="musician_name">{{fm.band_name}} 
-
+              <span class="microcopy informational middle">
+                <i class="fa fa-thumbs-o-up"></i> 
+                  <span id="mus_likes">{{fm.likes}}</span> Likes 
+                  <i class="fa fa-users left_spaced"></i> {{fm.followers}} Followers</span>
       			  </span>
     			  </div>
     			  <div class="previous_matchup_info_links">
