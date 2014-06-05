@@ -31,6 +31,14 @@ indexes:
   - name: musician_state
   - name: state_rank
 
+- kind: Videos
+  properties:
+  - name: featured
+  - name: genre_tag
+  - name: musician_key
+  - name: video_added
+    direction: desc
+
 - kind: Voting
   properties:
   - name: voter_acc_key

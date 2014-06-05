@@ -58,14 +58,15 @@
   			<p class="text-center"><a id="right_url" href="" class="btn btn-primary signup"><i class="fa fa-thumbs-o-up"></i> I Like This</a></p>
   			  {% else %}
   			<p class="text-center"><a class="btn btn-primary signup" href="javascript:void(0)" onclick="show_login_popup()">Login to Like This</a></p>
-  			  {% endif %}
+  			  
   		</div>
   		<img src="/images/matchup_vs.png" id="matchup_vs">
   		<img id="left_image" class="artist_image">
   		<img id="right_image" class="artist_image">
     </div>
+    {% endif %}
 		<div class="row">
-			<div class="col-lg-12 clear">
+			<div class="col-lg-12 clear" id="draw-div">
 			    {% if user %}
 				<p class="text-center"><a id="draw_url" href="" class="btn btn-deemphasize text-center signup">I can't decide, it's a draw</a></p>
 				  {% else %}

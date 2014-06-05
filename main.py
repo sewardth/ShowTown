@@ -110,45 +110,59 @@ class MainHandler(views.Template):
 		state = self.request.get('state_code')
 		genre = self.request.get('genre_code')
 		user = self.user_check()
-		self.videos = models.videos.Videos.fetch_featured()
-		
 
-		try:
-			random.sample(self.videos,2)  #Checks if more than 2 videos exist.  If not, displays error message
+		#find default genre if null
+		if not genre: genre =  sorted([x.genre_tag for x in models.videos.Videos.fetch_distinct_genres()])[0]
 
-			if user: #Checks for previous votes by user
-				self.user_votes = models.voting.Voting.query_by_user(user.key)
+		#query available musician key given the selected state
+		musician_keys = [x.key for x in models.musician.Musician.filter_by_state(state)]
+
+		#query videos based on parameters
+		self.videos = models.videos.Videos.filter_by_state_genre(musician_keys, genre)
 		
-				if self.user_votes != None:
-					self.user_votes = [[x.video_one,x.video_two] for x in self.user_votes] #if user has voted, create an array of votes
-					page_vids = False #set initial while loop variable
-					while page_vids == False and len(self.videos)>1:
-						rand_vid = random.choice(self.videos) #grabs a random choice video from all videos
-						page_vids = self.find_match(rand_vid) #calls find match function to find all possible unvoted matches for video
-						self.videos.remove(rand_vid) #if video has appeared in all available matches, remove video from array
+		if len(self.videos) >1:
+
+			try:
+				random.sample(self.videos,2)  #Checks if more than 2 videos exist.  If not, displays error message
+
+				if user: #Checks for previous votes by user
+					self.user_votes = models.voting.Voting.query_by_user(user.key)
+			
+					if self.user_votes != None:
+						self.user_votes = [[x.video_one,x.video_two] for x in self.user_votes] #if user has voted, create an array of votes
+						page_vids = False #set initial while loop variable
+						while page_vids == False and len(self.videos)>1:
+							rand_vid = random.choice(self.videos) #grabs a random choice video from all videos
+							page_vids = self.find_match(rand_vid) #calls find match function to find all possible unvoted matches for video
+							self.videos.remove(rand_vid) #if video has appeared in all available matches, remove video from array
+					else:
+						page_vids = random.sample(self.videos,2) #pull any random sample
+					
 				else:
 					page_vids = random.sample(self.videos,2) #pull any random sample
-				
-			else:
-				page_vids = random.sample(self.videos,2) #pull any random sample
-		
-			#Match musician info to video data
-			musician_data = {x.key:x.band_name for x in models.musician.Musician.fetch_artists([x.musician_key for x in page_vids])}
-			video_data = []
-			for x in page_vids:
-				data = x.to_dict()
-				data['band_name'] = musician_data[x.musician_key]
-				data['vid_key'] = x.key
-				video_data.append(data)
 			
-		except Exception as e:
-			logging.exception(e)
-			video_data = None
+				#Match musician info to video data
+				musician_data = {x.key:x.band_name for x in models.musician.Musician.fetch_artists([x.musician_key for x in page_vids])}
+				video_data = []
+				for x in page_vids:
+					data = x.to_dict()
+					data['band_name'] = musician_data[x.musician_key]
+					data['vid_key'] = x.key
+					video_data.append(data)
+				
+			except Exception as e:
+				logging.exception(e)
+				video_data = None
+			
+			
+			lvideo = {'url':video_data[0]['embed_link'], 'musician_id':video_data[0]['musician_key'].urlsafe(), 'musician_name':video_data[0]['band_name'], 'song_name':video_data[0]['video_title'], 'key':video_data[0]['vid_key'].urlsafe()}
+			rvideo = {'url':video_data[1]['embed_link'], 'musician_id':video_data[1]['musician_key'].urlsafe(), 'musician_name':video_data[1]['band_name'], 'song_name':video_data[1]['video_title'], 'key':video_data[1]['vid_key'].urlsafe()}
+			data = {'lvideo':lvideo, 'rvideo':rvideo, 'genre_tag':video_data[0]['genre_tag']}
 		
+		else:
+
+			data = {'lvideo':None, 'rvideo':None, 'genre_tag':genre}
 		
-		lvideo = {'url':video_data[0]['embed_link'], 'musician_id':video_data[0]['musician_key'].urlsafe(), 'musician_name':video_data[0]['band_name'], 'song_name':video_data[0]['video_title'], 'key':video_data[0]['vid_key'].urlsafe()}
-		rvideo = {'url':video_data[1]['embed_link'], 'musician_id':video_data[1]['musician_key'].urlsafe(), 'musician_name':video_data[1]['band_name'], 'song_name':video_data[1]['video_title'], 'key':video_data[1]['vid_key'].urlsafe()}
-		data = {'lvideo':lvideo, 'rvideo':rvideo, 'genre_tag':video_data[0]['genre_tag']}
 		self.response.headers.add_header('content-type', 'application/json', charset='utf-8')
 		self.response.out.write(json.dumps(data)) 
 		
