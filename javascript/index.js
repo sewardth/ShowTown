@@ -64,7 +64,7 @@ console.log('Load genre=' + genre_code + ' - state=' + state_code)
       }
       else{
         $('#video-matchup').show();
-        $('#error').html();
+        $('#error').html('');
         $('#draw-div').show()
         $('#left_iframe').attr('src', data.lvideo.url);
   	    $('#left_url').attr('href','/vote?left_vid=' + data.lvideo.key + '&left_mus_id=' +data.lvideo.musician_id + '&left_mus_name=' +data.lvideo.musician_name+ '&right_vid=' +data.rvideo.key+ '&right_mus_id=' +data.rvideo.musician_id + '&right_mus_name=' +data.rvideo.musician_name +'&win=' + data.lvideo.key + '&mus_win=' + data.lvideo.musician_id)
