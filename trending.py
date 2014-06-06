@@ -34,7 +34,7 @@ class TrendingHandler(views.Template):
 			if genre_selection and genre_selection != 'All':
 				musicians = models.musician.Musician.fetch_by_genre_state(genre_selection, state_selection)
 			else:
-				musicians = models.musician.Musician.filter_by_state(state_selection)
+				musicians = models.musician.Musician.fetch_by_state(state_selection)
 
 			if musicians:
 				trending_data =[]

@@ -43,7 +43,7 @@ class Musician(ndb.Model):
 			return None
 			
 	@classmethod
-	def filter_by_state(cls, state):
+	def fetch_by_state(cls, state):
 		return cls.query(cls.musician_state == state).order(cls.state_rank).fetch()
 		
 	@classmethod
@@ -63,4 +63,16 @@ class Musician(ndb.Model):
 	def count_by_state(cls, state):
 		return cls.query(cls.musician_state == state).count()
 
+	def qry_all(cls):
+		return cls.query()
+
+	@classmethod
+	def filter_by_genre(cls, qry, genre):
+		return qry.filter(cls.band_genre == genre)
+
+	def filter_by_state(cls, qry, state):
+		return qry.filter(cls.musician_state == state)
+
+	def filter_by_popularity(cls,qry,popularity):
+		return qry.filter(cls.current_rank <= popularity)
 		
