@@ -36,5 +36,8 @@ class Videos(ndb.Model):
 	def fetch_all(cls):
 		return cls.query().fetch(100000)
 	
-	
+	@classmethod
+	def filter_by_state(cls, musician_keys):
+		return cls.query(cls.musician_key.IN(musician_keys), cls.featured == True).order(-cls.video_added).fetch()
+			
 		

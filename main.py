@@ -94,6 +94,7 @@ class MainHandler(views.Template):
 			genres = models.videos.Videos.fetch_distinct_genres()
 			states_select = {lookup.states[x.musician_state]:x.musician_state for x in states}
 			genre = {x.genre_tag:x.genre_tag for x in genres}
+			genre['All'] = 'All'
 
 
 		except Exception as e:
@@ -111,14 +112,18 @@ class MainHandler(views.Template):
 		genre = self.request.get('genre_code')
 		user = self.user_check()
 
-		#find default genre if null
-		if not genre: genre =  sorted([x.genre_tag for x in models.videos.Videos.fetch_distinct_genres()])[0]
-
-		#query available musician key given the selected state
 		musician_keys = [x.key for x in models.musician.Musician.filter_by_state(state)]
 
-		#query videos based on parameters
-		self.videos = models.videos.Videos.filter_by_state_genre(musician_keys, genre)
+		#find default genre if null
+		if genre and genre != 'All': 
+			self.videos = models.videos.Videos.filter_by_state_genre(musician_keys, genre)
+
+		else:
+			genre = 'All'
+			self.videos = models.videos.Videos.filter_by_state(musician_keys)
+
+
+
 		
 		if len(self.videos) >1:
 
@@ -157,7 +162,7 @@ class MainHandler(views.Template):
 			
 			lvideo = {'url':video_data[0]['embed_link'], 'musician_id':video_data[0]['musician_key'].urlsafe(), 'musician_name':video_data[0]['band_name'], 'song_name':video_data[0]['video_title'], 'key':video_data[0]['vid_key'].urlsafe()}
 			rvideo = {'url':video_data[1]['embed_link'], 'musician_id':video_data[1]['musician_key'].urlsafe(), 'musician_name':video_data[1]['band_name'], 'song_name':video_data[1]['video_title'], 'key':video_data[1]['vid_key'].urlsafe()}
-			data = {'lvideo':lvideo, 'rvideo':rvideo, 'genre_tag':video_data[0]['genre_tag']}
+			data = {'lvideo':lvideo, 'rvideo':rvideo, 'genre_tag':genre}
 		
 		else:
 

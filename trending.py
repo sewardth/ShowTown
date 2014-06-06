@@ -1,5 +1,3 @@
-
-
 import webapp2, json, sys, views, logging
 from google.appengine.ext import ndb
 from google.appengine.datastore.datastore_query import Cursor

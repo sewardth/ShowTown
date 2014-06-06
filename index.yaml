@@ -39,6 +39,13 @@ indexes:
   - name: video_added
     direction: desc
 
+- kind: Videos
+  properties:
+  - name: featured
+  - name: musician_key
+  - name: video_added
+    direction: desc
+
 - kind: Voting
   properties:
   - name: voter_acc_key
