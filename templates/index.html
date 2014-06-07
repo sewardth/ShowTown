@@ -31,7 +31,7 @@
 			</ul>
 		</div>
 		<hr/>
-		{% if vids %}
+
 		<h1 class="text-center" id="matchup_title">New Video Match Up</h1>
 		<br/>
 		<p class ="text-center" id="error"></p>
@@ -58,13 +58,13 @@
   			<p class="text-center"><a id="right_url" href="" class="btn btn-primary signup"><i class="fa fa-thumbs-o-up"></i> I Like This</a></p>
   			  {% else %}
   			<p class="text-center"><a class="btn btn-primary signup" href="javascript:void(0)" onclick="show_login_popup()">Login to Like This</a></p>
-  			  
+  			    {% endif %}  
   		</div>
   		<img src="/images/matchup_vs.png" id="matchup_vs">
   		<img id="left_image" class="artist_image">
   		<img id="right_image" class="artist_image">
     </div>
-    {% endif %}
+
 		<div class="row">
 			<div class="col-lg-12 clear" id="draw-div">
 			    {% if user %}
@@ -72,9 +72,7 @@
 				  {% else %}
 			  <p class="text-center"><a class="btn btn-deemphasize signup" href="javascript:void(0)" onclick="show_login_popup()">Login to make it a draw</a></p> 
   			  {% endif %}
-		{% else %}
-		<p>No new match-ups for you to view</p>
-		{% endif %}
+
 			</div>
 		</div>
 		{% if matchups %}

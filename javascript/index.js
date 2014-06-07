@@ -56,16 +56,18 @@ console.log('Load genre=' + genre_code + ' - state=' + state_code)
       $('#matchup_title').text(data.genre_tag + ' Matchup');
       // Left
 
-      if (data.lvideo === null)
+      if (data.response != '')
       {
         $('#video-matchup').hide();
         $('#draw-div').hide();
-        $('#error').html('No matchups match your selected criteria.');
+        $('#prev-match').hide();
+        $('#error').html(data.response);
+
       }
+
       else{
         $('#video-matchup').show();
         $('#error').html('');
-        $('#draw-div').show()
         $('#left_iframe').attr('src', data.lvideo.url);
   	    $('#left_url').attr('href','/vote?left_vid=' + data.lvideo.key + '&left_mus_id=' +data.lvideo.musician_id + '&left_mus_name=' +data.lvideo.musician_name+ '&right_vid=' +data.rvideo.key+ '&right_mus_id=' +data.rvideo.musician_id + '&right_mus_name=' +data.rvideo.musician_name +'&win=' + data.lvideo.key + '&mus_win=' + data.lvideo.musician_id)
         $('#left_musician_name').text(data.lvideo.musician_name);
@@ -79,9 +81,13 @@ console.log('Load genre=' + genre_code + ' - state=' + state_code)
         $('#right_image').attr({src:'/imgs?id=' + encodeURIComponent(data.rvideo.musician_id) + '&width=100&height=100'});
   	  // Draw
         $('#draw_url').attr('href','/vote?left_vid=' + data.lvideo.key + '&left_mus_id=' +data.lvideo.musician_id + '&left_mus_name=' +data.lvideo.musician_name+ '&right_vid=' +data.rvideo.key+ '&right_mus_id=' +data.rvideo.musician_id + '&right_mus_name=' +data.rvideo.musician_name +'&win=')
+        $('#draw-div').show();
     }})
     .fail(function(xhr){ 
 console.log(xhr);
 	$('#error').text('No new match-ups at this time.  Please check back later and thank you for voting!');
+  $('#video-matchup').hide();
+  $('#draw-div').hide();
+  $('#selected_genre').text('All');
     });
 }

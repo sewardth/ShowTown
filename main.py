@@ -128,7 +128,6 @@ class MainHandler(views.Template):
 		if len(self.videos) >1:
 
 			try:
-				random.sample(self.videos,2)  #Checks if more than 2 videos exist.  If not, displays error message
 
 				if user: #Checks for previous votes by user
 					self.user_votes = models.voting.Voting.query_by_user(user.key)
@@ -146,6 +145,7 @@ class MainHandler(views.Template):
 				else:
 					page_vids = random.sample(self.videos,2) #pull any random sample
 			
+
 				#Match musician info to video data
 				musician_data = {x.key:x.band_name for x in models.musician.Musician.fetch_artists([x.musician_key for x in page_vids])}
 				video_data = []
@@ -159,14 +159,17 @@ class MainHandler(views.Template):
 				logging.exception(e)
 				video_data = None
 			
-			
-			lvideo = {'url':video_data[0]['embed_link'], 'musician_id':video_data[0]['musician_key'].urlsafe(), 'musician_name':video_data[0]['band_name'], 'song_name':video_data[0]['video_title'], 'key':video_data[0]['vid_key'].urlsafe()}
-			rvideo = {'url':video_data[1]['embed_link'], 'musician_id':video_data[1]['musician_key'].urlsafe(), 'musician_name':video_data[1]['band_name'], 'song_name':video_data[1]['video_title'], 'key':video_data[1]['vid_key'].urlsafe()}
-			data = {'lvideo':lvideo, 'rvideo':rvideo, 'genre_tag':genre}
+			if not video_data:
+				data = {'lvideo':None, 'rvideo':None, 'genre_tag':genre, 'response':'No new match-ups at this time.  Please check back later and thank you for voting!'}
+
+			else:
+				lvideo = {'url':video_data[0]['embed_link'], 'musician_id':video_data[0]['musician_key'].urlsafe(), 'musician_name':video_data[0]['band_name'], 'song_name':video_data[0]['video_title'], 'key':video_data[0]['vid_key'].urlsafe()}
+				rvideo = {'url':video_data[1]['embed_link'], 'musician_id':video_data[1]['musician_key'].urlsafe(), 'musician_name':video_data[1]['band_name'], 'song_name':video_data[1]['video_title'], 'key':video_data[1]['vid_key'].urlsafe()}
+				data = {'lvideo':lvideo, 'rvideo':rvideo, 'genre_tag':genre, 'response':''}
 		
 		else:
 
-			data = {'lvideo':None, 'rvideo':None, 'genre_tag':genre}
+			data = {'lvideo':None, 'rvideo':None, 'genre_tag':genre,'response':'No matchups match your selected criteria.'}
 		
 		self.response.headers.add_header('content-type', 'application/json', charset='utf-8')
 		self.response.out.write(json.dumps(data)) 
