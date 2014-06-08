@@ -59,19 +59,14 @@
     				</div>
     				<div class="clearfix"></div>
       			<div class="control-group" id="city_wrapper">
-      			  <label for="city" class="control-label">City</label>
+      			  
       			  <div class="controls">
-      			    <input type="text" class="input-xlarge" placeholder="" name="city" id="city" value="{{city[0]}}">
+      			    <input type="hidden" class="input-xlarge" placeholder="" name="city" id="city" value="{{city[0]}}">
       			  </div>
       			</div>
       			<div class="control-group" id="state_wrapper">
-      			  <label for="state" class="control-label">State</label>
       			  <div class="controls">
-      			    <select class="input-xlarge" name="state" id="state">
-					 {% for x in states %}
-      			      	<option {% if state[0] == x %} selected = "true" {% endif %}>{{x}}</option>
-					 {% endfor %}
-					</select>
+      			    <input type = "hidden" class="input-xlarge" name="state" id="state" value="{{state[0]}}">
       			  </div>
       			</div>
       			<div class="control-group" id="zip_wrapper">
@@ -79,7 +74,10 @@
       			  <div class="controls">
       			    <input type="text" required = "True" maxlength = "5" class="input-xlarge" placeholder="" name="zip" id="zip" value="{{zip[0]}}">
       			  </div>
-      			</div>
+              <div class="warning" id="error_output"></div>
+              <input id="latitude" type="hidden" name="latitude" value="{{latitude[0]}}">
+              <input id="longitude" type="hidden" name="longitude" value="{{longitude[0]}}">
+       			</div>
     			</fieldset>
     			<div class="clearfix"></div>
     			<br/>

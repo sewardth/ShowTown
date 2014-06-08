@@ -8,6 +8,7 @@ from datetime import datetime
 from helpers.form_validation import Validate as valid
 from helpers import messages, static_lookups
 import models
+from google.appengine.ext import ndb
 
 
 class SignupFanHandler(views.Template):
@@ -51,8 +52,10 @@ class SignupMusicianHandler(views.Template):
 							'facebook':[profile.facebook],
 							'musician_name':[profile.band_name],
 							'city':[profile.address[0].city],
-							'state':[static_lookups.states[profile.address[0].state]],
+							'state':[profile.address[0].state],
 							'zip':[profile.address[0].zip],
+							'latitude':[profile.address[0].geo_code.lat],
+							'longitude':[profile.address[0].geo_code.lon],
 							'num_of_members':[profile.num_of_members],
 							'bio':[profile.bio],
 							'band_genre':[profile.band_genre],
@@ -71,6 +74,8 @@ class SignupMusicianHandler(views.Template):
 							'city':[],
 							'state':[],
 							'zip':[],
+							'latitude':[],
+							'longitude':[],
 							'num_of_members':[],
 							'bio':[],
 							'band_genre':[],
@@ -241,7 +246,8 @@ class SignupHandler(views.Template):
 		if params['file_upload']!= '':
 			try:
 				profile_pic = self.image_handler(params['file_upload'][0],150,150)
-			except:
+			except Exception as e:
+				logging.exception(e)
 				profile_pic = False
 		if user:
 			submission_video = None
@@ -282,8 +288,9 @@ class SignupHandler(views.Template):
 				profile.email = email
 				profile.DOB = DOB
 				profile.address[0].city = params['city'][0]
-				profile.address[0].state = static_lookups.us_state_abbrev[params['state'][0]]
+				profile.address[0].state = params['state'][0]
 				profile.address[0].zip = int(params['zip'][0])
+				profile.address[0].geo_code = ndb.GeoPt(params['latitude'][0],params['longitude'][0])
 				profile.num_of_members = int(params['num_of_members'][0])
 				profile.bio = params['bio'][0]
 				profile.facebook = params['facebook'][0]
@@ -305,8 +312,9 @@ class SignupHandler(views.Template):
 									band_name = params['musician_name'][0],
 									email = email, 
 									address= [models.address.Address(city=params['city'][0],
-																	 state = static_lookups.us_state_abbrev[params['state'][0]], 
-																	 zip = int(params['zip'][0]))], 
+																	 state = params['state'][0], 
+																	 zip = int(params['zip'][0]),
+																	 geo_code = ndb.GeoPt(params['latitude'][0], params['longitude'][0]))], 
 									
 									profile_pic = profile_pic,
 									num_of_members = int(params['num_of_members'][0]),

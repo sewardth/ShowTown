@@ -8,3 +8,4 @@
 <script src="javascript/bootstrap.min.js" charset="utf-8"></script>
 <script src="javascript/common.js" charset="utf-8"></script>
 <script src="javascript/login.js" charset="utf-8"></script>
+<script src="javascript/googleGeoCodeAPI.js" charset="utf-8"></script>
