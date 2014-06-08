@@ -12,7 +12,7 @@
 <body>
   <div id="page">
     {% include 'header.html' %}
-    <h1 class="pull-left">{{musician.band_name}} <small>You have {% if likes %} {{likes | count}} {% else %} 0 {% endif %} Likes and {% if followers %}{{followers | count}} {% else %} 0 {% endif %} Followers</h1>
+    <h1 class="pull-left">{{musician.band_name}} <small>You have {{musician.musician_stats.get('likes',0) }}Likes and {{musician.musician_stats.get('followers',0)}} Followers</h1>
     <h1 class="pull-right">
       <a href="/signup_musician" class="btn btn-default">Edit Profile</a>
       <a href="#" class="btn btn-primary">Find Gigs</a>
@@ -24,7 +24,7 @@
       </p>
       <p>
         <a class="trending" href="/trending">
-          You Are Trending: <strong>#{{trending_rank}}</strong> out of <strong>{{trending_category}}</strong> in <strong>{{trending_state}}</strong>
+          You Are Trending: <strong>#{% if musician.state_rank %} {{musician.state_rank}} {% else %} {{trending_population}} {% endif %}</strong> out of <strong>{{trending_population}}</strong> in <strong>{{musician.address[0].state}}</strong>
         </a>
       </p>
 		</div>
@@ -125,9 +125,9 @@
 			<div class="col-lg-6 video {% if v.featured %} featured {% endif %}">
 				<iframe width="490" height="300" frameborder="0" allowfullscreen="" src="{{v.embed_link}}"></iframe>
           {% if v.featured %}
-				  <h2 class="text-center featured"><span>Featured:</span> {{v.video_title}} <br><small>{{v.likes}} Likes. Wins {{v.win_percent}}% of Match Ups</small></h2>
+				  <h2 class="text-center featured"><span>Featured:</span> {{v.video_title}} <br><small>{{v.video_stats.get('likes',0) + v.video_stats.get('head_to_head_wins',0)}} Likes. Wins {% if v.video_stats.get('total_matchups',0) ==0 %}0{% else %} {{((v.video_stats.get('head_to_head_wins',0) / v.video_stats.get('total_matchups',0))*100)|round|int}}{% endif %}% of Match Ups</small></h2>
 					{% else %}
-				  <h2 class="text-center">{{v.video_title}} <br><small>{{v.likes}} Likes. Wins {{v.win_percent}}% of Match Ups</small></h2>
+				  <h2 class="text-center">{{v.video_title}} <br><small>{{v.video_stats.get('likes',0) + v.video_stats.get('head_to_head_wins',0)}} Likes. Wins {% if v.video_stats.get('total_matchups',0) ==0 %}0{% else %} {{((v.video_stats.get('head_to_head_wins',0) / v.video_stats.get('total_matchups',0))*100)|round|int}}{% endif %}% of Match Ups</small></h2>
 					{% endif %}
 					<br>
 					{% if v.featured %}

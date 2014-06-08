@@ -107,29 +107,16 @@ class MusicianProfileHandler(views.Template):
 		
 		
 		user = self.user_check()
-		if user:
+		if user and user.account_type =='musician':
 			musician = models.musician.Musician.query_by_account(user.key)
 			videos = models.videos.Videos.query_by_account(user.key)
-			followers = models.following.Following.fetch_by_followed_key(musician.key)
-			if videos: 
-				likes = models.voting.Voting.fetch_winning_count([x.key for x in videos])
-				if likes != None and len(likes)>0:
-					matches = models.voting.Voting.fetch_votes_musicians([musician.key])
-					total_matches = [x.video_one for x in matches] + [x.video_two for x in matches]
-					wins = [x.voter_choice for x in likes]
-					for x in videos:
-						x.total_matchups = total_matches.count(x.key)
-						x.likes =  wins.count(x.key)
-						if x.total_matchups and x.likes != 0:
-							x.win_percent = format((float(x.likes) / x.total_matchups)*100, '.0f')
-						else:
-							x.win_percent = '0'
-			else:
-				likes = None
+			trending_population = models.musician.Musician.count_by_state(musician.address[0].state)
+		else:
+			self.response.out.write('Not Authorized')
+
 		
-		template_values = {'musician':musician, 'likes':likes, 'followers':followers,
-		'trending_rank':'3','trending_category':'All Musicians', 'trending_state':'Michigan', 
-		'new_offers':new_offers, 'booked_gigs':booked_gigs, 'videos':videos}
+		template_values = {'musician':musician,
+		'new_offers':new_offers, 'booked_gigs':booked_gigs, 'videos':videos,'trending_population':trending_population}
 		self.render('musician_profile.html', template_values)
 
 
