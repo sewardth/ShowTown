@@ -31,7 +31,7 @@
       			<div class="control-group" id="musician_name_wrapper">
       			  <label for="musician_name" class="control-label">Musician or Band Name</label>
       			  <div class="controls">
-      			    <input type="text" class="input-xlarge" placeholder="" name="musician_name" id="musician_name" value="{{musician_name[0]}}">
+      			    <input type="text" required ="True" class="input-xlarge" placeholder="" name="musician_name" id="musician_name" value="{{musician_name[0]}}">
       			  </div>
       			</div>
     				<div class="control-group" id="email_wrapper">
@@ -136,7 +136,7 @@
 				<div class ="warning">{{picture_error}}</div>
       			</div>
       			<div class="control-group"  id="num_of_members_wrapper">
-      			  <label for="num_of_members" class="control-label"># of Band Members</label>
+      			  <label for="num_of_members" class="control-label" required ="True"># of Band Members</label>
       			  <div class="controls">
       			    <input type="text" class="input-xlarge" placeholder="" name="num_of_members" id="num_of_members" value="{{num_of_members[0]}}">
       			  </div>
