@@ -51,6 +51,10 @@ class Musician(ndb.Model):
 	def fetch_distinct_states(cls):
 		return cls.query(projection=[cls.musician_state], distinct=True).fetch()
 
+	@classmethod
+	def fetch_distinct_cities(cls, state):
+		return cls.query(cls.musician_state == state, projection=[cls.musician_city], distinct=True).fetch()
+
 
 	@classmethod
 	def fetch_all(cls):

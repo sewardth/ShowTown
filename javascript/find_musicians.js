@@ -81,3 +81,20 @@ function do_search(){
 console.log(xhr)
     });
 }
+
+
+//fetch distinct cities based on state selection
+$(document).ready(function(){
+  $("#state-select").change(function(){
+    var state = $('#state-select').val();
+    $.get("/load-content/parameters/city?state="+state,function(data,status){
+      $('#city-select').html('');
+      for (x in data.cities)
+      {
+
+        $('#city-select').append($('<option/>').html(data.cities[x]));
+      }
+
+    });
+  });
+});

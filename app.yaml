@@ -80,6 +80,9 @@ handlers:
 
 - url: /account.*
   script: account.app
+
+- url: /load-content/parameters.*
+  script: content_loaders.parameters.app
   
 - url: .*
   script: main.app

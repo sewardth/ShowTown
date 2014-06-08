@@ -50,24 +50,26 @@
 						</div>
 
 						<div class="control-group col-lg-2">
-						  <label for="popularity" class="control-label">Popularity</label>
+						  <label for="states" class="control-label">State</label>
 						  <div class="controls">
-						    <select class="input-xlarge" name="popularity" id="popularity">
-							    <option>Top 10</option>      
-						   	  <option>Top 25</option>
-				          <option>Top 50</option>
-				          <option>Top 100</option>
-				          <option>Top 250</option>
-				          <option>Top 500</option>
-				          <option>All</option>
+						    <select class="input-xlarge" name="state" id="state-select">
+
+							{% for x in states %}
+            				<option>{{ x }}</option>
+      						{% endfor %}
+							        
 						    </select>
 						  </div>
 						</div>
-
+				
 						<div class="control-group col-lg-2">
-						  <label for="state" class="control-label">State</label>
+						  <label for="city" class="control-label">City</label>
 						  <div class="controls">
-						  	<input type="text" name ="state"/>
+						  	<select class="input-xlarge" name="city" id="city-select">
+
+            				<option>All</option>
+							        
+						    </select>
 						  </div>
 						</div>
 

@@ -29,6 +29,11 @@ indexes:
 - kind: Musician
   properties:
   - name: musician_state
+  - name: musician_city
+
+- kind: Musician
+  properties:
+  - name: musician_state
   - name: state_rank
 
 - kind: Videos
