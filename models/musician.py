@@ -11,6 +11,7 @@ class Musician(ndb.Model):
 	email = ndb.StringProperty()
 	address = ndb.StructuredProperty(Address, repeated=True)
 	musician_state = ndb.ComputedProperty(lambda self: self.address[0].state)
+	musician_city = ndb.ComputedProperty(lambda self: self.address[0].city)
 	profile_pic = ndb.BlobProperty()
 	num_of_members = ndb.IntegerProperty()
 	bio = ndb.TextProperty()

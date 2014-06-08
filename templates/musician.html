@@ -23,7 +23,7 @@
     		<img class="artist_image" src="/imgs?id={{musician.key.urlsafe()}}&width=165&height=165" />
     		<img src="/images/trending_round.png" />
     		<p class="center">
-          <strong>Trending #{{musician.state_rank}}</strong> out of <br/>
+          <strong>Trending #{% if musician.state_rank %}{{musician.state_rank}}{% else %} {{state_count}} {% endif %}</strong> out of <br/>
           <a href="/trending">
             <strong>{{state_count}}</strong> in <strong>{{musician.musician_state}}</strong>
           </a>
