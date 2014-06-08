@@ -40,7 +40,7 @@ class TrendingHandler(views.Template):
 				trending_data =[]
 				for x in musicians:
 					data = x.to_dict()
-					del data['profile_pic'], data['user_key'], data['DOB'],data['account_created'], data['latest_update']
+					del data['profile_pic'], data['user_key'], data['DOB'],data['account_created'], data['latest_update'], data['address'][0]['geo_code']
 					data['key']=x.key.urlsafe()
 					trending_data.append(data)
 
