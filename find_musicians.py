@@ -22,12 +22,40 @@ class FindMusiciansHandler(views.Template):
   def post(self):
     # NOTE: we are posting genre, popularity, distance, keywords and the cursor from a previous request or null if this is the initial one.
     genre = self.request.get('genre')
-    popularity = self.request.get('popularity')
-    state = self.request.get('state')
+    state = lookup.us_state_abbrev[self.request.get('state')]
+    city = self.request.get('city')
+
+    #get all musicians
+    musicians = models.musician.Musician.query()
+
+    #filter results by state
+    if state != 'All': musicians = musicians.filter(models.musician.Musician.musician_state == state)
+
+    #filter by city
+    if city != 'All': musicians = musicians.filter(models.musician.Musician.musician_city == city)
 
 
-    data = {'hello':'there'}
-    self.response.headers.add_header('content-type', 'application/json', charset='utf-8')
+    musicians = musicians.fetch()
+
+    data =[]
+    for x in musicians:
+        d = x.to_dict()
+
+        #delete Non JSON variables
+        del d['user_key'], d['profile_pic'],d['latest_update'],d['account_created'],d['DOB'],d['address'][0]['geo_code']
+
+        #add user key back in as urlsafe
+        d['key']= x.key.urlsafe()
+
+        data.append(d)
+    
+
+
+
+
+
+    data = {'musicians':data}
+    self.response.headers['Content-Type'] = 'application/json' 
     self.response.out.write(json.dumps(data))    	
 
 

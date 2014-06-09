@@ -9,8 +9,8 @@ function do_search(){
     dataType: 'json',
     data: {
       genre:$('#genre').val(), 
-      popularity:$('#popularity').val(),
-      distance:$('#distance').val(),
+      state:$('#state-select').val(),
+      city:$('#city-select').val(),
       keywords:$('#keywords').val()
     }})
     .done(function(data, textStatus, xhr){
