@@ -74,9 +74,11 @@
       			  <div class="controls">
       			    <input type="text" required = "True" maxlength = "5" class="input-xlarge" placeholder="" name="zip" id="zip" value="{{zip[0]}}">
       			  </div>
+              <div class ="warning">{{zip_error}}</div>
               <div class="warning" id="error_output"></div>
               <input id="latitude" type="hidden" name="latitude" value="{{latitude[0]}}">
               <input id="longitude" type="hidden" name="longitude" value="{{longitude[0]}}">
+              <input id="country" type="hidden" name="country" value="">
        			</div>
     			</fieldset>
     			<div class="clearfix"></div>

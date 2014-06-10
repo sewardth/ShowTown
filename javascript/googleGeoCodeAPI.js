@@ -12,7 +12,6 @@ $(document).ready(function(){
       {
       	address_types[results.address_components[x]['types'][0]] = {'short_name': results.address_components[x]['short_name'], 'long_name':results.address_components[x]['long_name']};
       }
-
       
       //test if zip is valid US code
       if (address_types.country.short_name !== 'US')
@@ -33,6 +32,7 @@ $(document).ready(function(){
 	      $('#city').val(address_types.locality.long_name);
 	      $('#latitude').val(results.geometry.location.lat);
 	      $('#longitude').val(results.geometry.location.lng);
+        $('#country').val(address_types.country.short_name);
 	  }
 
 

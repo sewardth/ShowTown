@@ -257,7 +257,13 @@ class SignupHandler(views.Template):
 		else:
 			video_hosting_page = valid.verify_link(params['video_hosting_page'][0], 'vimeo')
 		facebook = valid.verify_link(params['facebook'][0], 'facebook')
-		
+
+		zip_check = params['country'][0]
+
+		if zip_check != 'US':
+			zip_code = False
+		else:
+			zip_code = True
 		
 		
 		#Error Checks
@@ -271,6 +277,7 @@ class SignupHandler(views.Template):
 		if sound_cloud == False: self.template_values['sound_cloud_error'] = 'Not a valid Sound Cloud link'
 		if video_hosting_page == False: self.template_values['video_page_error'] = 'Not a valid YouTube / Vimeo link'
 		if facebook == False: self.template_values['facebook_error'] = 'Not a valid Facebook link'
+		if zip_code == False: self.template_values['zip_error'] = 'Not a valid Zip Code'
 		validation = [email, DOB, profile_pic, submission_video, twitter, sound_cloud, video_hosting_page, facebook, existing_user, password]
 		
 		if False in validation:
