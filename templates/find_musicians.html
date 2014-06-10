@@ -8,7 +8,11 @@
 	<!--[if lt IE 9]>
 	<script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script>
 	<![endif]-->
-	<script>var user_type = '{{user.account_type}}';</script>
+	<script  type="text/javascript">
+	  var user_type = '{{user.account_type}}';
+  	var selected_genre = '{{selected_genre|safe}}';
+  	var selected_state = '{{selected_state|safe}}';
+	</script>
 </head>
 <body>
   <div id="page">
@@ -29,22 +33,22 @@
 						  <div class="controls">
 						    <select class="input-xlarge" name="genre" id="genre">
 							    <option>All</option>      
-						   	  <option>Alternative</option>
-				          <option>Blues</option>
-				          <option>Classical</option>
-				          <option>Country</option>
-				          <option>Dance</option>
-				          <option>Easy Listening</option>
-				          <option>Electronic</option>
-				          <option>Hip-Hop/Rap</option>
-				          <option>Classical</option>
-				          <option>Industrial</option>
-				          <option>Instrumental</option>
-				          <option>Jazz</option>
-				          <option>Pop</option>
-				          <option>Rock</option>
-				          <option>Singer/Songwriter</option>
-				          <option>Vocal</option>
+						   	  <option{% if selected_genre == 'Alternative' %} selected{% endif %}>Alternative</option>
+				          <option{% if selected_genre == 'Blues' %} selected{% endif %}>Blues</option>
+				          <option{% if selected_genre == 'Classical' %} selected{% endif %}>Classical</option>
+				          <option{% if selected_genre == 'Country' %} selected{% endif %}>Country</option>
+				          <option{% if selected_genre == 'Dance' %} selected{% endif %}>Dance</option>
+				          <option{% if selected_genre == 'Easy Listening' %} selected{% endif %}>Easy Listening</option>
+				          <option{% if selected_genre == 'Electronic' %} selected{% endif %}>Electronic</option>
+				          <option{% if selected_genre == 'Hip-Hop/Rap' %} selected{% endif %}>Hip-Hop/Rap</option>
+				          <option{% if selected_genre == 'Classical' %} selected{% endif %}>Classical</option>
+				          <option{% if selected_genre == 'Industrial' %} selected{% endif %}>Industrial</option>
+				          <option{% if selected_genre == 'Instrumental' %} selected{% endif %}>Instrumental</option>
+				          <option{% if selected_genre == 'Jazz' %} selected{% endif %}>Jazz</option>
+				          <option{% if selected_genre == 'Pop' %} selected{% endif %}>Pop</option>
+				          <option{% if selected_genre == 'Rock' %} selected{% endif %}>Rock</option>
+				          <option{% if selected_genre == 'Singer/Songwriter' %} selected{% endif %}>Singer/Songwriter</option>
+				          <option{% if selected_genre == 'Vocal' %} selected{% endif %}>Vocal</option>
 						    </select>
 						  </div>
 						</div>
@@ -53,11 +57,9 @@
 						  <label for="states" class="control-label">State</label>
 						  <div class="controls">
 						    <select class="input-xlarge" name="state" id="state-select">
-
-							{% for x in states %}
-            				<option>{{ x }}</option>
+							    {% for x in states %}
+            				<option{% if selected_state == x %} selected{% endif %}>{{ x }}</option>
       						{% endfor %}
-							        
 						    </select>
 						  </div>
 						</div>
@@ -88,7 +90,9 @@
 						</div>
 			</fieldset>
 		</form>
-
+		<hr/>
+		<div id="musician_data"></div>
+		
     {% include 'footer.html' %}
   </div>
 </body>

@@ -12,10 +12,11 @@ class FindMusiciansHandler(views.Template):
     states_select = [lookup.states[x.musician_state]for x in states]
     genre = {x.genre_tag:x.genre_tag for x in genres}
     states_select.insert(0,'All')
+    selected_genre = self.request.get("g")
+    selected_state = self.request.get("s")
 
-
-
-    template_values = {'states':sorted(states_select), 'cities': ['All'], 'genres':json.dumps(genre, sort_keys = True)}    
+    template_values = {'states':sorted(states_select), 'cities': ['All'], 'genres':json.dumps(genre, sort_keys = True), 
+      'selected_genre':selected_genre, 'selected_state':selected_state}    
     self.render('find_musicians.html', template_values)
 
 
