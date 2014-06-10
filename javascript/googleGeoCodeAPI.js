@@ -29,7 +29,7 @@ $(document).ready(function(){
 	  	//populate form fields
 	      $('#error_output').html('');
 	      $("input[type=submit]").removeAttr("disabled"); 
-	      $('#state').val(address_types.administrative_area_level_1.short_name);
+	      $('#state').val(address_types.administrative_area_level_1.long_name);
 	      $('#city').val(address_types.locality.long_name);
 	      $('#latitude').val(results.geometry.location.lat);
 	      $('#longitude').val(results.geometry.location.lng);

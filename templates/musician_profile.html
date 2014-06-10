@@ -12,7 +12,7 @@
 <body>
   <div id="page">
     {% include 'header.html' %}
-    <h1 class="pull-left">{{musician.band_name}} <small>You have {{musician.musician_stats.get('likes',0) }}Likes and {{musician.musician_stats.get('followers',0)}} Followers</h1>
+    <h1 class="pull-left">{{musician.band_name}} <small>You have {{musician.musician_stats.get('likes',0) }} Likes and {{musician.musician_stats.get('followers',0)}} Followers</h1>
     <h1 class="pull-right">
       <a href="/signup_musician" class="btn btn-default">Edit Profile</a>
       <a href="#" class="btn btn-primary">Find Gigs</a>

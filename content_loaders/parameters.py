@@ -1,6 +1,5 @@
 import webapp2, sys, views, json, logging, models
 sys.path.insert(0,'libs')
-from helpers import static_lookups as lookup
 
 
 class DistinctCities(views.Template):
@@ -10,7 +9,7 @@ class DistinctCities(views.Template):
 			self.response.out.write(json.dumps({'cities':['All']}))
 
 		else:
-			state = lookup.us_state_abbrev[self.request.get('state')]
+			state = self.request.get('state')
 
 			cities = models.musician.Musician.fetch_distinct_cities(state)
 			cities = [x.musician_city for x in cities]+['All']

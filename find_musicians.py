@@ -1,6 +1,5 @@
 import webapp2, json, sys, views
 from google.appengine.ext import ndb
-from helpers import static_lookups as lookup
 sys.path.insert(0,'libs')
 import models
 
@@ -9,7 +8,7 @@ class FindMusiciansHandler(views.Template):
   def get(self):
     states = models.musician.Musician.fetch_distinct_states()
     genres = models.videos.Videos.fetch_distinct_genres()
-    states_select = [lookup.states[x.musician_state]for x in states]
+    states_select = [x.musician_state for x in states]
     genre = {x.genre_tag:x.genre_tag for x in genres}
     states_select.insert(0,'All')
     selected_genre = self.request.get("g")
@@ -23,7 +22,7 @@ class FindMusiciansHandler(views.Template):
   def post(self):
     # NOTE: we are posting genre, popularity, distance, keywords and the cursor from a previous request or null if this is the initial one.
     genre = self.request.get('genre')
-    state = lookup.us_state_abbrev[self.request.get('state')]
+    state = self.request.get('state')
     city = self.request.get('city')
 
     #get all musicians

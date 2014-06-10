@@ -6,7 +6,7 @@ from google.appengine.api import urlfetch
 from helpers.email_handler import Email
 from datetime import datetime
 from helpers.form_validation import Validate as valid
-from helpers import messages, static_lookups
+from helpers import messages
 import models
 from google.appengine.ext import ndb
 
@@ -33,7 +33,6 @@ class SignupFanHandler(views.Template):
 class SignupMusicianHandler(views.Template):
 	def get(self):
 		user = self.user_check()
-		states = sorted(static_lookups.us_state_abbrev, key=lambda key: static_lookups.us_state_abbrev[key]) #sorts states alphabetically
 		if user:
 			profile = models.musician.Musician.query_by_account(user.key) # Returns musician profile data.
 			if profile.DOB:
@@ -60,8 +59,7 @@ class SignupMusicianHandler(views.Template):
 							'bio':[profile.bio],
 							'band_genre':[profile.band_genre],
 							'user':user,
-							'profile':profile,
-							'states':states}
+							'profile':profile}
 		else:
 			template_values = {'email':[],
 							'dob':[],
@@ -78,8 +76,7 @@ class SignupMusicianHandler(views.Template):
 							'longitude':[],
 							'num_of_members':[],
 							'bio':[],
-							'band_genre':[],
-							'states':states}
+							'band_genre':[]}
 
 		self.render('signup_musician.html', template_values)
 

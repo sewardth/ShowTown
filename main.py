@@ -17,7 +17,6 @@
 
 import webapp2, json, sys, views, random, logging
 sys.path.insert(0,'libs')
-from helpers import static_lookups as lookup
 import models
 
 
@@ -92,7 +91,7 @@ class MainHandler(views.Template):
 		try:
 			states = models.musician.Musician.fetch_distinct_states()
 			genres = models.videos.Videos.fetch_distinct_genres()
-			states_select = {lookup.states[x.musician_state]:x.musician_state for x in states}
+			states_select = {x.musician_state:x.musician_state for x in states}
 			genre = {x.genre_tag:x.genre_tag for x in genres}
 			genre['All'] = 'All'
 
