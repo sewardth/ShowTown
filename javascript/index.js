@@ -3,7 +3,6 @@
  */
 
 function init_page(){
-  $('li.musicians').addClass('selected');
   //
   // ========================
   // Genres

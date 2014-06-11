@@ -3,6 +3,8 @@
  */
 
 function init_page(){
+  $('li.musicians').addClass('selected');
+  
   if(selected_genre != '' || selected_state != ''){
     do_search();
   }
