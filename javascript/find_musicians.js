@@ -22,6 +22,7 @@ function do_search(){
       keywords:$('#keywords').val()
     }})
     .done(function(data, textStatus, xhr){
+      $('#musician_data').empty();
       var entries = data.musicians;
       for(var i = 0, len = entries.length; i < len; i++){
         // Create the span for multiple genres.
