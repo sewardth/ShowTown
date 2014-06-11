@@ -17,20 +17,24 @@ class FanProfileHandler(views.Template):
 		musician_participation_data = models.musician.Musician.fetch_artists([x.video_one_artist_key for x in participation] + [x.video_two_artist_key for x in participation])
 
 		#build dictionary of musician data
-		musician_data ={}
-		for x in musician_participation_data:
-			musician_data[x.key] = x.to_dict()
+		if participation:
+			musician_data ={}
+			for x in musician_participation_data:
+				musician_data[x.key] = x.to_dict()
 
 
-		#map musician profile data to matches
-		for x in participation:
-			x.artist_one_stats = musician_data[x.video_one_artist_key]['musician_stats']
-			x.artist_two_stats = musician_data[x.video_two_artist_key]['musician_stats']
+			#map musician profile data to matches
+			for x in participation:
+				x.artist_one_stats = musician_data[x.video_one_artist_key]['musician_stats']
+				x.artist_two_stats = musician_data[x.video_two_artist_key]['musician_stats']
 
-		#check if user is currently following the musician
-			followed_keys = [y.followed_entity_key for y in following]
-			if x.video_one_artist_key in followed_keys: x.one_followed = True
-			if x.video_two_artist_key in followed_keys: x.two_followed = True
+			#check if user is currently following the musician
+				followed_keys = [y.followed_entity_key for y in following]
+				if x.video_one_artist_key in followed_keys: x.one_followed = True
+				if x.video_two_artist_key in followed_keys: x.two_followed = True
+
+		else:
+			participation = None
 
 
 		#query musician data for followed musicians

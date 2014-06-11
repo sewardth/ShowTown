@@ -197,13 +197,14 @@ class SignupHandler(views.Template):
 				user.put()
 				profile.email = email
 				profile.DOB = DOB
-				profile.genres = params['checkboxes']
+				profile.genres = params.get('checkboxes',[])
 				profile.put()
+				time.sleep(.5)
 				self.redirect('/fan_profile')
 			else:
 				acc_key = self.account_creator(params, password)
 				try:
-					user = models.fan.Fan(user_key = acc_key, email = email, DOB = DOB, genres = params['checkboxes']).put()
+					user = models.fan.Fan(user_key = acc_key, email = email, DOB = DOB, genres = params.get('checkboxes',[])).put()
 					email_body = self.email_sender('email_FanSignUp.html', template_values ={'user':email, 'user_id':acc_key.urlsafe()})
 					Email.email('Welcome to ShowTown', email_body, email)
 					self.redirect('/')
