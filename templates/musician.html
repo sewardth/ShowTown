@@ -51,9 +51,8 @@
         <div class="row">
           <div class="microcopy">
             <p>
-              Genre: <strong>{% for x in musician.band_genre %}{{ x }} {% endfor %}</strong> 
-              <span class="left_spaced">Location: <strong>{{musician.address[0].city}}, {{musician.address[0].state}}</strong></span>  
-              <span class="left_spaced">Born: <strong>{% if musician.DOB %}{{musician.DOB.strftime('%B %d, %Y')}} {% else %}{% endif %}</strong></span>
+              Genre: <strong>{% for x in musician.band_genre %} <a href="/find_musicians?g={{x}}">{{ x }}</a> {% endfor %}</strong> 
+              <span class="left_spaced">Location: <strong>{{musician.address[0].city}}, <a href="/find_musicians?s={{musician.address[0].state}}">{{musician.address[0].state}}</a></strong></span>  
             </p>
       		</div>
         </div>

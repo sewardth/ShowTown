@@ -2,6 +2,14 @@
  * @file Functions to handle the trending page content
  */
 
+function init_page(){
+  $('li.musicians').addClass('selected');
+  
+  if(selected_genre != '' || selected_state != ''){
+    do_search();
+  }
+}
+
 function do_search(){
   $.ajax({
     type: "POST",
@@ -16,6 +24,15 @@ function do_search(){
     .done(function(data, textStatus, xhr){
       var entries = data.musicians;
       for(var i = 0, len = entries.length; i < len; i++){
+        // Create the span for multiple genres.
+        var gen_span = $(document.createElement('span'));
+        for(var g = 0, len2 = entries[i].band_genre.length; g < len2; g++){
+          $(gen_span)
+            .append($(document.createElement('a'))
+              .attr({href:"/find_musicians?g=" + encodeURIComponent(entries[i].band_genre[g])})
+              .text((g > 0 ? ', ' : '') + entries[i].band_genre[g])
+            )
+        }
         $('#musician_data')
           .append($(document.createElement('div'))
             .attr({"class":"row prev-vid-row prev-vid"})
@@ -32,19 +49,16 @@ function do_search(){
                   .attr({href:"/musician?id=" + encodeURIComponent(entries[i].key)})
                   .text(entries[i].band_name)
                 )
-                .append($(document.createElement('small'))
-                  .attr({'class':'left_spaced'})
-                  .text(entries[i].musician_stats.likes + ' Likes and ' + entries[i].musician_stats.followers + ' Followers')
+                .append($(document.createElement('span'))
+                  .attr({'class':'left_spaced microcopy informational middle'})
+                  .html('<i class="fa fa-thumbs-o-up"></i> ' + entries[i].musician_stats.likes + ' Likes and <i class="fa fa-users left_spaced"></i> ' + entries[i].musician_stats.followers + ' Followers')
                 )
               )
               .append($(document.createElement('p'))
                 .append($(document.createElement('strong'))
                   .text('Genre: ')
                 )
-                .append($(document.createElement('a'))
-                  .attr({href:"/find_musicians?g=" + encodeURIComponent(entries[i].band_genre)})
-                  .text(entries[i].band_genre)
-                )
+                .append(gen_span)
                 .append($(document.createElement('br')))
                 .append($(document.createElement('span'))
                   .text('Located in ' + entries[i].address[0].city + ', ')
@@ -56,9 +70,7 @@ function do_search(){
               )
             )
           );
-      }// for
-            
-            
+      }// for 
     })
     .fail(function(xhr){ 
 console.log(xhr)

@@ -3,7 +3,6 @@
  */
 
 function init_page(){
-  $('li.musicians').addClass('selected');
   //
   // ========================
   // Genres
@@ -14,8 +13,8 @@ function init_page(){
         .append($(document.createElement('a'))
           .attr({href:'javascript:void(0)'})
           .bind('click',{key: key}, function(e) {
-            $('#selected_genre').text(genres[e.data.key]);
-            load_page_content(e.data.key, states[$('#selected_state').text()])
+            $('#selected_genre span').text(genres[e.data.key]);
+            load_page_content(e.data.key, states[$('#selected_state span').text()])
           })
           .text(genres[key])
         )
@@ -23,7 +22,7 @@ function init_page(){
   }
   // ========================
   // States 
-  $('#selected_state').text(Object.keys(states)[0]); 
+  $('#selected_state span').text(Object.keys(states)[0]); 
   $('#states_list').empty();
   for(key in states){
     $('#states_list')
@@ -31,14 +30,14 @@ function init_page(){
         .append($(document.createElement('a'))
           .attr({href:'javascript:void(0)'})
           .bind('click',{key: key}, function(e) {
-            $('#selected_state').text(e.data.key);
-            load_page_content($('#selected_genre').text(), states[e.data.key]);
+            $('#selected_state span').text(e.data.key);
+            load_page_content($('#selected_genre span').text(), states[e.data.key]);
           })
           .text(key)
         )
       );
   }
-  load_page_content(null, states[$('#selected_state').text()])
+  load_page_content(null, states[$('#selected_state span').text()])
 }
 
 
@@ -51,20 +50,17 @@ console.log('Load genre=' + genre_code + ' - state=' + state_code)
     data: {genre_code:genre_code, state_code:state_code}})
     .done(function(data, textStatus, xhr){
       // Update genre selection
-      $('#selected_genre').text(data.genre_tag);
+      $('#selected_genre span').text(data.genre_tag);
       // Title
       $('#matchup_title').text(data.genre_tag + ' Matchup');
       // Left
 
-      if (data.response != '')
-      {
+      if (data.response != ''){
         $('#video-matchup').hide();
         $('#draw-div').hide();
         $('#prev-match').hide();
         $('#error').html(data.response);
-
       }
-
       else{
         $('#video-matchup').show();
         $('#error').html('');

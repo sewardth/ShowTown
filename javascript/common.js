@@ -13,6 +13,9 @@ $(document).ready(function() {
     case '/venues':
       init_page()
       break;
+    case '/find_musicians':
+      init_page()
+      break;
   }
 });
 
