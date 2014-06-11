@@ -93,7 +93,6 @@ class MainHandler(views.Template):
 			genres = models.videos.Videos.fetch_distinct_genres()
 			states_select = {x.musician_state:x.musician_state for x in states}
 			genre = {x.genre_tag:x.genre_tag for x in genres}
-			genre['All'] = 'All'
 
 
 		except Exception as e:
@@ -111,17 +110,20 @@ class MainHandler(views.Template):
 		genre = self.request.get('genre_code')
 		user = self.user_check()
 
-		musician_keys = [x.key for x in models.musician.Musician.filter_by_state(state)]
+		#initial query for featured videos
+		videos = models.videos.Videos.query(models.videos.Videos.featured == True)
 
-		#find default genre if null
-		if genre and genre != 'All': 
-			self.videos = models.videos.Videos.filter_by_state_genre(musician_keys, genre)
+		#apply state filter if used
+		if state and state != 'All':
+			musician_keys = [x.key for x in models.musician.Musician.filter_by_state(state)]
+			videos = videos.filter(models.videos.Videos.musician_key.IN(musician_keys))
 
-		else:
-			genre = 'All'
-			self.videos = models.videos.Videos.filter_by_state(musician_keys)
+		#apply genre filter if used
+		if genre and genre != 'All':
+			videos = videos.filter(models.videos.Videos.genre_tag == genre)
 
-
+		#returns list of available videos
+		self.videos = videos.fetch()
 
 		
 		if len(self.videos) >1:

@@ -23,6 +23,12 @@ indexes:
 
 - kind: Musician
   properties:
+  - name: band_genre
+  - name: musician_state
+  - name: state_rank
+
+- kind: Musician
+  properties:
   - name: musician_state
   - name: current_rank
 

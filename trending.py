@@ -28,12 +28,24 @@ class TrendingHandler(views.Template):
 		genre_selection = self.request.get('genre_code')
 		state_selection = self.request.get('state_code')
 
+		#queries all musicians
+		musicians = models.musician.Musician.query()
+
 		try:
 
+			#filter musicians by genre if selected
 			if genre_selection and genre_selection != 'All':
-				musicians = models.musician.Musician.fetch_by_genre_state(genre_selection, state_selection)
+				musicians = musicians.filter(models.musician.Musician.band_genre == genre_selection)
+
+			#filter by state if selected and return results by state rank
+			if state_selection and state_selection != 'All':
+				musicians = musicians.filter(models.musician.Musician.musician_state == state_selection)
+				musicians = musicians.order(models.musician.Musician.state_rank).fetch()
 			else:
-				musicians = models.musician.Musician.filter_by_state(state_selection)
+				#return by overall rank
+				musicians = musicians.order(models.musician.Musician.current_rank).fetch()
+
+
 
 			if musicians:
 				trending_data =[]
