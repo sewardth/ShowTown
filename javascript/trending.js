@@ -133,7 +133,7 @@ function load_page_content(genre_code, state_code){
                   )
                   .append($(document.createElement('span'))
                     .attr({'class':'left_spaced microcopy informational middle'})
-                    .html('<i class="fa fa-thumbs-o-up"></i> ' + likes+wins + ' Likes and <i class="fa fa-users left_spaced"></i> ' + followers + ' Followers')
+                    .html('<i class="fa fa-thumbs-o-up"></i> ' + (likes+wins) + ' Likes and <i class="fa fa-users left_spaced"></i> ' + followers + ' Followers')
                   )
                 )
                 .append($(document.createElement('p'))
