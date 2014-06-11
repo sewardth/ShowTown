@@ -134,8 +134,9 @@ fieldset legend {margin: 0}
 .profile-pic p {margin: 50px 0 0 0;}
 .video {width:491px; float:left; margin: 0 3px; padding: 0}
 .video_musician{width:471px; float:left; margin: 0 3px; padding: 0}
+.video_home{width:491px; float:left;}
 #video-matchup {width:982px; margin: 0 auto 20px auto; position: relative;}
-.video iframe {margin-bottom: 30px;}
+.video iframe, .video_home iframe {margin-bottom: 30px;}
 #matchup_vs {position: absolute; top: 120px; left: 463px;}
 #left_image {
   position: absolute; 
