@@ -132,7 +132,8 @@ fieldset legend {margin: 0}
 .profile-pic img:nth-child(1) {border-radius: 100%; display: block; margin: 0 auto 8px;}
 .profile-pic img:nth-child(2) {position: absolute; top: 150px; left: 65px;}
 .profile-pic p {margin: 50px 0 0 0;}
-.video {width:491px; float:left}
+.video {width:491px; float:left; margin: 0 3px; padding: 0}
+.video_musician{width:471px; float:left; margin: 0 3px; padding: 0}
 #video-matchup {width:982px; margin: 0 auto 20px auto; position: relative;}
 .video iframe {margin-bottom: 30px;}
 #matchup_vs {position: absolute; top: 120px; left: 463px;}

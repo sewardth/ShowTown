@@ -113,8 +113,8 @@
     			<hr class="clear">
     			{% if videos %}
     			{% for v in videos %}
-    			<div class="col-lg-6 video {% if v.featured %} featured {% endif %}">
-    				<iframe width="490" height="300" frameborder="0" allowfullscreen="" src="{{v.embed_link}}"></iframe>
+    			<div class="col-lg-6 video_musician {% if v.featured %} featured {% endif %}">
+    				<iframe width="470" height="300" frameborder="0" allowfullscreen="" src="{{v.embed_link}}"></iframe>
               {% if v.featured %}
     				  <h2 class="text-center featured"><span>Featured:</span> {{v.video_title}}</h2>
     				  <div class="text-center">Wins {% if v.video_stats.get('total_matchups',0) ==0 %}0{% else %} {{((v.video_stats.get('head_to_head_wins',0) / v.video_stats.get('total_matchups',0))*100)|round|int}}{% endif %}% of Match Ups</div>
