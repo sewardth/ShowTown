@@ -48,6 +48,7 @@ function init_page(){
   // States 
   $('#selected_state span').text(Object.keys(states)[0]); 
   $('#states_list').empty();
+  states['All'] = 'All';
   for(key in states){
     $('#states_list')
       .append($(document.createElement('li'))
