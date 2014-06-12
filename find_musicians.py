@@ -34,6 +34,9 @@ class FindMusiciansHandler(views.Template):
     #filter by city
     if city != 'All': musicians = musicians.filter(models.musician.Musician.musician_city == city)
 
+    #filter by genre
+    if genre != 'All': musicians = musicians.filter(models.musician.Musician.band_genre == genre)
+
 
     musicians = musicians.fetch()
 
