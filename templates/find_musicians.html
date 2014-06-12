@@ -33,7 +33,7 @@
 						  <div class="controls">
 						    <select class="input-xlarge" name="genre" id="genre">
 							    {% for x in genres %}
-							    <option>{{x}}</option>
+							    <option{% if selected_genre == x %} selected{% endif %}>{{ x }}</option>
 							    {% endfor %}
 				
 						    </select>
