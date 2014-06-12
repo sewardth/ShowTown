@@ -8,13 +8,14 @@ class FindMusiciansHandler(views.Template):
   def get(self):
     states = models.musician.Musician.fetch_distinct_states()
     genres = models.videos.Videos.fetch_distinct_genres()
-    states_select = [x.musician_state for x in states]
-    genre = {x.genre_tag:x.genre_tag for x in genres}
+    states_select = sorted([x.musician_state for x in states])
+    genre = sorted([x.genre_tag for x in genres])
+    genre.insert(0,'All')
     states_select.insert(0,'All')
     selected_genre = self.request.get("g")
     selected_state = self.request.get("s")
 
-    template_values = {'states':sorted(states_select), 'cities': ['All'], 'genres':json.dumps(genre, sort_keys = True), 
+    template_values = {'states':states_select, 'cities': ['All'], 'genres':genre, 
       'selected_genre':selected_genre, 'selected_state':selected_state}    
     self.render('find_musicians.html', template_values)
 
