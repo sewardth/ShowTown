@@ -151,6 +151,8 @@ fieldset legend {margin: 0}
 }
 .matchup_video_title {margin: 40px 0 20px 0;}
 .musician_name {font-family: 'Quicksand', sans-serif; letter-spacing:-1px; font-size: 30px;}
+#musician_links{font-size: 28px; margin: 10px 0; display: block;}
+#musician_social_share{width:100%; margin: 0 auto; position: absolute;}
 #left_song_name, #right_song_name {font-weight: bold}
 .artist_image{
   border-radius: 100%; 

@@ -23,23 +23,23 @@
     		<img class="artist_image" src="/imgs?id={{musician.key.urlsafe()}}&width=165&height=165" />
     		<img src="/images/trending_round.png" />
     		<p class="center">
-          <strong>Trending #{% if musician.state_rank %}{{musician.state_rank}}{% else %} {{state_count}} {% endif %}</strong> out of <br/>
-          <a href="/trending">
-            <strong>{{state_count}}</strong> in <strong>{{musician.musician_state}}</strong>
+          <strong>Trending #{% if musician.state_rank %}{{musician.state_rank}}{% else %} {{state_count}} {% endif %}</strong> out of <strong>{{state_count}}</strong> in 
+          <a href="/find_musicians?s={{musician.musician_state}}">
+            <strong>{{musician.musician_state}}</strong>
           </a>
-          <div><a href="{{musician.facebook}}" target="_blank">FB</a></div>
-          <div><a href="{{musician.twitter}}" target="_blank">twitter</a></div>
-          <div><a href="{{musician.sound_cloud}}" target="_blank">sound_cloud</a></div>
-          <div><a href="{{musician.video_hosting_page}}" target="_blank">video_hosting_page</a></div>
+          <br/>
+          <span id="musician_links">
+            <a href="{{musician.facebook}}" target="_blank" title="Facebook page"><i class="fa fa-facebook"></i></a>&nbsp;
+            <a href="{{musician.twitter}}" target="_blank" title="Twitter page"><i class="fa fa-twitter"></i></a>&nbsp;
+            <a href="{{musician.sound_cloud}}" target="_blank" title="Sound Cloud page"><i class="fa fa-soundcloud"></i></a>&nbsp;
+            <a href="{{musician.video_hosting_page}}" target="_blank" title="Video page"><i class="fa fa-video-camera"></i></a>
+          </span>
+          <br/>
+          <!-- AddThis Pro BEGIN -->
+          <script type="text/javascript" src="//s7.addthis.com/js/300/addthis_widget.js#pubid=ra-535f25a708c8a1e9"></script>
+          <div id="musician_social_share" class="addthis_native_toolbox"></div>
+          <!-- AddThis Pro END -->
         </p>
-        <!-- AddThis Button BEGIN -->
-        <div class="addthis_toolbox addthis_default_style addthis_32x32_style">
-        <a class="addthis_button_facebook"></a>
-        <a class="addthis_button_twitter"></a>
-        </div>
-        <script type="text/javascript">var addthis_config = {"data_track_addressbar":true};</script>
-        <script type="text/javascript" src="//s7.addthis.com/js/300/addthis_widget.js#pubid=ra-535f25a708c8a1e9"></script>
-        <!-- AddThis Button END -->
     	</div>
       <div class="col-lg-10">
         <div class="row">
