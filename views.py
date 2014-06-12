@@ -53,6 +53,7 @@ class Template(webapp2.RequestHandler):
 		
 		
 	def email_sender(self, template, template_values):
+		template_values['domain']= os.environ['HTTP_HOST']
 		self.response.headers['Content-Type'] = 'text/html'
 		page = jinja_environment.get_template(template)
 		template = page.render(template_values)
