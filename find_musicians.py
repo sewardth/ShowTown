@@ -40,24 +40,25 @@ class FindMusiciansHandler(views.Template):
 
     musicians = musicians.fetch()
 
-    data =[]
-    for x in musicians:
-        d = x.to_dict()
+    if musicians:
+        data =[]
+        for x in musicians:
+            d = x.to_dict()
 
-        #delete Non JSON variables
-        del d['user_key'], d['profile_pic'],d['latest_update'],d['account_created'],d['DOB'],d['address'][0]['geo_code']
+            #delete Non JSON variables
+            del d['user_key'], d['profile_pic'],d['latest_update'],d['account_created'],d['DOB'],d['address'][0]['geo_code']
 
-        #add user key back in as urlsafe
-        d['key']= x.key.urlsafe()
+            #add user key back in as urlsafe
+            d['key']= x.key.urlsafe()
 
-        data.append(d)
+            data.append(d)
+        data = {'musicians':data, 'error':''}
+
+    else:
+        data = {'musicians':'','error':'No matches found for given parameters'}
     
 
 
-
-
-
-    data = {'musicians':data}
     self.response.headers['Content-Type'] = 'application/json' 
     self.response.out.write(json.dumps(data))    	
 
