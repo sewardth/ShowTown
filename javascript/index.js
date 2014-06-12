@@ -6,7 +6,9 @@ function init_page(){
   //
   // ========================
   // Genres
+  $('#selected_genre span').text('All');
   $('#genres_list').empty();
+  genres['All'] = 'All';
   for(key in genres){
     $('#genres_list')
       .append($(document.createElement('li'))
@@ -22,7 +24,7 @@ function init_page(){
   }
   // ========================
   // States 
-  $('#selected_state span').text(Object.keys(states)[0]); 
+  $('#selected_state span').text('All'); 
   $('#states_list').empty();
   states['All'] = 'All';
   for(key in states){
@@ -38,7 +40,7 @@ function init_page(){
         )
       );
   }
-  load_page_content(null, states[$('#selected_state span').text()])
+  load_page_content($('#selected_genre span').text(), $('#selected_state span').text())
 }
 
 
@@ -51,7 +53,7 @@ console.log('Load genre=' + genre_code + ' - state=' + state_code)
     data: {genre_code:genre_code, state_code:state_code}})
     .done(function(data, textStatus, xhr){
       // Update genre selection
-      $('#selected_genre span').text(data.genre_tag);
+      // $('#selected_genre span').text(data.genre_tag);
       // Title
       $('#matchup_title').text(data.genre_tag + ' Matchup');
       // Left
