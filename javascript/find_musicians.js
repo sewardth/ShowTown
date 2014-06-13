@@ -10,6 +10,19 @@ function init_page(){
   }
 }
 
+
+function variableType(stat)
+{
+    if (stat === undefined)
+    {
+        return 0;
+    }
+    else
+    {
+        return stat;
+    }
+}
+
 function do_search(){
   $.ajax({
     type: "POST",
@@ -32,6 +45,9 @@ function do_search(){
         // Create the span for multiple genres.
         var gen_span = $(document.createElement('span'));
         for(var g = 0, len2 = entries[i].band_genre.length; g < len2; g++){
+          var likes = variableType(entries[i].musician_stats.likes);
+          var wins = variableType(entries[i].musician_stats.head_to_head_wins);
+          var followers = variableType(entries[i].musician_stats.followers);
           $(gen_span)
             .append($(document.createElement('a'))
               .attr({href:"/find_musicians?g=" + encodeURIComponent(entries[i].band_genre[g])})
@@ -56,7 +72,7 @@ function do_search(){
                 )
                 .append($(document.createElement('span'))
                   .attr({'class':'left_spaced microcopy informational middle'})
-                  .html('<i class="fa fa-thumbs-o-up"></i> ' + entries[i].musician_stats.likes + ' Likes and <i class="fa fa-users left_spaced"></i> ' + entries[i].musician_stats.followers + ' Followers')
+                  .html('<i class="fa fa-thumbs-o-up"></i> ' + (likes+wins) + ' Likes and <i class="fa fa-users left_spaced"></i> ' + followers + ' Followers')
                 )
               )
               .append($(document.createElement('p'))
