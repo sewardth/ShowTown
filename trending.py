@@ -40,9 +40,11 @@ class TrendingHandler(views.Template):
 			#filter by state if selected and return results by state rank
 			if state_selection and state_selection != 'All':
 				musicians = musicians.filter(models.musician.Musician.musician_state == state_selection)
+				musicians = musicians.filter(models.musician.Musician.state_rank != None)
 				musicians = musicians.order(models.musician.Musician.state_rank).fetch()
 			else:
 				#return by overall rank
+				musicians = musicians.filter(models.musician.Musician.current_rank != None)
 				musicians = musicians.order(models.musician.Musician.current_rank).fetch()
 
 
