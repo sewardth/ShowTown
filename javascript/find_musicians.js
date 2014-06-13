@@ -16,7 +16,7 @@ function do_search(){
     url: '/find_musicians',
     dataType: 'json',
     data: {
-      genre:$('#genre').val(), 
+      genre:$('#genre-select').val(), 
       state:$('#state-select').val(),
       city:$('#city-select').val(),
       keywords:$('#keywords').val()
@@ -87,8 +87,9 @@ console.log(xhr)
 $(document).ready(function(){
   $("#state-select").change(function(){
     var state = $('#state-select').val();
-    $.get("/load-content/parameters/city?state="+state,function(data,status){
-      $('#city-select').html('');
+    var genre = $('#genre-select').val();
+    $.get("/load-content/parameters/city?state="+state+'&genre='+genre,function(data,status){
+      $('#city-select').empty();
       for (x in data.cities)
       {
 
@@ -97,4 +98,20 @@ $(document).ready(function(){
 
     });
   });
+
+
+  $("#genre-select").change(function(){
+    var genre = $('#genre-select').val();
+    $.get("/load-content/parameters/state?genre="+genre,function(data,status){
+      $('#state-select').empty();
+      for (x in data.states)
+      {
+
+        $('#state-select').append($('<option/>').html(data.states[x]));
+      }
+
+    });
+  });
+
+
 });
