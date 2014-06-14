@@ -19,7 +19,18 @@ indexes:
   properties:
   - name: band_genre
   - name: musician_state
+
+- kind: Musician
+  properties:
+  - name: band_genre
+  - name: musician_state
   - name: current_rank
+
+- kind: Musician
+  properties:
+  - name: band_genre
+  - name: musician_state
+  - name: musician_city
 
 - kind: Musician
   properties:

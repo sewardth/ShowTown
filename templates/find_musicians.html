@@ -31,24 +31,11 @@
 						<div class="control-group col-lg-2">
 						  <label for="genre" class="control-label">Genre</label>
 						  <div class="controls">
-						    <select class="input-xlarge" name="genre" id="genre">
-							    <option>All</option>      
-						   	  <option{% if selected_genre == 'Alternative' %} selected{% endif %}>Alternative</option>
-				          <option{% if selected_genre == 'Blues' %} selected{% endif %}>Blues</option>
-				          <option{% if selected_genre == 'Classical' %} selected{% endif %}>Classical</option>
-				          <option{% if selected_genre == 'Country' %} selected{% endif %}>Country</option>
-				          <option{% if selected_genre == 'Dance' %} selected{% endif %}>Dance</option>
-				          <option{% if selected_genre == 'Easy Listening' %} selected{% endif %}>Easy Listening</option>
-				          <option{% if selected_genre == 'Electronic' %} selected{% endif %}>Electronic</option>
-				          <option{% if selected_genre == 'Hip-Hop/Rap' %} selected{% endif %}>Hip-Hop/Rap</option>
-				          <option{% if selected_genre == 'Classical' %} selected{% endif %}>Classical</option>
-				          <option{% if selected_genre == 'Industrial' %} selected{% endif %}>Industrial</option>
-				          <option{% if selected_genre == 'Instrumental' %} selected{% endif %}>Instrumental</option>
-				          <option{% if selected_genre == 'Jazz' %} selected{% endif %}>Jazz</option>
-				          <option{% if selected_genre == 'Pop' %} selected{% endif %}>Pop</option>
-				          <option{% if selected_genre == 'Rock' %} selected{% endif %}>Rock</option>
-				          <option{% if selected_genre == 'Singer/Songwriter' %} selected{% endif %}>Singer/Songwriter</option>
-				          <option{% if selected_genre == 'Vocal' %} selected{% endif %}>Vocal</option>
+						    <select class="input-xlarge" name="genre" id="genre-select">
+							    {% for x in genres %}
+							    <option{% if selected_genre == x %} selected{% endif %}>{{ x }}</option>
+							    {% endfor %}
+				
 						    </select>
 						  </div>
 						</div>

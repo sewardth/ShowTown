@@ -10,13 +10,26 @@ function init_page(){
   }
 }
 
+
+function variableType(stat)
+{
+    if (stat === undefined)
+    {
+        return 0;
+    }
+    else
+    {
+        return stat;
+    }
+}
+
 function do_search(){
   $.ajax({
     type: "POST",
     url: '/find_musicians',
     dataType: 'json',
     data: {
-      genre:$('#genre').val(), 
+      genre:$('#genre-select').val(), 
       state:$('#state-select').val(),
       city:$('#city-select').val(),
       keywords:$('#keywords').val()
@@ -24,10 +37,17 @@ function do_search(){
     .done(function(data, textStatus, xhr){
       $('#musician_data').empty();
       var entries = data.musicians;
+      if (data.error)
+      {
+        $('#musician_data').text(data.error)
+      }
       for(var i = 0, len = entries.length; i < len; i++){
         // Create the span for multiple genres.
         var gen_span = $(document.createElement('span'));
         for(var g = 0, len2 = entries[i].band_genre.length; g < len2; g++){
+          var likes = variableType(entries[i].musician_stats.likes);
+          var wins = variableType(entries[i].musician_stats.head_to_head_wins);
+          var followers = variableType(entries[i].musician_stats.followers);
           $(gen_span)
             .append($(document.createElement('a'))
               .attr({href:"/find_musicians?g=" + encodeURIComponent(entries[i].band_genre[g])})
@@ -52,7 +72,7 @@ function do_search(){
                 )
                 .append($(document.createElement('span'))
                   .attr({'class':'left_spaced microcopy informational middle'})
-                  .html('<i class="fa fa-thumbs-o-up"></i> ' + entries[i].musician_stats.likes + ' Likes and <i class="fa fa-users left_spaced"></i> ' + entries[i].musician_stats.followers + ' Followers')
+                  .html('<i class="fa fa-thumbs-o-up"></i> ' + (likes+wins) + ' Likes and <i class="fa fa-users left_spaced"></i> ' + followers + ' Followers')
                 )
               )
               .append($(document.createElement('p'))
@@ -83,8 +103,9 @@ console.log(xhr)
 $(document).ready(function(){
   $("#state-select").change(function(){
     var state = $('#state-select').val();
-    $.get("/load-content/parameters/city?state="+state,function(data,status){
-      $('#city-select').html('');
+    var genre = $('#genre-select').val();
+    $.get("/load-content/parameters/city?state="+state+'&genre='+genre,function(data,status){
+      $('#city-select').empty();
       for (x in data.cities)
       {
 
@@ -93,4 +114,20 @@ $(document).ready(function(){
 
     });
   });
+
+
+  $("#genre-select").change(function(){
+    var genre = $('#genre-select').val();
+    $.get("/load-content/parameters/state?genre="+genre,function(data,status){
+      $('#state-select').empty();
+      for (x in data.states)
+      {
+
+        $('#state-select').append($('<option/>').html(data.states[x]));
+      }
+
+    });
+  });
+
+
 });
