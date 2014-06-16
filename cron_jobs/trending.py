@@ -1,5 +1,5 @@
 from google.appengine.ext import ndb
-import views, webapp2, models,requests
+import views, webapp2, models,requests, os
 
 class TrendingSelector(views.Template):
     def get(self):
@@ -18,7 +18,8 @@ class TrendingSelector(views.Template):
 
     def cron_request(self, state):
         payload = {'selection':state}
-        r = requests.post("http://localhost:9080/tasks/trending/builder", data=payload)
+        domain = os.environ['HTTP_HOST']
+        r = requests.post("http://"+domain+"/tasks/trending/builder", data=payload)
         return 1
 
 

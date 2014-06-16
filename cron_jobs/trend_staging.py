@@ -42,7 +42,7 @@ class Trending(views.Template):
         return [x.voter_choice_musician_key for x in self.matches]
 
     def win_percent(self, musicians):
-        return [float(self.wins.count(x))/self.votes.count(x) for x in musicians]
+        return [float(self.wins.count(x))/self.votes.count(x) if self.votes.count(x)>0 else 0 for x in musicians]
 
     def fetch_following(self):
         query = models.following.Following.recent_trends()
