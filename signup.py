@@ -127,7 +127,8 @@ class SignupHandler(views.Template):
 		self.template_values ={'email_error':'',
 								'error':'',
 								'passwords_error':'',
-								'dob_error':''}
+								'dob_error':'',
+								'success':''}
 		params = {} 
 		for field in self.request.arguments():
 			params[field] = self.request.get_all(field) 
@@ -190,6 +191,7 @@ class SignupHandler(views.Template):
 			for x in params:
 				self.template_values[x] = params[x]
 			self.render_errors('signup_fan.html')
+
 		else:
 			if user:
 				user.email = email
@@ -207,7 +209,11 @@ class SignupHandler(views.Template):
 					user = models.fan.Fan(user_key = acc_key, email = email, DOB = DOB, genres = params.get('checkboxes',[])).put()
 					email_body = self.email_sender('email_FanSignUp.html', template_values ={'user':email, 'user_id':acc_key.urlsafe()})
 					Email.email('Welcome to ShowTown', email_body, email)
-					self.redirect('/')
+					for x in params:
+						self.template_values[x] = params[x]
+					self.template_values['error'] = 'Thank you for signing up!  Please check your email to activate your account.'
+					self.render_errors('signup_fan.html')
+				
 				except Exception as e:
 					logging.exception(e)
 					acc_key.delete()
@@ -331,7 +337,8 @@ class SignupHandler(views.Template):
 									sound_cloud = sound_cloud,
 									band_genre = [params['band_genre'][0]]).put()
 					
-					video = models.videos.Videos(embed_link = submission_video['embed_link'],
+					if submission_video: 
+						video = models.videos.Videos(embed_link = submission_video['embed_link'],
 																acc_key = acc_key,
 																musician_key = user,
 																genre_tag = params['band_genre'][0],
@@ -340,7 +347,11 @@ class SignupHandler(views.Template):
 
 					email_body = self.email_sender('email_MusicianSignUp.html', template_values ={'user':email, 'user_id':acc_key.urlsafe()})
 					Email.email('Welcome to ShowTown', email_body, email)
-					self.redirect('/')
+					for x in params:
+						self.template_values[x] = params[x]
+					self.template_values['error'] = 'Thank you for signing up!  Please check your email to activate your account.'
+					self.render_errors('signup_musician.html')
+
 		
 				except Exception as e:
 					logging.exception(e)
@@ -430,8 +441,12 @@ class SignupHandler(views.Template):
 										  capacity = int(params['capacity'][0]),
 										  phone = params['phone1'][0],
 										  profile_pic = profile_pic).put()
+					for x in params:
+						self.template_values[x] = params[x]
+					self.template_values['error'] = 'Thank you for signing up!  Please check your email to activate your account.'
+					self.render_errors('signup_venue.html')
 									
-					self.redirect('/')
+					
 				except:
 					acc_key.delete()
 					self.template_values['error'] = 'Something went wrong, please try again'

@@ -1,5 +1,5 @@
 from google.appengine.ext import ndb
-import views, webapp2, models,requests, os
+import views, webapp2, models,requests, os, logging
 
 class TrendingSelector(views.Template):
     def get(self):
@@ -14,7 +14,8 @@ class TrendingSelector(views.Template):
         for x in states:
             self.cron_request(x.musician_state)
 
-
+        self.response.out.write('job complete')
+        logging.info('trending update complete')
 
     def cron_request(self, state):
         payload = {'selection':state}

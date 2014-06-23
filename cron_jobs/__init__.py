@@ -1,1 +1,1 @@
-import trend_staging
+import trend_staging, trending

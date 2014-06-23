@@ -1,5 +1,4 @@
 cron:
-- description: Trending Ranks
+- description: Trending Updates
   url: /tasks/trending
-  schedule: every 5 minutes from 10:00 to 23:00
-  timezone: America/Detroit
+  schedule: every 5 minutes
