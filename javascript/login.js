@@ -22,9 +22,9 @@ function show_login_popup(){
   var login_html = '<div id="login">' +
                     '<fieldset><legend>Login to ShowTown</legend>' +
                       '<p id="login_error"></p>' +
-  					          '<p class="fl"><label>E-mail</label> <input type="text" name="login_email"></p>' +
-  					          '<p class="fl"><label>Password</label> <input type="password" name="login_password"></p>' +
-  					          '<p><input class="btn btn-primary" value="Login"type="button" onclick="do_ajax_login()"/> ' +
+  					          '<p class="fl"><label>E-mail</label> <input type="text" name="login_email" onkeydown="if (event.keyCode == 13) document.getElementById('+"'login_submit'"+').click()";></p>' +
+  					          '<p class="fl"><label>Password</label> <input type="password" name="login_password" onkeydown="if (event.keyCode == 13) document.getElementById('+"'login_submit'"+').click()";></p>' +
+  					          '<p><input id="login_submit" class="btn btn-primary" value="Login"type="button" onclick="do_ajax_login();"/> ' +
   					          '<a style="color:blue;" href="/account">I forgot my password</a></p>' +
   				          '</fieldset></div>';
 	$('#login_popup_dialog')
