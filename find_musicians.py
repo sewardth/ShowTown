@@ -39,7 +39,7 @@ class FindMusiciansHandler(views.Template):
     if genre != 'All': musicians = musicians.filter(models.musician.Musician.band_genre == genre)
 
 
-    musicians = musicians.fetch()
+    musicians = musicians.order(models.musician.Musician.band_name).fetch()
 
     if musicians:
         data =[]
