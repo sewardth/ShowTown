@@ -18,6 +18,11 @@ indexes:
 - kind: Musician
   properties:
   - name: band_genre
+  - name: band_name
+
+- kind: Musician
+  properties:
+  - name: band_genre
   - name: musician_city
   - name: musician_state
   - name: band_name
@@ -50,6 +55,17 @@ indexes:
   - name: band_genre
   - name: musician_state
   - name: state_rank
+
+- kind: Musician
+  properties:
+  - name: musician_city
+  - name: musician_state
+  - name: band_name
+
+- kind: Musician
+  properties:
+  - name: musician_state
+  - name: band_name
 
 - kind: Musician
   properties:
