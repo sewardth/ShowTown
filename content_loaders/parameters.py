@@ -27,12 +27,14 @@ class DistinctCities(views.Template):
 class DistinctStates(views.Template):
 	def get(self):
 		self.response.headers['Content-Type'] = 'application/json'  
+		c_name = models.musician.Musician
 		if self.request.get('genre') == 'All':
-			self.response.out.write(json.dumps({'states':['All']}))
+			states = [x.musician_state for x in c_name.query(projection=[c_name.musician_state], distinct=True).order(c_name.musician_state).fetch()]
+			states.insert(0,'All')
+			self.response.out.write(json.dumps({'states':states}))
 
 		else:
 			genre = self.request.get('genre')
-			c_name = models.musician.Musician
 
 			states = c_name.query(c_name.band_genre == genre, projection=[c_name.musician_state], distinct=True).fetch()
 

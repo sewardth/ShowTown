@@ -120,11 +120,13 @@ $(document).ready(function(){
     var genre = $('#genre-select').val();
     $.get("/load-content/parameters/state?genre="+genre,function(data,status){
       $('#state-select').empty();
+      $('#city-select').empty();
       for (x in data.states)
       {
 
         $('#state-select').append($('<option/>').html(data.states[x]));
       }
+      $('#city-select').append($('<option/>').html('All'));
 
     });
   });
