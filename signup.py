@@ -133,6 +133,11 @@ class SignupHandler(views.Template):
 		for field in self.request.arguments():
 			params[field] = self.request.get_all(field) 
 		params['ip_addr'] = [self.request.remote_addr]
+
+		#set email to lowercase
+		params['email'][0] = params['email'][0].lower()
+
+		#check for user type
 		user_type = params['user_type'][0]
 		
 		

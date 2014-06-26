@@ -9,7 +9,7 @@ from sessions.cookie import Cookie
 class Login(views.Template):
 	def post(self):
 		password = self.request.get('password')
-		email = self.request.get('email')
+		email = self.request.get('email').lower()
 		path = self.request.get('url_path')
 
 		self.user = models.account.Account.query_by_email(email)
