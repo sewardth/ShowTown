@@ -38,7 +38,13 @@ class Login(views.Template):
 		check = pwd.compare_hash(password, pwhash)
 		if check == True and self.user.verified == True:
 			self.user.session_token = str(uuid.uuid4())
+
+			#checks for user IP address and adds if not used before
+			user_ip = self.request.remote_addr
+			if user_ip not in self.user.known_ip_addresses: self.user.known_ip_addresses.append(user_ip)
+
 			self.user.put()
+			
 		else:
 			raise ValueError ('invalid password')
 
