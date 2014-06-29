@@ -6,96 +6,129 @@ class Trending(views.Template):
     def post(self):
         start_time = time.clock() #used to calculate process time for monitoring
 
-        self.selection = self.request.get('selection')
+        #set coefficients 
+        self.follow_coef = .35
+        self.wins_coef = .45
+        self.likes_coef = .2
 
-        if self.selection == 'All':
-            musicians_query = models.musician.Musician.fetch_all()
-        else:
-            musicians_query = models.musician.Musician.filter_by_state(self.selection)
+        #get current date and date -1
+        today = datetime.datetime.now()
+        yesterday = datetime.datetime.now() - datetime.timedelta(hours=24)
+        self.today = today.date()
+        self.yesterday = yesterday.date()
 
-        self.likes = self.fetch_likes()
-        self.votes = self.fetch_votes()
-        self.wins = self.fetch_wins()
-        self.following = self.fetch_following()
-        self.videos = self.fetch_videos()
+        #set base class for musician models
+        mus = models.musician.Musician
 
+        selection = self.request.get('selection')
+        musicians = mus.query()
 
-        #build models
-        self.build_calcs(musicians_query)
+        #filter by state if selection
+        if selection != 'All': musicians = musicians.filter(mus.musician_state == selection)
 
+        #pull musicians
+        musicians = musicians.fetch()
+
+        #fetch follower transactions
+        fol = models.following.Following
+        follower_trans = fol.query(fol.followed_date>= yesterday).fetch()
+
+        #videos posted
+        self.videos = [x.musician_key for x in models.videos.Videos.query().fetch()]
+
+        #fetch head-to-head wins
+        wins = models.voting.Voting
+        votes = wins.query(wins.vote_time >= yesterday).fetch()
+
+        #fetch likes per video
+        vids = models.likes.Likes
+        video_likes = vids.query(vids.like_time>= yesterday).fetch()
+
+        #build calculation dictionaries
+        self.recent_calcs(follower_trans, votes, video_likes)
+
+        #build ranks
+        musicians = self.rank_builder(musicians)
+
+        #set ranks
+        self.set_ranks(musicians, selection)
 
         end_time = time.clock() - start_time
-        logging.info(str(end_time) + " seconds") #logs process time
+        logging.info(str(end_time) + " seconds - " + selection) #logs process time
         self.response.out.write('Finished in ' + str(end_time) + ' seconds')
 
+    def set_ranks(self,musicians, selection):
+        #sort by rank
+        ranks = sorted(musicians, key = lambda x: x.total_points, reverse = True)
 
+        if selection == 'All':
+            for i, obj in enumerate(ranks):
+                obj.current_rank = i+1
 
-    def fetch_likes(self):
-        query = models.likes.Likes.recent_trends()
-        return [x.musician_key for x in query]
-
-    def fetch_votes(self):
-        self.matches = models.voting.Voting.recent_trends()
-        return [x.video_one_artist_key for x in self.matches]+[x.video_two_artist_key for x in self.matches]
-
-    def fetch_wins(self):
-        return [x.voter_choice_musician_key for x in self.matches]
-
-    def win_percent(self, musicians):
-        return [float(self.wins.count(x))/self.votes.count(x) if self.votes.count(x)>0 else 0 for x in musicians]
-
-    def fetch_following(self):
-        query = models.following.Following.recent_trends()
-        return [x.followed_entity_key for x in query]
-
-    def fetch_videos(self):
-        query = models.videos.Videos.fetch_all()
-        return [x.musician_key for x in query]
-
-    def build_calcs(self, musicians):
-        #convert musicians to key list
-        musician_list = [x.key for x in musicians]
-        win_percents = self.win_percent(musician_list)
-
-        #calculate ranks for each category
-        likes_rank = self.rank_by_value(musician_list, self.likes)
-        following_rank = self.rank_by_value(musician_list, self.following)
-        win_percent_rank = self.rank_by_value(musician_list, win_percents, count = False)
-
-        #calculates total rank
-        total_ranks = self.rank_overall(musicians, likes_rank, following_rank, win_percent_rank)
-
-
-
-        for x in musicians:
-            if self.selection == 'All':
-                x.current_rank = total_ranks.index(x.key)+1
-            else:
-                x.state_rank = total_ranks.index(x.key)+1
-        ndb.put_multi(musicians)
-        return True
-
-
-
-
-
-    def rank_by_value(self, key_list, value_list, count = True):
-        #calculate like count by musician
-        if count: #Counts number of occurence of x in key list that are in value list.  Optional because win percent is already calculated
-            counter = [value_list.count(x) for x in key_list]
         else:
-            counter = value_list
-        mapping =  dict(zip(key_list, counter))
-        return {x:sorted(counter, reverse =True).index(mapping[x]) for x in mapping}
+            for i, obj in enumerate(ranks):
+                obj.state_rank = i+1
 
+        ndb.put_multi(ranks)
 
-    def rank_overall(self, musicians, likes_rank, following_rank, win_percent_rank):
-        overall = []
+    
+    def rank_builder(self, musicians):
         for x in musicians:
-            points = (likes_rank[x.key]+ following_rank[x.key] + win_percent_rank[x.key])/float(3)
-            overall.append([x.key, points])
-        ranks = sorted(overall, key = lambda x: x[1]) #sorts list based on total points
-        return [x[0] for x in ranks] #returns ranked list
+            following_stats = self.following.get(x.key,{})
+            #like_stats = self.likes.get(x.key,{})
+            win_stats = self.wins.get(x.key,{})
+            theta = (self.today - x.account_created.date()).days
+
+            #followers calc
+            f = following_stats.get('today',0) + (following_stats.get('change',0)*theta)+(x.musician_stats.get('followers',0)*theta)
+
+            #wins calc
+            w = win_stats.get('today',0) + (win_stats.get('change',0)*theta)+(x.musician_stats.get('head_to_head_wins',0)*theta)
+
+            #likes calculation
+            vids_posted = self.videos.count(x.key)
+            if x.musician_stats.get('likes',0) == 0 or vids_posted == 0:
+                lpv = 0
+            else:
+                lpv = x.musician_stats.get('likes')/float(vids_posted)
+
+            setattr(x,'total_points',(self.follow_coef * f) + (self.wins_coef*w) + (self.likes_coef*lpv))
+
+        return musicians
+
+
+
+
+
+    def recent_calcs(self, follower_trans, votes, video_likes):
+        #builds day and day -1 dictionaries
+        self.following = self.percent_mapping(follower_trans, 'followed_date', 'followed_entity_key')
+        self.wins = self.percent_mapping(votes, 'vote_time', 'voter_choice_musician_key')
+        #self.likes = self.percent_mapping(video_likes, 'like_time', 'musician_key')
+
+    
+    def percent_mapping(self, query, date_name, key_name):
+
+        #create arrays with muscians keys for day and day-1
+        todays_count = [getattr(x,key_name) for x in query if datetime.datetime.date(getattr(x,date_name)) == self.today]
+        yesterday_count = [getattr(x,key_name) for x in query if datetime.datetime.date(getattr(x,date_name)) == self.yesterday]
+
+        #map data using dictionary and return
+        data = {}
+        for x in query:
+            today = todays_count.count(getattr(x,key_name))
+            yesterday = yesterday_count.count(getattr(x,key_name))
+            if today > yesterday and yesterday != 0:
+                change = (today-yesterday)/float(yesterday)
+            elif today > yesterday and yesterday == 0:
+                change = 1.0
+            else:
+                change = 0.0
+
+            data[getattr(x,key_name)] = {'change':change, 'today':today,'yesterday':yesterday}
+
+        return data
+
 
 
 

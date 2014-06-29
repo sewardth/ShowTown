@@ -21,7 +21,6 @@ class TrendingSelector(views.Template):
         payload = {'selection':state}
         domain = os.environ['HTTP_HOST']
         r = requests.post("http://"+domain+"/tasks/trending/builder", data=payload)
-        return 1
 
 
 
