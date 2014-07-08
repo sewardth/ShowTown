@@ -29,13 +29,13 @@
     			<fieldset>
 				<div class ="warning">{{error}}</div>
       			<div class="control-group" id="musician_name_wrapper">
-      			  <label for="musician_name" class="control-label">Musician or Band Name</label>
+      			  <label for="musician_name" class="control-label">Musician or Band Name: <span class="form-required" title="This field is required.">*</span></label>
       			  <div class="controls">
       			    <input type="text" required ="True" class="input-xlarge" placeholder="" name="musician_name" id="musician_name" value="{{musician_name[0]}}">
       			  </div>
       			</div>
     				<div class="control-group" id="email_wrapper">
-    				  <label for="email" class="control-label">Email</label>
+    				  <label for="email" class="control-label">Email: <span class="form-required" title="This field is required.">*</span></label>
     				  <div class="controls">
     				    <input type="text" required="True" class="input-xlarge" placeholder="email@domain.com" name="email" id="email" value="{{email[0]}}">
     				  </div>
@@ -43,16 +43,16 @@
     				</div>
     				<div class="clearfix"></div>
     				<div class="control-group" id="password_wrapper">
-    				  <label for="password" class="control-label">Password</label>
+    				  <label for="password" class="control-label">Password: <span class="form-required" title="This field is required.">*</span></label>
     				  <div class="controls">
-    				    <input type="password" class="input-xlarge" {% if user %} placeholder="Enter new password to change" {% endif %} name="password" id="password">
+    				    <input type="password" required="True" class="input-xlarge" {% if user %} placeholder="Enter new password to change" {% endif %} name="password" id="password">
     				    <p class="help-block">Type in password</p>
     				  </div>
     				</div>
     				<div class="control-group" id="conf_password_wrapper">
     				  <label for="conf_password" class="control-label">&nbsp;</label>
     				  <div class="controls">
-    				    <input type="password" class="input-xlarge" {% if user %} placeholder="Confirm new password" {% endif %} name="conf_password" id="conf_password">
+    				    <input type="password" required="True" class="input-xlarge" {% if user %} placeholder="Confirm new password" {% endif %} name="conf_password" id="conf_password">
     				    <p class="help-block">Confirm password</p>
     				  </div>
 					<div class ="warning">{{passwords_error}}</div>
@@ -70,7 +70,7 @@
       			  </div>
       			</div>
       			<div class="control-group" id="zip_wrapper">
-      			  <label for="zip" class="control-label">Zipcode</label>
+      			  <label for="zip" class="control-label">Zipcode: <span class="form-required" title="This field is required.">*</span></label>
       			  <div class="controls">
       			    <input type="text" required = "True" maxlength = "5" class="input-xlarge" placeholder="" name="zip" id="zip" value="{{zip[0]}}">
       			  </div>
@@ -88,7 +88,7 @@
 				{% else %}
     				<legend>Music Video</legend>
       			<div class="control-group">
-      			  <label for="video_url" class="control-label">Video URL</label>
+      			  <label for="video_url" class="control-label">Video URL: <span class="form-required" title="This field is required.">*</span></label>
       			  <div class="controls">
       			    <input type="text" required ="True" class="input-xlarge" placeholder="http://" name="video_url" id="video_url" value="{{video_url[0]}}">
       			    <p class="help-block">Youtube or Vimeo Supported</p>
@@ -99,7 +99,7 @@
 				{% if user %}
 				{% else %}
       			<div class="control-group">
-      			  <label for="video_genre" class="control-label">Video Genre</label>
+      			  <label for="video_genre" class="control-label">Video Genre: <span class="form-required" title="This field is required.">*</span></label>
       			  <div class="controls">
       			    <select class="input-xlarge" name="band_genre" id="video_genre">
 					 {% if band_genre != None %}
@@ -128,58 +128,58 @@
     			</fieldset>
     			<br>
     			<fieldset>
-    				<legend>Customize Your Profile (optional)</legend>
+    				<legend>Customize Your Profile</legend>
       			<div class="control-group">
-      			  <label for="file_upload" class="control-label"><b>Profile Picture</b> - <i style="color:red;">Must be less than 1MB in Size</i></label>
+      			  <label for="file_upload" class="control-label"><b>Profile Picture: <span class="form-required" title="This field is required.">*</span></b> - <i style="color:red;">Must be less than 1MB in Size</i></label>
 				  <p>Note: Images are centered and cropped for consistency.  For best results, smaller images with content centered work the best.</p>
       			  <div class="controls">
-      			    <input type="file" class="input-file" name="file_upload" id="file_upload">
+      			    <input type="file" required="True" class="input-file" name="file_upload" id="file_upload">
       			  </div>
 				<div class ="warning">{{picture_error}}</div>
       			</div>
       			<div class="control-group"  id="num_of_members_wrapper">
-      			  <label for="num_of_members" class="control-label" required ="True"># of Band Members</label>
+      			  <label for="num_of_members" class="control-label" required ="True"># of Band Members:</label>
       			  <div class="controls">
       			    <input type="text" class="input-xlarge" placeholder="" name="num_of_members" id="num_of_members" value="{{num_of_members[0]}}">
       			  </div>
       			</div>
 	    			<div class="control-group"  id="dob_wrapper">
-      			  <label for="dob" class="control-label">Date of Birth</label>
+      			  <label for="dob" class="control-label">Date of Birth: <span class="form-required" title="This field is required.">*</span></label>
       			  <div class="controls">
-      			    <input type="text" class="input-xlarge" placeholder="MM/DD/YYYY" name="dob" id="dob" value="{{dob[0]}}">
+      			    <input type="text" required="True" class="input-xlarge" placeholder="MM/DD/YYYY" name="dob" id="dob" value="{{dob[0]}}">
       			  </div>
 				<div class ="warning">{{dob_error}}</div>
       			</div>
       			<div class="clearfix"></div>
       			<div class="control-group">
-      			  <label for="bio" class="control-label">Brief Bio (500 charecters)</label>
+      			  <label for="bio" class="control-label">Brief Bio (500 charecters):</label>
       			  <div class="controls">                     
       			    <textarea name="bio" id="bio">{{bio[0]}}</textarea>
       			  </div>
       			</div>
       			<div class="control-group">
-      			  <label for="facebook" class="control-label">Facebook</label>
+      			  <label for="facebook" class="control-label">Facebook:</label>
       			  <div class="controls">
       			    <input type="text" class="input-xlarge" placeholder="" name="facebook" id="facebook" value="{{facebook[0]}}">
       			  </div>
 				<div class ="warning">{{facebook_error}}</div>
       			</div>
       			<div class="control-group">
-      			  <label for="twitter" class="control-label">Twitter</label>
+      			  <label for="twitter" class="control-label">Twitter:</label>
       			  <div class="controls">
       			    <input type="text" class="input-xlarge" placeholder="" name="twitter" id="twitter" value="{{twitter[0]}}">
       			  </div>
 				<div class ="warning">{{twitter_error}}</div>
       			</div>
       			<div class="control-group">
-      			  <label for="sound_cloud" class="control-label">Sound Cloud</label>
+      			  <label for="sound_cloud" class="control-label">Sound Cloud:</label>
       			  <div class="controls">
       			    <input type="text" class="input-xlarge" placeholder="" name="sound_cloud" id="sound_cloud" value="{{sound_cloud[0]}}">
       			  </div>
 				<div class ="warning">{{sound_cloud_error}}</div>
       			</div>
       			<div class="control-group">
-      			  <label for="video_hosting_page" class="control-label">YouTube or Vimeo page</label>
+      			  <label for="video_hosting_page" class="control-label">YouTube or Vimeo page:</label>
       			  <div class="controls">
       			    <input type="text" class="input-xlarge" placeholder="" name="video_hosting_page" id="video_hosting_page" value="{{video_hosting_page[0]}}">
       			  </div>

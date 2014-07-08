@@ -18,6 +18,7 @@ h4 {font-size: 24px;}
 .clearfix:after {clear: both; content: "."; display: block; height: 0; visibility: hidden;}
 .clearfix {display: block;}
 .bold {font-weight: bold;}
+.form-required {color: #f00;}
 
 #page {width: 1181px; margin: 0 auto;}
 

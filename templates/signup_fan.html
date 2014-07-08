@@ -39,38 +39,38 @@
   				<fieldset>
 					<div class ="warning">{{error}}</div>
     				<div class="control-group" id="email_wrapper">
-    				  <label for="email" class="control-label">Email</label>
+    				  <label for="email" class="control-label">Email: <span class="form-required" title="This field is required.">*</span></label>
     				  <div class="controls">
     				    <input type="text" required="" class="input-xlarge" placeholder="email@domain.com" name="email" id="email" value="{{email[0]}}">
     				  </div>
 					<div class ="warning">{{email_error}}</div>
     				</div>
     				<div class="control-group" id="dob_wrapper">
-    				  <label for="dob" class="control-label">Date of Birth</label>
+    				  <label for="dob" class="control-label">Date of Birth: <span class="form-required" title="This field is required.">*</span></label>
     				  <div class="controls">
-    				    <input type="text" class="input-xlarge" placeholder="MM/DD/YYYY" name="dob" id="dob" value ="{{dob[0]}}">
+    				    <input type="text" required="" class="input-xlarge" placeholder="MM/DD/YYYY" name="dob" id="dob" value ="{{dob[0]}}">
     				  </div>
 					<div class ="warning">{{dob_error}}</div>
     				</div>
     				<div class="clearfix"></div>
     				<div class="control-group" id="password_wrapper">
-    				  <label for="password" class="control-label">Password</label>
+    				  <label for="password" class="control-label">Password: <span class="form-required" title="This field is required.">*</span></label>
     				  <div class="controls">
-    				    <input type="password" class="input-xlarge" {% if user %} placeholder="Enter new password to change" {% endif %} name="password" id="password">
+    				    <input type="password" required="" class="input-xlarge" {% if user %} placeholder="Enter new password to change" {% endif %} name="password" id="password">
     				    <p class="help-block">Type in password</p>
     				  </div>
     				</div>
     				<div class="control-group" id="conf_password_wrapper">
     				  <label for="conf_password" class="control-label">&nbsp;</label>
     				  <div class="controls">
-    				    <input type="password" class="input-xlarge" {% if user %} placeholder="Confirm New Password" {% endif %} name="conf_password" id="conf_password">
+    				    <input type="password" required="" class="input-xlarge" {% if user %} placeholder="Confirm New Password" {% endif %} name="conf_password" id="conf_password">
     				    <p class="help-block">Confirm password</p>
     				  </div>
 					<div class="warning">{{passwords_error}}</div>
     				</div>
     				<div class="clearfix"></div>
     				<div class="control-group">
-    				  <label for="checkboxes" class="control-label">Favorite Genre(s)</label>
+    				  <label for="checkboxes" class="control-label">Favorite Genre(s):</label>
     				  <div class="controls">
     				    <ul id="favorite_genres">
       				    <li><label for="checkboxes" class="checkbox">
