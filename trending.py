@@ -13,6 +13,7 @@ class TrendingHandler(views.Template):
 			genres = models.videos.Videos.fetch_distinct_genres()
 			states_select = {x.musician_state:x.musician_state for x in states}
 			genre = {x.genre_tag:x.genre_tag for x in genres}
+			selected_state = self.request.get("s")
 
 
 		except Exception as e:
@@ -20,7 +21,7 @@ class TrendingHandler(views.Template):
 			states_select = {}
 			genre = {}
 
-		template_values = {'musicians_states':json.dumps(states_select, sort_keys = True), 'genres':json.dumps(genre, sort_keys = True)}
+		template_values = {'musicians_states':json.dumps(states_select, sort_keys = True), 'genres':json.dumps(genre, sort_keys = True), 'selected_state':selected_state}
 		self.render('trending.html', template_values)
 	
 

@@ -24,15 +24,15 @@
     		<img src="/images/trending_round.png" />
     		<p class="center">
           <strong>Trending #{% if musician.state_rank %}{{musician.state_rank}}{% else %} {{state_count}} {% endif %}</strong> out of <strong>{{state_count}}</strong> in 
-          <a href="/find_musicians?s={{musician.musician_state}}">
+          <a href="/trending?s={{musician.musician_state}}">
             <strong>{{musician.musician_state}}</strong>
           </a>
           <br/>
           <span id="musician_links">
-            <a href="{{musician.facebook}}" target="_blank" title="Facebook page"><i class="fa fa-facebook"></i></a>&nbsp;
-            <a href="{{musician.twitter}}" target="_blank" title="Twitter page"><i class="fa fa-twitter"></i></a>&nbsp;
-            <a href="{{musician.sound_cloud}}" target="_blank" title="Sound Cloud page"><i class="fa fa-soundcloud"></i></a>&nbsp;
-            <a href="{{musician.video_hosting_page}}" target="_blank" title="Video page"><i class="fa fa-video-camera"></i></a>
+            {% if musician.facebook %}<a href="{{musician.facebook}}" target="_blank" title="Facebook page"><i class="fa fa-facebook"></i></a>&nbsp;{% endif %}
+            {% if musician.twitter %}<a href="{{musician.twitter}}" target="_blank" title="Twitter page"><i class="fa fa-twitter"></i></a>&nbsp;{% endif %}
+            {% if musician.sound_cloud %}<a href="{{musician.sound_cloud}}" target="_blank" title="Sound Cloud page"><i class="fa fa-soundcloud"></i></a>&nbsp;{% endif %}
+            {% if musician.video_hosting_page %}<a href="{{musician.video_hosting_page}}" target="_blank" title="Video page"><i class="fa fa-video-camera"></i></a>{% endif %}
           </span>
           <br/>
           <!-- AddThis Pro BEGIN -->

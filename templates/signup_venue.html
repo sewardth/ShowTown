@@ -28,13 +28,13 @@
 				  <fieldset>
 					<div class ="warning">{{error}}</div>
     				<div class="control-group" id="venue_name_wrapper">
-    				  <label for="venue_name" class="control-label">Venue Name</label>
+    				  <label for="venue_name" class="control-label">Venue Name: <span class="form-required" title="This field is required.">*</span></label>
     				  <div class="controls">
-    				    <input type="text" class="input-xlarge" placeholder="" name="venue_name" id="venue_name" value="{{venue_name[0]}}">
+    				    <input type="text" required="True" class="input-xlarge" placeholder="" name="venue_name" id="venue_name" value="{{venue_name[0]}}">
     				  </div>
     				</div>
     				<div class="control-group" id="email_wrapper">
-    				  <label for="email" class="control-label">Email</label>
+    				  <label for="email" class="control-label">Email: <span class="form-required" title="This field is required.">*</span></label>
     				  <div class="controls">
     				    <input type="text" required="" class="input-xlarge" placeholder="email@domain.com" name="email" id="email" value="{{email[0]}}">
     				  </div>
@@ -42,25 +42,25 @@
     				</div>
     				<div class="clearfix"></div>
     				<div class="control-group" id="password_wrapper">
-    				  <label for="password" class="control-label">Password</label>
+    				  <label for="password" class="control-label">Password: <span class="form-required" title="This field is required.">*</span></label>
     				  <div class="controls">
-    				    <input type="password" class="input-xlarge" {% if user %} placeholder="Enter new password to change" {% endif %} name="password" id="password">
+    				    <input type="password" required="True" class="input-xlarge" {% if user %} placeholder="Enter new password to change" {% endif %} name="password" id="password">
     				    <p class="help-block">Type in password</p>
     				  </div>
     				</div>
     				<div class="control-group" id="conf_password_wrapper">
     				  <label for="conf_password" class="control-label">&nbsp;</label>
     				  <div class="controls">
-    				    <input type="password" class="input-xlarge" {% if user %} placeholder="Confirm New Password" {% endif %} name="conf_password" id="conf_password">
+    				    <input type="password" required="True" class="input-xlarge" {% if user %} placeholder="Confirm New Password" {% endif %} name="conf_password" id="conf_password">
     				    <p class="help-block">Confirm password</p>
     				  </div>
 					<div class ="warning">{{passwords_error}}</div>
     				</div>
     				<div class="clearfix"></div>
     				<div class="control-group" id="address_wrapper">
-    				  <label for="address" class="control-label">Address</label>
+    				  <label for="address" class="control-label">Address: <span class="form-required" title="This field is required.">*</span></label>
     				  <div class="controls">
-    				    <input type="text" class="input-xlarge" placeholder="" name="address" id="address" value="{{address[0]}}">
+    				    <input type="text" required="True" class="input-xlarge" placeholder="" name="address" id="address" value="{{address[0]}}">
     				  </div>
     				</div>
     				<div class="control-group" id="address2_wrapper">
@@ -71,41 +71,41 @@
     				</div>
     				<div class="clearfix"></div>
       			<div class="control-group" id="city_wrapper">
-      			  <label for="city" class="control-label">City</label>
+      			  <label for="city" class="control-label">City: <span class="form-required" title="This field is required.">*</span></label>
       			  <div class="controls">
-      			    <input type="text" class="input-xlarge" placeholder="" name="city" id="city" value = "{{city[0]}}">
+      			    <input type="text" required="True" class="input-xlarge" placeholder="" name="city" id="city" value = "{{city[0]}}">
       			  </div>
       			</div>
       			<div class="control-group" id="state_wrapper">
-      			  <label for="state" class="control-label">State</label>
+      			  <label for="state" class="control-label">State: <span class="form-required" title="This field is required.">*</span></label>
       			  <div class="controls">
-      			    <input type="text" class="input-xlarge" placeholder="" name="state" id="state" value="{{state[0]}}">
+      			    <input type="text" required="True" class="input-xlarge" placeholder="" name="state" id="state" value="{{state[0]}}">
       			  </div>
       			</div>
       			<div class="control-group" id="zip_wrapper">
-      			  <label for="zip" class="control-label">Zipcode</label>
+      			  <label for="zip" class="control-label">Zipcode: <span class="form-required" title="This field is required.">*</span></label>
       			  <div class="controls">
-      			    <input type="text" class="input-xlarge" placeholder="" name="zip" id="zip" value="{{zip[0]}}">
+      			    <input type="text" required="True" class="input-xlarge" placeholder="" name="zip" id="zip" value="{{zip[0]}}">
       			  </div>
       			</div>
       			<div class="clearfix"></div>
       			<div class="control-group" id="phone1_wrapper">
-      			  <label for="phone1" class="control-label">Phone number</label>
+      			  <label for="phone1" class="control-label">Phone number:</label>
       			  <div class="controls">
       			    <input type="text" class="input-xlarge" placeholder="" name="phone1" id="phone1" value="{{phone1[0]}}">
       			  </div>
       			</div>
       			<div class="control-group" id="phone1_wrapper">
-      			  <label for="venue_url" class="control-label">Website</label>
+      			  <label for="venue_url" class="control-label">Website:</label>
       			  <div class="controls">
       			    <input type="text" class="input-xlarge" placeholder="http://www.domain.com" name="venue_url" id="venue_url" value="">
       			  </div>
       			</div>
       			<div class="clearfix"></div>
     				<div class="control-group" id="venue_type_wrapper">
-    				  <label for="venue_type" class="control-label">Venue Type</label>
+    				  <label for="venue_type" class="control-label">Venue Type: <span class="form-required" title="This field is required.">*</span></label>
     				  <div class="controls">
-    				    <select class="input-xlarge" name="venue_type" id="venue_type">
+    				    <select required="True" class="input-xlarge" name="venue_type" id="venue_type">
     				      <option {% if venue_type[0] == "Bar" %} selected="true" {% endif %}>Bar</option>
     				      <option {% if venue_type[0] == "Coffee Shop" %} selected="true" {% endif %}>Coffee Shop</option>
     				      <option {% if venue_type[0] == "Concert House" %} selected="true" {% endif %}>Concert House</option>
@@ -118,9 +118,9 @@
     				  </div>
     				</div>
     				<div class="control-group" id="age_limit_wrapper">
-    				  <label for="age_limit" class="control-label">Age Limit</label>
+    				  <label for="age_limit" class="control-label">Age Limit: <span class="form-required" title="This field is required.">*</span></label>
     				  <div class="controls">
-    				    <select class="input-xlarge" name="age_limit" id="age_limit">
+    				    <select required="True" class="input-xlarge" name="age_limit" id="age_limit">
     				     <option {% if age_limit[0] == "0" %} selected="true" {% endif %} value="0">None</option>
     				     <option {% if age_limit[0] == "18" %} selected="true" {% endif %} value="18">18 &amp; Up</option>
     				     <option {% if age_limit[0] == "21" %} selected="true" {% endif %} value="21">21 &amp; Up</option>
@@ -128,7 +128,7 @@
     				  </div>
     				</div>
     				<div class="control-group" id="capacity_wrapper">
-    				  <label for="capacity" class="control-label">Capacity</label>
+    				  <label for="capacity" class="control-label">Capacity:</label>
     				  <div class="controls">
     				    <input type="text" class="input-xlarge" placeholder="" name="capacity" id="capacity" value="{{capacity[0]}}">
     				  </div>

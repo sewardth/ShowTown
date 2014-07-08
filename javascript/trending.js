@@ -46,7 +46,7 @@ function init_page(){
     );
   // ========================
   // States 
-  $('#selected_state span').text(Object.keys(states)[0]); 
+  $('#selected_state span').text(selected_state == '' ? Object.keys(states)[0] : selected_state); 
   $('#states_list').empty();
   states['All'] = 'All';
   for(key in states){
