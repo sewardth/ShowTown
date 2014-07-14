@@ -8,8 +8,8 @@ class Trending(views.Template):
 
         #set coefficients 
         self.follow_coef = .35
-        self.wins_coef = .45
-        self.likes_coef = .2
+        self.wins_coef = .5
+        self.likes_coef = .15
 
         #get current date and date -1
         today = datetime.datetime.now()
