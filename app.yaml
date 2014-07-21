@@ -34,6 +34,9 @@ handlers:
 
 - url: /tasks/trending/builder.*
   script: cron_jobs.trend_staging.app
+
+- url: /tasks/trending/dump_data
+  script: cron_jobs.calculation_dump.app
   
 
 - url: /signup.*
