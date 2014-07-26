@@ -452,10 +452,19 @@ class SignupHandler(views.Template):
 					self.render_errors('signup_venue.html')
 									
 					
-				except:
+				except Exception as e:
+					logging.exception(e)
 					acc_key.delete()
+					try:
+						if user: user.delete()
+						if video: video.delete()
+					except Exception as e:
+						logging.error(e)
+					
+					for x in params:
+						self.template_values[x] = params[x]
 					self.template_values['error'] = 'Something went wrong, please try again'
-					self.render_errors('signup_venue.html')
+					self.render_errors('signup_venue.html') 
 	
 			
 	def image_handler(self, image, width, height):

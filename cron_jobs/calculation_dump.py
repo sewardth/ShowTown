@@ -66,15 +66,28 @@ class Trending(views.Template):
         self.response.headers['Content-Type'] = 'application/csv'
         self.response.headers['Content-Disposition'] = 'attachment; filename={time}.csv'.format(time=datetime.datetime.now())
         c = csv.writer(self.response.out)
-        c.writerow(["Rank","Musician","Total Points", "F", "W","LPV"])
+        c.writerow(["Rank","Musician","Total Points", "win coef", "fol coef", "like coef", "F", "W","LPV","Theta","Followers Today", "Follower Change",
+                    "Total Followers", "Wins Today", "Wins Change", "Total Wins", "Videos Posted", "Video Likes"])
         for x in ranks:
             d = []
             d.append(int(x.current_rank))
             d.append(x.band_name)
-            d.append(int(x.total_points))
-            d.append(int(x.f))
-            d.append(int(x.w))
-            d.append(int(x.lpv))
+            d.append('{0:0.1f}'.format(x.total_points))
+            d.append('{0:0.1f}'.format(self.wins_coef))
+            d.append('{0:0.1f}'.format(self.follow_coef))
+            d.append('{0:0.1f}'.format(self.likes_coef))
+            d.append('{0:0.1f}'.format(x.f))
+            d.append('{0:0.1f}'.format(x.w))
+            d.append('{0:0.1f}'.format(x.lpv))
+            d.append('{0:0.1f}'.format(x.theta))
+            d.append('{0:0.1f}'.format(x.followers_today))
+            d.append('{0:0.1f}'.format(x.follower_change))
+            d.append('{0:0.1f}'.format(x.total_followers))
+            d.append('{0:0.1f}'.format(x.wins_today))
+            d.append('{0:0.1f}'.format(x.wins_change))
+            d.append('{0:0.1f}'.format(x.total_wins))
+            d.append('{0:0.1f}'.format(x.videos_posted))
+            d.append('{d}'.format(d=x.video_likes))
             c.writerow(d)
             
         self.response.out.write(c)
@@ -99,22 +112,31 @@ class Trending(views.Template):
             following_stats = self.following.get(x.key,{})
             #like_stats = self.likes.get(x.key,{})
             win_stats = self.wins.get(x.key,{})
-            theta = (self.today - x.account_created.date()).days
+            theta = 1.0/(self.today - x.account_created.date()).days
+            setattr(x,'theta',theta)
 
             #followers calc
             f = following_stats.get('today',0) + (following_stats.get('change',0)*theta)+(x.musician_stats.get('followers',0)*theta)
+            setattr(x,'followers_today',following_stats.get('today',0))
+            setattr(x,'follower_change',following_stats.get('change',0))
+            setattr(x,'total_followers', x.musician_stats.get('followers',0))
             setattr(x,'f',f)
 
             #wins calc
             w = win_stats.get('today',0) + (win_stats.get('change',0)*theta)+(x.musician_stats.get('head_to_head_wins',0)*theta)
             setattr(x,'w',w)
+            setattr(x,'wins_today',win_stats.get('today',0))
+            setattr(x,'wins_change',win_stats.get('change',0))
+            setattr(x,'total_wins',x.musician_stats.get('head_to_head_wins',0))
 
             #likes calculation
             vids_posted = self.videos.count(x.key)
+            setattr(x,'videos_posted', vids_posted)
             if x.musician_stats.get('likes',0) == 0 or vids_posted == 0:
                 lpv = 0
             else:
                 lpv = x.musician_stats.get('likes')/float(vids_posted)
+            setattr(x,'video_likes', x.musician_stats.get('likes'))
             setattr(x,'lpv',lpv)
 
             setattr(x,'total_points',(self.follow_coef * f) + (self.wins_coef*w) + (self.likes_coef*lpv))

@@ -77,7 +77,7 @@ class Trending(views.Template):
             following_stats = self.following.get(x.key,{})
             #like_stats = self.likes.get(x.key,{})
             win_stats = self.wins.get(x.key,{})
-            theta = (self.today - x.account_created.date()).days
+            theta = 1.0/(self.today - x.account_created.date()).days
 
             #followers calc
             f = following_stats.get('today',0) + (following_stats.get('change',0)*theta)+(x.musician_stats.get('followers',0)*theta)
