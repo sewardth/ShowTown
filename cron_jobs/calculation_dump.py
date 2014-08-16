@@ -31,21 +31,23 @@ class Trending(views.Template):
 
         #fetch follower transactions
         fol = models.following.Following
-        follower_trans = fol.query(fol.followed_date>= yesterday).fetch()
+        follower_trans = fol.query().fetch()
 
         #videos posted
         self.videos = [x.musician_key for x in models.videos.Videos.query().fetch()]
 
         #fetch head-to-head wins
         wins = models.voting.Voting
-        votes = wins.query(wins.vote_time >= yesterday).fetch()
+        votes = wins.query().fetch()
 
         #fetch likes per video
         vids = models.likes.Likes
-        video_likes = vids.query(vids.like_time>= yesterday).fetch()
+        video_likes = vids.query().fetch()
 
         #build calculation dictionaries
         self.recent_calcs(follower_trans, votes, video_likes)
+        self.wins_theta = self.theta_builder(votes,'voter_choice_musician_key','vote_time')
+        self.follower_theta = self.theta_builder(follower_trans,'followed_entity_key', 'followed_date')
 
         #build ranks
         musicians = self.rank_builder(musicians)
@@ -58,7 +60,9 @@ class Trending(views.Template):
 
         end_time = time.clock() - start_time
         logging.info(str(end_time) + " seconds - " + selection) #logs process time
-        self.response.out.write('Finished in ' + str(end_time) + ' seconds')
+
+
+  
 
 
     def csv_dump(self, ranks):
@@ -66,7 +70,7 @@ class Trending(views.Template):
         self.response.headers['Content-Type'] = 'application/csv'
         self.response.headers['Content-Disposition'] = 'attachment; filename={time}.csv'.format(time=datetime.datetime.now())
         c = csv.writer(self.response.out)
-        c.writerow(["Rank","Musician","Total Points", "win coef", "fol coef", "like coef", "F", "W","LPV","Theta","Followers Today", "Follower Change",
+        c.writerow(["Rank","Musician","Total Points", "win coef", "fol coef", "like coef", "F", "W","LPV","Win Theta","Follower Theta", "Followers Today", "Follower Change",
                     "Total Followers", "Wins Today", "Wins Change", "Total Wins", "Videos Posted", "Video Likes"])
         for x in ranks:
             d = []
@@ -79,7 +83,8 @@ class Trending(views.Template):
             d.append('{0:0.1f}'.format(x.f))
             d.append('{0:0.1f}'.format(x.w))
             d.append('{0:0.1f}'.format(x.lpv))
-            d.append('{0:0.1f}'.format(x.theta))
+            d.append('{0:0.1f}'.format(x.wins_theta))
+            d.append('{0:0.1f}'.format(x.followers_theta))
             d.append('{0:0.1f}'.format(x.followers_today))
             d.append('{0:0.1f}'.format(x.follower_change))
             d.append('{0:0.1f}'.format(x.total_followers))
@@ -112,18 +117,20 @@ class Trending(views.Template):
             following_stats = self.following.get(x.key,{})
             #like_stats = self.likes.get(x.key,{})
             win_stats = self.wins.get(x.key,{})
-            theta = 1.0/(self.today - x.account_created.date()).days
-            setattr(x,'theta',theta)
+            followers_theta = self.theta_series(x.key, x.account_created, self.follower_theta)
+            wins_theta = self.theta_series(x.key, x.account_created, self.wins_theta)
+            setattr(x,'followers_theta',followers_theta)
+            setattr(x,'wins_theta', wins_theta)
 
             #followers calc
-            f = following_stats.get('today',0) + (following_stats.get('change',0)*theta)+(x.musician_stats.get('followers',0)*theta)
+            f = following_stats.get('today',0) + (following_stats.get('change',0)*followers_theta)+(x.musician_stats.get('followers',0)*followers_theta)
             setattr(x,'followers_today',following_stats.get('today',0))
             setattr(x,'follower_change',following_stats.get('change',0))
             setattr(x,'total_followers', x.musician_stats.get('followers',0))
             setattr(x,'f',f)
 
             #wins calc
-            w = win_stats.get('today',0) + (win_stats.get('change',0)*theta)+(x.musician_stats.get('head_to_head_wins',0)*theta)
+            w = win_stats.get('today',0) + (win_stats.get('change',0)*wins_theta)+(x.musician_stats.get('head_to_head_wins',0)*wins_theta)
             setattr(x,'w',w)
             setattr(x,'wins_today',win_stats.get('today',0))
             setattr(x,'wins_change',win_stats.get('change',0))
@@ -177,7 +184,40 @@ class Trending(views.Template):
         return data
 
 
+    def theta_builder(self, query, key_name, date_name):
+        """Builds a dictionary of key:{date:count} for a query"""
+        data ={}
+        for x in query:
+            lookup = data.get(getattr(x,key_name),None)
+            if lookup:
+                count = lookup.get(getattr(x,date_name).date(),0)
+                if count == 0:
+                    data[getattr(x,key_name)][getattr(x,date_name).date()] = 1
+                else:
+                    data[getattr(x,key_name)][getattr(x,date_name).date()] = count+1
 
+            else:
+                #set artist key in dict
+                data[getattr(x,key_name)] = {}
+
+                #set initial date with count 1
+                data[getattr(x,key_name)][getattr(x,date_name).date()] = 1
+
+        return data
+
+
+    def theta_series(self, key, account_created_date, dictionary):
+        """returns a series of 1/days * count for each record"""
+        data = dictionary.get(key, None)
+        series =[]
+        if data:
+            for x in data:
+                days = (x - account_created_date.date()).days
+                calc = (1.0/(days+1))*data[x]
+                series.append(calc)
+        else:
+            series =[0]
+        return sum(series)
 
 
 

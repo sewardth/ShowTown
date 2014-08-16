@@ -49,6 +49,7 @@ class Trending(views.Template):
         self.wins_theta = self.theta_builder(votes,'voter_choice_musician_key','vote_time')
         self.follower_theta = self.theta_builder(follower_trans,'followed_entity_key', 'followed_date')
 
+
         #build ranks
         musicians = self.rank_builder(musicians)
 
@@ -138,19 +139,37 @@ class Trending(views.Template):
         """Builds a dictionary of key:{date:count} for a query"""
         data ={}
         for x in query:
-            count = data[getattr(x,key_name)].get(getattr(x,date_name).date())
-            data[getattr(x,key_name)][getattr(x,date_name).date()] = count +=1
+            lookup = data.get(getattr(x,key_name),None)
+            if lookup:
+                count = lookup.get(getattr(x,date_name).date(),0)
+                if count == 0:
+                    data[getattr(x,key_name)][getattr(x,date_name).date()] = 1
+                else:
+                    data[getattr(x,key_name)][getattr(x,date_name).date()] = count+1
+
+            else:
+                #set artist key in dict
+                data[getattr(x,key_name)] = {}
+
+                #set initial date with count 1
+                data[getattr(x,key_name)][getattr(x,date_name).date()] = 1
+
         return data
 
 
-    def theta_series(key, account_created_date, dictionary):
+    def theta_series(self, key, account_created_date, dictionary):
         """returns a series of 1/days * count for each record"""
-        data = dictionary[key]
-        series = []
-        for x in data:
-            days = (x - account_created_date).days()
-            series.append((1.0/days)*data[x])
+        data = dictionary.get(key, None)
+        series =[]
+        if data:
+            for x in data:
+                days = (x - account_created_date.date()).days
+                calc = (1.0/(days+1))*data[x]
+                series.append(calc)
+        else:
+            series =[0]
         return sum(series)
+
 
 
 app = webapp2.WSGIApplication([
