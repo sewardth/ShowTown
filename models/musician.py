@@ -58,7 +58,7 @@ class Musician(ndb.Model):
 
 	@classmethod
 	def fetch_all(cls):
-		return cls.query().fetch(100000)
+		return cls.query().fetch()
 
 	@classmethod
 	def fetch_by_genre_state(cls, genre, state):

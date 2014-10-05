@@ -3,172 +3,146 @@ import views, webapp2, models, datetime, time, logging
 
 class Trending(views.Template):
     """Builds current trending ranks and inserts records into trending model"""
-    def post(self):
-        start_time = time.clock() #used to calculate process time for monitoring
+    follower_coef = .25
+    wins_coef = .35
+    likes_coef = .1
 
-        #set coefficients 
-        self.follow_coef = .35
-        self.wins_coef = .5
-        self.likes_coef = .15
+    def __init__(self, state_param = 'All'):
 
-        #get current date and date -1
-        today = datetime.datetime.now()
-        yesterday = datetime.datetime.now() - datetime.timedelta(hours=24)
-        self.today = today.date()
-        self.yesterday = yesterday.date()
-
-        #set base class for musician models
-        mus = models.musician.Musician
-
-        selection = self.request.get('selection')
-        musicians = mus.query()
-
-        #filter by state if selection
-        if selection != 'All': musicians = musicians.filter(mus.musician_state == selection)
-
-        #pull musicians
-        musicians = musicians.fetch()
-
-        #fetch follower transactions
-        fol = models.following.Following
-        follower_trans = fol.query().fetch()
-
-        #videos posted
-        self.videos = [x.musician_key for x in models.videos.Videos.query().fetch()]
-
-        #fetch head-to-head wins
-        wins = models.voting.Voting
-        votes = wins.query().fetch()
-
-        #fetch likes per video
-        vids = models.likes.Likes
-        video_likes = vids.query().fetch()
-
-        #build calculation dictionaries
-        self.recent_calcs(follower_trans, votes, video_likes)
-        self.wins_theta = self.theta_builder(votes,'voter_choice_musician_key','vote_time')
-        self.follower_theta = self.theta_builder(follower_trans,'followed_entity_key', 'followed_date')
-
-
-        #build ranks
-        musicians = self.rank_builder(musicians)
-
-        #set ranks
-        self.set_ranks(musicians, selection)
-
-        end_time = time.clock() - start_time
-        logging.info(str(end_time) + " seconds - " + selection) #logs process time
-        self.response.out.write('Finished in ' + str(end_time) + ' seconds')
-
-    def set_ranks(self,musicians, selection):
-        #sort by rank
-        ranks = sorted(musicians, key = lambda x: x.total_points, reverse = True)
-
-        if selection == 'All':
-            for i, obj in enumerate(ranks):
-                obj.current_rank = i+1
-
+        #Determine weather to grab all musicians or filter by state. 
+        if state_param == 'All':
+            self.musicians = models.musician.Musician.fetch_all()
         else:
-            for i, obj in enumerate(ranks):
-                obj.state_rank = i+1
+            self.musicians = models.musician.Musician.filter_by_state(state_param)
 
-        ndb.put_multi(ranks)
+        #Create key array for filtering
+        musician_keys = [x.key for x in self.musicians]
+
+        #Query videos, likes, and matchups
+        self.videos = [x.musician_key for x in models.videos.Videos.filter_by_state(musician_keys)]
+        self.matchups = models.voting.Voting.fetch_votes_musicians(musician_keys)
+        self.likes = [x.musician_key for x in models.likes.Likes.fetch_for_musicians(musician_keys)]
+        self.followers = models.following.Following.fetch_followers_count(musician_keys)
+
+
+        #build dictionary mappings
+        follower_map = self.__map_objects_to_dates(self.followers,'followed_entity_key', 'followed_date')
+        wins_map = self.__map_objects_to_dates(self.matchups,'voter_choice_musician_key','vote_time')
+
+        #calculate series for each list
+        self.follower_calcs = self.__calculate_series(follower_map)
+        self.wins_calcs = self.__calculate_series(wins_map)
+
+        #build total points property on musicians object
+        self.__build_ranks()
+
+        #update database
+        self.__rank_musicians(state_param)
+
+
+        
+ 
+    def __map_objects_to_dates(self, object_list, key_property, date_property):
+        #takes a list of objects and returns a dictionary of {key:date{count}}
+        object_mapping={}
+        for x in object_list:
+            key = getattr(x,key_property)
+            date = getattr(x,date_property).date()
+            
+            key_check = object_mapping.get(key, False)
+
+            if key_check:
+                count = object_mapping[key].get(date,0)
+                object_mapping[key][date] = count+1
+            else:
+                object_mapping[key] = {date:1}
+
+        return object_mapping
+
+
+    def __calculate_series(self, map_list):
+        #takes a mapping and calculates daily changes / theta
+        today = datetime.datetime.now().date()
+
+        #create blank dictionary to store {key:points}
+        calculation_mapping ={}
+
+        #loop through list of keys in map_list
+        for key in map_list:
+            series_percent_change=[]
+            series_count = []
+            count_today = map_list[key].get(today,0)
+
+            #loop through dates in each key in map_list
+            for date in map_list[key]:
+                theta = 1.0/(today-date).days
+
+                #build series_count array with theta * values
+                series_count.append(theta*map_list[key][date])
+
+                #calculate daily percent change with midpoint formula
+                day_count = map_list[key][date]
+                prev_day_date = date - datetime.timedelta(days = -1)
+                prev_day_count = map_list[key].get(prev_day_date,0)
+
+                #build series percent change
+                try:
+                    calc = theta* ((day_count - float(prev_day_count))/((day_count + float(prev_day_count))/2))
+                
+                except ZeroDivisionError:
+                    calc = 0
+                    
+                series_percent_change.append(calc)
+
+
+            calculation_mapping[key] = count_today + sum(series_percent_change) + sum(series_count)
+
+        return calculation_mapping
+
+
+    def __build_ranks(self):
+        for x in self.musicians:
+            try:
+                lpv = float(self.likes.count(x.key))/ self.videos.count(x.key)
+
+            except ZeroDivisionError:
+                lpv = 0.0
+
+            setattr(x,'total_points',(Trending.follower_coef * self.follower_calcs.get(x.key,0))+(Trending.wins_coef * self.wins_calcs.get(x.key,0)) + (Trending.likes_coef * lpv))
+            setattr(x,'lpv',lpv)
+            setattr(x,'f',self.follower_calcs.get(x.key,0))
+            setattr(x,'w',self.wins_calcs.get(x.key,0))
+
+        self.musicians = sorted(self.musicians, key = lambda x: x.total_points, reverse = True)
+
+
+    def __rank_musicians(self, scope):
+        if scope == 'All':
+            prop = 'current_rank'
+        else:
+            prop = 'state_rank'
+
+        for index, musician in enumerate(self.musicians):
+            setattr(musician,prop,index+1)
+
+        
+
+    def commit_data(self):
+        ndb.put_multi(self.musicians)
 
     
-    def rank_builder(self, musicians):
-        for x in musicians:
-            following_stats = self.following.get(x.key,{})
-            #like_stats = self.likes.get(x.key,{})
-            win_stats = self.wins.get(x.key,{})
-            followers_theta = self.theta_series(x.key, x.account_created, self.follower_theta)
-            wins_theta = self.theta_series(x.key, x.account_created, self.wins_theta)
-
-
-            #followers calc
-            f = following_stats.get('today',0) + (following_stats.get('change',0)*followers_theta)+(x.musician_stats.get('followers',0)*followers_theta)
-
-            #wins calc
-            w = win_stats.get('today',0) + (win_stats.get('change',0)*wins_theta)+(x.musician_stats.get('head_to_head_wins',0)*wins_theta)
-
-            #likes calculation
-            vids_posted = self.videos.count(x.key)
-            if x.musician_stats.get('likes',0) == 0 or vids_posted == 0:
-                lpv = 0
-            else:
-                lpv = x.musician_stats.get('likes')/float(vids_posted)
-
-            setattr(x,'total_points',(self.follow_coef * f) + (self.wins_coef*w) + (self.likes_coef*lpv))
-
-        return musicians
 
 
 
 
 
-    def recent_calcs(self, follower_trans, votes, video_likes):
-        #builds day and day -1 dictionaries
-        self.following = self.percent_mapping(follower_trans, 'followed_date', 'followed_entity_key')
-        self.wins = self.percent_mapping(votes, 'vote_time', 'voter_choice_musician_key')
-        #self.likes = self.percent_mapping(video_likes, 'like_time', 'musician_key')
-
-    
-    def percent_mapping(self, query, date_name, key_name):
-
-        #create arrays with muscians keys for day and day-1
-        todays_count = [getattr(x,key_name) for x in query if datetime.datetime.date(getattr(x,date_name)) == self.today]
-        yesterday_count = [getattr(x,key_name) for x in query if datetime.datetime.date(getattr(x,date_name)) == self.yesterday]
-
-        #map data using dictionary and return
-        data = {}
-        for x in query:
-            today = todays_count.count(getattr(x,key_name))
-            yesterday = yesterday_count.count(getattr(x,key_name))
-            if today > yesterday and yesterday != 0:
-                change = (today-yesterday)/float(yesterday)
-            elif today > yesterday and yesterday == 0:
-                change = 1.0
-            else:
-                change = 0.0
-
-            data[getattr(x,key_name)] = {'change':change, 'today':today,'yesterday':yesterday}
-
-        return data
 
 
-    def theta_builder(self, query, key_name, date_name):
-        """Builds a dictionary of key:{date:count} for a query"""
-        data ={}
-        for x in query:
-            lookup = data.get(getattr(x,key_name),None)
-            if lookup:
-                count = lookup.get(getattr(x,date_name).date(),0)
-                if count == 0:
-                    data[getattr(x,key_name)][getattr(x,date_name).date()] = 1
-                else:
-                    data[getattr(x,key_name)][getattr(x,date_name).date()] = count+1
-
-            else:
-                #set artist key in dict
-                data[getattr(x,key_name)] = {}
-
-                #set initial date with count 1
-                data[getattr(x,key_name)][getattr(x,date_name).date()] = 1
-
-        return data
 
 
-    def theta_series(self, key, account_created_date, dictionary):
-        """returns a series of 1/days * count for each record"""
-        data = dictionary.get(key, None)
-        series =[]
-        if data:
-            for x in data:
-                days = (x - account_created_date.date()).days
-                calc = (1.0/(days+1))*data[x]
-                series.append(calc)
-        else:
-            series =[0]
-        return sum(series)
+
+
+
 
 
 

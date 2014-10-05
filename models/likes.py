@@ -25,3 +25,7 @@ class Likes(ndb.Model):
 	@classmethod
 	def recent_trends(cls):
 		return cls.query(cls.like_time >= datetime.datetime.now() + datetime.timedelta(-30)).fetch()
+
+	@classmethod
+	def fetch_for_musicians(cls, musician_keys):
+		return cls.query(cls.musician_key.IN(musician_keys)).fetch()
