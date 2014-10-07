@@ -34,7 +34,7 @@ class Trending(views.Template):
         self.wins_calcs = self.__calculate_series(wins_map)
 
         #build total points property on musicians object
-        self.__build_ranks()
+        self.__build_ranks(follower_map, wins_map)
 
         #update database
         self.__rank_musicians(state_param)
@@ -61,6 +61,7 @@ class Trending(views.Template):
 
 
     def __calculate_series(self, map_list):
+        """for a given dictionary of date:counts, calculates theta as 1/days since today and multiples by percentage changes and counts"""
         #takes a mapping and calculates daily changes / theta
         today = datetime.datetime.now().date()
 
@@ -100,7 +101,7 @@ class Trending(views.Template):
         return calculation_mapping
 
 
-    def __build_ranks(self):
+    def __build_ranks(self, follower_map, wins_map):
         for x in self.musicians:
             try:
                 lpv = float(self.likes.count(x.key))/ self.videos.count(x.key)
@@ -112,6 +113,10 @@ class Trending(views.Template):
             setattr(x,'lpv',lpv)
             setattr(x,'f',self.follower_calcs.get(x.key,0))
             setattr(x,'w',self.wins_calcs.get(x.key,0))
+            setattr(x,'followers', follower_map.get(x.key,{}))
+            setattr(x,'wins', wins_map.get(x.key,{}))
+            setattr(x,'likes', self.likes.count(x.key))
+            setattr(x,'videos',self.videos.count(x.key))
 
         self.musicians = sorted(self.musicians, key = lambda x: x.total_points, reverse = True)
 
