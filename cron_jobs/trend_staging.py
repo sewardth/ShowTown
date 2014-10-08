@@ -3,9 +3,9 @@ import views, webapp2, models, datetime, time, logging
 
 class Trending(views.Template):
     """Builds current trending ranks and inserts records into trending model"""
-    follower_coef = .25
-    wins_coef = .35
-    likes_coef = .1
+    follower_coef = .35
+    wins_coef = .5
+    likes_coef = .15
 
     def __init__(self, state_param = 'All'):
 
@@ -76,8 +76,8 @@ class Trending(views.Template):
 
             #loop through dates in each key in map_list
             for date in map_list[key]:
-                theta = 1.0/(today-date).days
-
+                theta = 1.0/((today-date).days+1)
+                
                 #build series_count array with theta * values
                 series_count.append(theta*map_list[key][date])
 
