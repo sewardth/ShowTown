@@ -42,7 +42,7 @@ function init_page(){
         )
       );
   }
-  load_page_content(null, states[$('#selected_state').text()], gig_offers[$('#selected_gig_offer').text()])
+  load_page_content(null, $('#selected_state').text(), $('#selected_gig_offer').text())
 }
    
 function load_page_content(venue_type, state_code, gig_offer){

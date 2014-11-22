@@ -61,14 +61,14 @@ class VenueProfileHandler(views.Template):
 				x.applicant_count =   applicant_list.count(x.key)
 		except Exception as e:
 			logging.exception(e)
-			return False
+			
 			
 
 
 		template_values = {'venue_name':venue.venue_name, 'venue_type':venue.venue_type,
 		'venue_address':venue.address[0].address_1  + ', ' + venue.address[0].address_2  + ' ' + venue.address[0].city  + ', ' + venue.address[0].state  + ' ' + str(venue.address[0].zip), 
 		'venue_phone':venue.phone, 'venue_url':'Need field in DB',
-		'venue_url_text':'Andiamoitalia.com','venue_age_limit':venue.age_limit, 'venue_capacity':venue.capacity, 'available_gigs':gigs, 'venue':venue}
+		'venue_url_text':venue.venue_url,'venue_age_limit':venue.age_limit, 'venue_capacity':venue.capacity, 'available_gigs':gigs, 'venue':venue}
 
 		self.render('venue_profile.html', template_values)
 

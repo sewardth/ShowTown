@@ -12,8 +12,8 @@ class FollowHandler(views.Template):
 		call_back = self.request.get('call_b')
 		result = self.request.get('result')
 		user = self.user_check()
-		
-		
+
+
 		if result == 'f':
 			check = models.following.Following.get_by_keys(user.key, to_follow)
 			if check == None:follow = models.following.Following(followed_entity_key = to_follow,
@@ -25,14 +25,14 @@ class FollowHandler(views.Template):
 		time.sleep(.5)
 		#update musician stats
 		MusicianStats.update_followers(to_follow)
-		
+
 		redirect = '/%s?id=%s' %(call_back, self.request.get('id'))
 		self.redirect(redirect)
-	
 
-    		    		                                         		
+
+
 app = webapp2.WSGIApplication([
-    
+
     ('/follow*', FollowHandler)
-    
+
 ], debug=True)

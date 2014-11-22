@@ -41,22 +41,17 @@ class VenuesHandler(views.Template):
 
 	def post(self):
 		# NOTE: we are posting venue_type, state_code, gig_offer and the cursor from a previous request or null if this is the initial one.
-		curs = Cursor(urlsafe=self.request.get('cursor'))
-		vens, next_curs, more = models.venue.Venue.query().fetch_page(10, start_cursor=curs)
+		vens  = models.venue.Venue.query().fetch(100)
 		ven_data =[]
 		for x in vens:
 			data = x.to_dict()
 			del data['profile_pic'], data['latest_update'], data['user_key']
 			data['venue_key'] = x.key.urlsafe()
 			ven_data.append(data)
-		if more and next_curs:
-		      next = next_curs.urlsafe()
-		else:
-			next = None
 	
 		
 
-		data = {'cursor_for_next_page':next, 'venue_data':ven_data}
+		data = {'venue_data':ven_data}
 		self.response.headers.add_header('content-type', 'application/json', charset='utf-8')
 		self.response.out.write(json.dumps(data))
 

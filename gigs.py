@@ -30,6 +30,7 @@ class VenueAddEditGigHandler(views.Template):
 									   'end_time_am_pm': check_key.end_time.strftime('%p'),
 									   'compensation':check_key.compensation,
 									   'equipment':check_key.equipment,
+									   'checkboxes':check_key.genres,
 									   'locality':check_key.locality,
 									   'description':check_key.description,
 									   'gig':check_key}
@@ -40,22 +41,22 @@ class VenueAddEditGigHandler(views.Template):
 					self.response.out.write('Not Authorized')
 		
 			except Exception as e: #Else displays blank form
-                logging.exception(e)
+				logging.exception(e)
 				template_values = {'add':1,
-								   'gig_name': '',
-								   'event_date':'',
-								   'start_time_hour':'',
-								   'start_time_minutes':'',
-								   'start_time_am_pm':'',
-								   'end_time_hour':'',
-								   'end_time_minutes':'',
-								   'end_time_am_pm': '',
-								   'compensation':'',
-								   'equipment':'',
-								   'locality':'',
-								   'description':''}
-								
-								
+							   'gig_name': '',
+							   'event_date':'',
+							   'start_time_hour':'',
+							   'start_time_minutes':'',
+							   'start_time_am_pm':'',
+							   'end_time_hour':'',
+							   'end_time_minutes':'',
+							   'end_time_am_pm': '',
+							   'compensation':'',
+							   'equipment':'',
+							   'locality':'',
+							   'description':''}
+							
+							
 				self.render('venue_add_edit_gig.html', template_values)
 
 	def post(self):
@@ -76,6 +77,14 @@ class VenueAddEditGigHandler(views.Template):
 			compensation = self.request.get('compensation')
 			locality = self.request.get('locality')
 			description = self.request.get('description')
+			if self.request.get('equipment') == 'Yes':
+				equipment = True
+			else:
+				equipment = False
+
+			applicant_count = self.request.get('applicants',0)
+			genres = self.request.get_all('checkboxes')
+
 			
 			template_values={}
 			#error checks
@@ -93,26 +102,31 @@ class VenueAddEditGigHandler(views.Template):
 				try:
 					gig_key = ndb.Key(urlsafe=self.request.get('id'))
 					gig = gig_key.get()
-					gig.venue = venue.venue_name
+					gig.venue_key = user.key
 					gig.gig_name = gig_name
 					gig.event_date = event_date
 					gig.start_time = datetime.strptime(start_time_date,'%m/%d/%Y %I %M %p')
 					gig.end_time = datetime.strptime(end_time_date,'%m/%d/%Y %I %M %p')
 					gig.compensation = compensation
+					gig.equipment = equipment
+					gig.genres = genres
+					gig.applicant_count = applicant_count
 					gig.locality = locality
 					gig.description = description
 					gig.put()
 			
 				except Exception as e:
-                    logging.exception(e)
+					logging.exception(e)
 					gig = models.events.Event(venue_key = venue.key,
 												venue_account_key = user.key,
-												venue = venue.venue_name,
 												gig_name = gig_name,
 												event_date = event_date,
 												start_time = datetime.strptime(start_time_date,'%m/%d/%Y %I %M %p'),
 												end_time = datetime.strptime(end_time_date,'%m/%d/%Y %I %M %p'),
 												compensation = compensation,
+												equipment = equipment,
+												genres = genres,
+												applicant_count = applicant_count,
 												locality = locality,
 												description = description).put()
 		

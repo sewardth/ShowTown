@@ -137,20 +137,6 @@ class Trending(views.Template):
 
     
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 app = webapp2.WSGIApplication([
     ('/tasks/trending/builder.*', Trending)
 
