@@ -2,7 +2,7 @@ import lassie, requests, webapp2, messages
 from datetime import datetime
 from google.appengine.api import urlfetch
 from sessions import password as pwd
-import time
+import time, logging
 
 
 class Validate(webapp2.RequestHandler):
@@ -72,5 +72,6 @@ class Validate(webapp2.RequestHandler):
 					video_data = {'embed_link' : video['videos'][1]['src'],
 					             'title' : video['title']}
 				return video_data
-			except:
+			except Exception as e:
+				logging.error(e)
 				return False
