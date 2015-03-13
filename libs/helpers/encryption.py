@@ -1,7 +1,7 @@
 from webapp2_extras import security
 
 class Encryption(object):
-	pepper = 'jklaf#434o7#$$(#*&EklfdjhgaldfhfhdsJKFHDJKSHDHljh32423iuy4ey)'
+	pepper = '#'
 	
 	@classmethod
 	def generate_hash(cls,value):

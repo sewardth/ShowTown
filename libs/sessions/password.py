@@ -1,7 +1,7 @@
 from webapp2_extras import security
 
 class Passwords(object):
-	pepper = 'A*0-Ze4!1+23kKljhbo;2u32kla@45z#1Kl23nlc3#-)!mc'
+	pepper = '#'
 	
 	@classmethod
 	def generate_hash(cls,password):
